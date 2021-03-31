@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SB Delivery</string>
+    <string name="sign_in">Вход</string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="email">E-mail</string>
+    <string name="wrong_email">Некорректный e-mail</string>
+    <string name="password">Пароль</string>
+    <string name="to_enter">Войти</string>
+    <string name="sign_up">Регистрация</string>
+    <string name="enter">Вход</string>
+    <string name="to_sign_up">Зарегистрироваться</string>
+    <string name="forget_password">Забыли пароль?</string>
+</resources>
