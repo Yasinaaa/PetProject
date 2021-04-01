@@ -11,4 +11,13 @@
     <string name="enter">Вход</string>
     <string name="to_sign_up">Зарегистрироваться</string>
     <string name="forget_password">Забыли пароль?</string>
+    <string name="restore_password">Восстановление пароля</string>
+    <string name="forget_password_text">Введите электронную почту, которую вы
+        использовали при регистрации, и мы вышлем на
+        нее код для восстановления пароля</string>
+    <string name="send">Отправить</string>
+    <string name="input_verification_code">Введите проверочный код</string>
+    <string name="input_new_password">Введите новый пароль</string>
+    <string name="repeat_password">Повторите пароль</string>
+    <string name="save">Сохранить</string>
 </resources>
