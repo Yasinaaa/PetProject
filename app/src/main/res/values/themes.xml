@@ -28,9 +28,18 @@
     </style>
 
     <style name="EditTextSign">
-<!--        <item name="backgroundColor">@color/white</item>-->
+        <!--        <item name="backgroundColor">@color/white</item>-->
         <item name="android:textColor">@color/grey</item>
         <item name="android:textSize">12sp</item>
         <item name="android:layout_marginStart">29dp</item>
     </style>
+
+    <style name="Theme.SBDelivery.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.SBDelivery.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.SBDelivery.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
