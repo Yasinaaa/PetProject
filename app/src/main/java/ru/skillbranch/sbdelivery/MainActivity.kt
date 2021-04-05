@@ -2,6 +2,8 @@ package ru.skillbranch.sbdelivery
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.TextView
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -30,8 +32,7 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_main, R.id.nav_menu, R.id.nav_favorite,
@@ -41,6 +42,14 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.nav_search){
+                binding.appBarMain.toolbar.visibility = GONE
+            }else{
+                binding.appBarMain.toolbar.visibility = VISIBLE
+            }
+        }
 
         val aboutApp = navView.findViewById<TextView>(R.id.tv_about_app)
         aboutApp.setOnClickListener {

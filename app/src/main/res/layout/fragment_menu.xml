@@ -13,6 +13,7 @@
     android:paddingStart="2dp"
     android:paddingEnd="16dp"
     app:spanCount="3"
+    tools:listitem="@layout/item_menu"
     android:splitMotionEvents="false"
     android:orientation="vertical"
     android:clipChildren="false"

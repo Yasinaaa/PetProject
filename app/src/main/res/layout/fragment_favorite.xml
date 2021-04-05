@@ -13,6 +13,7 @@
     android:paddingStart="8dp"
     android:paddingEnd="16dp"
     app:spanCount="2"
+    tools:listitem="@layout/item_product_card"
     android:splitMotionEvents="false"
     android:orientation="vertical"
     android:clipChildren="false"

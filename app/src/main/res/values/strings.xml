@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">SB Delivery</string>
     <string name="made_by_yasina">Сделано Заляловой Ясиной\nTelegram: @yassinaa</string>
+    <string name="empty_list">Данные не найдены</string>
+    <string name="try_again">Повторить запрос</string>
 
     <!-- sign -->
     <string name="sign_in">Вход</string>
@@ -46,6 +48,12 @@
     <string name="paste">Паста</string>
     <string name="side_dishes">Гарниры</string>
     <string name="main_dish">Основное блюдо</string>
+    <string name="combo_set">Комбо</string>
+    <string name="pizza">Пицца</string>
+    <string name="sushi_and_rolls">Суши и роллы</string>
+    <string name="burgers">Бургеры</string>
+    <string name="soups">Супы</string>
+    <string name="hot_dishes">Горячее</string>
 
     <!-- main -->
     <string name="recommend">Рекомендуем</string>
@@ -53,5 +61,10 @@
     <string name="best">Лучшее</string>
     <string name="popular">Популярное</string>
     <string name="promotion">Акция</string>
+
+    <!-- search -->
+    <string name="search_dishes">Поиск блюд</string>
+    <string name="category">Категория</string>
+
 
 </resources>

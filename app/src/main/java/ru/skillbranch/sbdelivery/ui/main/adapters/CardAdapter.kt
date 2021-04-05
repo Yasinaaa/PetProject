@@ -5,14 +5,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.skillbranch.sbdelivery.R
-import ru.skillbranch.sbdelivery.databinding.ItemMainCardBinding
-import ru.skillbranch.sbdelivery.databinding.ItemMainRvBinding
-import ru.skillbranch.sbdelivery.databinding.ItemMenuBinding
+import ru.skillbranch.sbdelivery.databinding.ItemProductCardBinding
 import ru.skillbranch.sbdelivery.utils.toDp
 
 
@@ -28,7 +24,7 @@ open class CardAdapter(val type: Int) : RecyclerView.Adapter<RecyclerView.ViewHo
     private lateinit var context: Context
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val bindingItem: ItemMainCardBinding? = DataBindingUtil.bind(view)
+        val bindingItem: ItemProductCardBinding? = DataBindingUtil.bind(view)
     }
 
     private var list: MutableList<Item> = mutableListOf(
@@ -41,7 +37,7 @@ open class CardAdapter(val type: Int) : RecyclerView.Adapter<RecyclerView.ViewHo
         context = parent.context
         return ItemViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_main_card, parent, false)
+                .inflate(R.layout.item_product_card, parent, false)
         )
     }
 
