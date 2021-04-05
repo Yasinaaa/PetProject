@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">SB Delivery</string>
+
+    <!-- sign -->
     <string name="sign_in">Вход</string>
     <string name="name">Имя</string>
     <string name="surname">Фамилия</string>
@@ -20,14 +22,8 @@
     <string name="input_new_password">Введите новый пароль</string>
     <string name="repeat_password">Повторите пароль</string>
     <string name="save">Сохранить</string>
-    <string name="title_activity_main2">MainActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
+    <!-- drawer -->
     <string name="menu_main">Главная</string>
     <string name="menu_menu">Меню</string>
     <string name="menu_favorite">Избранное</string>
@@ -36,5 +32,25 @@
     <string name="menu_orders">Заказы</string>
     <string name="menu_notifications">Уведомления</string>
     <string name="menu_about_app">О приложении</string>
+
+    <!-- menu -->
+    <string name="search">Поиск</string>
+    <string name="promotions">Акции</string>
+    <string name="drinks">Напитки</string>
+    <string name="sauces">Соусы</string>
+    <string name="snacks">Закуски</string>
+    <string name="deserts">Десерты</string>
+    <string name="salads">Салаты</string>
+    <string name="dumplings">Пельмени</string>
+    <string name="paste">Паста</string>
+    <string name="side_dishes">Гарниры</string>
+    <string name="main_dish">Основное блюдо</string>
+
+    <!-- main -->
+    <string name="recommend">Рекомендуем</string>
+    <string name="see_all">См. все</string>
+    <string name="best">Лучшее</string>
+    <string name="popular">Популярное</string>
+    <string name="promotion">Акция</string>
 
 </resources>

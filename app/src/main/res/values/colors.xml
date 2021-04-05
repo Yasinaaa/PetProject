@@ -15,4 +15,8 @@
     <color name="orange">#FF6F14</color>
     <color name="grey">#B3BFCF</color>
     <color name="red">#EF3131</color>
+    <color name="grey_for_btn">#24222C</color>
+    <color name="colorRipple">#2FFF6F14</color>
+    <color name="colorTextWhite">#FAFAFA</color>
+    <color name="yellow">#FEC90D</color>
 </resources>

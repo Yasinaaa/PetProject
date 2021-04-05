@@ -12,31 +12,8 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <!-- Customize your theme here. -->
-    </style>
-
-    <style name="TextViewSign">
-        <item name="android:textColor">@color/grey</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:layout_marginStart">29dp</item>
-    </style>
-
-    <style name="TextViewSignError">
-        <item name="android:textColor">@color/red</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:layout_marginStart">29dp</item>
-    </style>
-
-    <style name="EditTextSign">
-        <!--        <item name="backgroundColor">@color/white</item>-->
-        <item name="android:textColor">@color/grey</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:layout_marginStart">29dp</item>
-    </style>
-
-    <style name="Theme.SBDelivery.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.SBDelivery.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

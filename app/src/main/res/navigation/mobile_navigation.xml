@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_main">
+
+    <fragment
+        android:id="@+id/nav_main"
+        android:name="ru.skillbranch.sbdelivery.ui.main.MainFragment"
+        android:label="@string/menu_main"
+        tools:layout="@layout/fragment_main" />
+
+    <fragment
+        android:id="@+id/nav_menu"
+        android:name="ru.skillbranch.sbdelivery.ui.menu.MenuFragment"
+        android:label="@string/menu_menu"
+        tools:layout="@layout/fragment_menu" />
+
+    <fragment
+        android:id="@+id/nav_favorite"
+        android:name="ru.skillbranch.sbdelivery.ui.favorite.FavoriteFragment"
+        android:label="@string/menu_favorite"
+        tools:layout="@layout/fragment_favorite" />
+
+    <fragment
+        android:id="@+id/nav_basket"
+        android:name="ru.skillbranch.sbdelivery.ui.basket.BasketFragment"
+        android:label="@string/menu_basket"
+        tools:layout="@layout/fragment_basket" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="ru.skillbranch.sbdelivery.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_orders"
+        android:name="ru.skillbranch.sbdelivery.ui.orders.OrdersFragment"
+        android:label="@string/menu_orders"
+        tools:layout="@layout/fragment_order" />
+
+    <fragment
+        android:id="@+id/nav_notifications"
+        android:name="ru.skillbranch.sbdelivery.ui.notifications.NotificationsFragment"
+        android:label="@string/menu_notifications"
+        tools:layout="@layout/fragment_notifications" />
+
+</navigation>

@@ -10,16 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SBDelivery">
         <activity
-            android:name=".MainActivity2"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/Theme.SBDelivery.NoActionBar"></activity>
-        <activity android:name=".MainActivity">
+            android:name=".MainActivity"
+            android:theme="@style/Theme.SBDelivery.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<!--        <activity android:name=".MainActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
     </application>
 
 </manifest>
