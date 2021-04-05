@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,9 +13,15 @@ import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ItemMainCardBinding
 import ru.skillbranch.sbdelivery.databinding.ItemMainRvBinding
 import ru.skillbranch.sbdelivery.databinding.ItemMenuBinding
+import ru.skillbranch.sbdelivery.utils.toDp
 
 
-open class CardAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+open class CardAdapter(val type: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    companion object{
+        const val MAIN = 1
+        const val FAVORITE = 2
+    }
 
     class Item(val title: String, val price: String)
 
@@ -45,6 +52,17 @@ open class CardAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 //                ContextCompat.getDrawable(context, list[position].img)
             holder.bindingItem?.tvTitle?.text = list[position].title
             holder.bindingItem?.tvPrice?.text = list[position].price
+
+            val lp: RecyclerView.LayoutParams = holder.bindingItem?.cv?.layoutParams
+                    as RecyclerView.LayoutParams
+
+            if (type == FAVORITE) {
+                if (position != 1 || position != 2) {
+                    lp.topMargin = 10.toDp(context)
+                }
+            }else if (type == MAIN){
+                lp.width = 158.toDp(context)
+            }
         }
     }
 

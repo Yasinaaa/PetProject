@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.recyclerview.widget.RecyclerView
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@android:color/black"
+    tools:ignore="MissingConstraints,RtlSymmetry"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:layout_height="match_parent"
+    android:id="@+id/rv_items"
+    android:paddingTop="30dp"
+    android:paddingBottom="28dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="16dp"
+    app:spanCount="2"
+    android:splitMotionEvents="false"
+    android:orientation="vertical"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:descendantFocusability="blocksDescendants"
+    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />

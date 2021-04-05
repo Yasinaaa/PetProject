@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ItemMainRvBinding
 import ru.skillbranch.sbdelivery.databinding.ItemMenuBinding
+import ru.skillbranch.sbdelivery.ui.main.adapters.CardAdapter.Companion.MAIN
 
 
 open class RecyclersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -43,7 +44,7 @@ open class RecyclersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 //            holder.bindingItem?.mbItem!!.icon =
 //                ContextCompat.getDrawable(context, list[position].img)
             holder.bindingItem?.tvTitle?.text = context.getString(list[position].title)
-            holder.bindingItem?.rvItems?.adapter = CardAdapter()
+            holder.bindingItem?.rvItems?.adapter = CardAdapter(type=MAIN)
         }
     }
 

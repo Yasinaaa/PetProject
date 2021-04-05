@@ -6,13 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import ru.skillbranch.sbdelivery.databinding.FragmentFavoriteBinding
 import ru.skillbranch.sbdelivery.databinding.FragmentMainBinding
+import ru.skillbranch.sbdelivery.ui.main.adapters.CardAdapter
+import ru.skillbranch.sbdelivery.ui.main.adapters.CardAdapter.Companion.FAVORITE
 
 class FavoriteFragment : Fragment() {
 
     private lateinit var menuViewModel: FavoriteViewModel
-    private var _binding: FragmentMainBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentFavoriteBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,13 +23,16 @@ class FavoriteFragment : Fragment() {
     ): View {
         menuViewModel = ViewModelProvider(this).get(FavoriteViewModel::class.java)
 
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+        val root: View = binding!!.root
+
+        binding?.rvItems?.adapter = CardAdapter(type=FAVORITE)
+
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        binding = null
     }
 }
