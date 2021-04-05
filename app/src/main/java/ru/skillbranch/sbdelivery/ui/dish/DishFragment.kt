@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.FragmentDishBinding
 import ru.skillbranch.sbdelivery.databinding.FragmentMainBinding
+import ru.skillbranch.sbdelivery.ui.dish.review.ReviewDialogFragment
 import ru.skillbranch.sbdelivery.utils.removeZero
 
 class DishFragment : Fragment() {
@@ -49,6 +50,13 @@ class DishFragment : Fragment() {
         binding?.tvEmptyReviewsTitle?.visibility = GONE
         binding?.rvReviews?.visibility = VISIBLE
         binding?.rvReviews?.adapter = ReviewsAdapter()
+
+        showReviewDialog()
+    }
+
+    private fun showReviewDialog(){
+        val reviewDialog = ReviewDialogFragment()
+        reviewDialog.show(parentFragmentManager, "review")
     }
 
     override fun onDestroyView() {

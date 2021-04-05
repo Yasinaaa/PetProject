@@ -25,5 +25,7 @@
     <color name="grey_line">#2C2C33</color>
     <color name="grey_btn2">#33313B</color>
     <color name="grey_stroke">#48484D</color>
+    <color name="grey_box">#E5E5E5</color>
+    <color name="grey_close">#BEBEBE</color>
 
 </resources>
