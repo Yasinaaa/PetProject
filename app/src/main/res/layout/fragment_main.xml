@@ -28,7 +28,8 @@
         app:layout_constraintStart_toStartOf="@+id/siv_wallpaper"
         app:layout_constraintEnd_toEndOf="@+id/siv_wallpaper"
         app:layout_constraintTop_toTopOf="@+id/siv_wallpaper"
-        app:layout_constraintBottom_toBottomOf="@+id/siv_wallpaper"/>
+        app:layout_constraintBottom_toBottomOf="@+id/siv_wallpaper"
+        tools:ignore="ContentDescription" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"

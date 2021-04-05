@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/iv_product"
+            android:background="@drawable/wallpaper"
+            app:shapeAppearanceOverlay="@style/roundedImageView"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Сет Королевский"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_product"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/mb_minus"
+            android:background="@drawable/rect_minus"
+            app:backgroundTint="@color/grey_stroke"
+            android:text="-"
+            android:textSize="24sp"
+            android:letterSpacing="0"
+            android:textColor="@color/orange"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:minHeight="34dp"
+            android:minWidth="30dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toEndOf="@+id/iv_product"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_product"
+            tools:ignore="HardcodedText"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:id="@+id/tv_num"
+            android:background="@drawable/rect"
+            android:text="1"
+            android:textSize="24sp"
+            android:textAlignment="center"
+            android:gravity="center_vertical"
+            android:letterSpacing="0"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:minHeight="34dp"
+            android:minWidth="30dp"
+            android:textColor="@color/orange"
+            app:layout_constraintStart_toEndOf="@+id/mb_minus"
+            app:layout_constraintTop_toTopOf="@+id/mb_minus"
+            app:layout_constraintBottom_toBottomOf="@+id/mb_minus"
+            tools:ignore="RtlCompat,HardcodedText"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/mb_plus"
+            android:background="@drawable/rect_plus"
+            app:backgroundTint="@color/grey_stroke"
+            android:text="+"
+            android:textSize="24sp"
+            android:letterSpacing="0"
+            android:textColor="@color/orange"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginEnd="16dp"
+            android:minHeight="34dp"
+            android:minWidth="30dp"
+            android:layout_marginTop="25dp"
+            app:layout_constraintStart_toEndOf="@+id/tv_num"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_product"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:textColor="@color/orange"
+            android:textSize="18sp"
+            android:textAlignment="textEnd"
+            tools:text="680 Р"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintStart_toEndOf="@+id/mb_plus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/mb_plus"
+            app:layout_constraintBottom_toBottomOf="@+id/mb_plus"/>
+
+        <View
+            android:id="@+id/view_line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/grey_line"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="16dp"
+            android:paddingStart="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mb_plus"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
