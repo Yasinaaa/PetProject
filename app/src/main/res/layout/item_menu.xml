@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:id="@+id/mb_item"
-        app:backgroundTint="@color/grey_for_btn"
+        app:backgroundTint="@color/grey_btn"
         app:icon="@drawable/ic_star"
         app:iconTint="#E5F1FF"
         app:iconTintMode="multiply"

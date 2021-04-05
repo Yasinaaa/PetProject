@@ -6,13 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import ru.skillbranch.sbdelivery.databinding.FragmentMainBinding
+import ru.skillbranch.sbdelivery.databinding.FragmentNotificationsBinding
 
 class NotificationsFragment : Fragment() {
 
     private lateinit var menuViewModel: NotificationsViewModel
-    private var _binding: FragmentMainBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentNotificationsBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,13 +20,16 @@ class NotificationsFragment : Fragment() {
     ): View {
         menuViewModel = ViewModelProvider(this).get(NotificationsViewModel::class.java)
 
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        binding = FragmentNotificationsBinding.inflate(inflater, container, false)
+        val root: View = binding!!.root
+
+        binding?.rvItems?.adapter = NotificationsAdapter()
+
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        binding = null
     }
 }

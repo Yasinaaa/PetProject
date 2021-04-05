@@ -2,6 +2,7 @@ package ru.skillbranch.sbdelivery
 
 import android.os.Bundle
 import android.view.Menu
+import android.widget.TextView
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -10,6 +11,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import ru.skillbranch.sbdelivery.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -39,6 +41,12 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        val aboutApp = navView.findViewById<TextView>(R.id.tv_about_app)
+        aboutApp.setOnClickListener {
+            drawerLayout.closeDrawers()
+            navController.navigate(R.id.nav_about_app)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

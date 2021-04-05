@@ -13,10 +13,15 @@
     <color name="colorAccent">@color/orange</color>
 
     <color name="orange">#FF6F14</color>
-    <color name="grey">#B3BFCF</color>
     <color name="red">#EF3131</color>
-    <color name="grey_for_btn">#24222C</color>
+
     <color name="colorRipple">#2FFF6F14</color>
     <color name="colorTextWhite">#FAFAFA</color>
     <color name="yellow">#FEC90D</color>
+
+    <color name="grey">#B3BFCF</color>
+    <color name="grey_btn">#24222C</color>
+    <color name="grey_text">#A6A6B2</color>
+    <color name="grey_line">#2C2C33</color>
+
 </resources>

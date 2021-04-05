@@ -18,7 +18,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/grey_for_btn"
+            android:background="@color/grey_btn"
             app:title="@string/enter"
             app:contentInsetStart="26dp"
             app:titleTextColor="@color/colorPrimary"
