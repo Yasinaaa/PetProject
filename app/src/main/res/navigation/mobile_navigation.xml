@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_category">
+    app:startDestination="@+id/nav_dish">
 
     <fragment
         android:id="@+id/nav_main"
@@ -64,5 +64,11 @@
         android:name="ru.skillbranch.sbdelivery.ui.category.CategoryFragment"
         android:label="@string/category"
         tools:layout="@layout/fragment_category" />
+
+    <fragment
+        android:id="@+id/nav_dish"
+        android:name="ru.skillbranch.sbdelivery.ui.dish.DishFragment"
+        android:label="@string/dish"
+        tools:layout="@layout/fragment_dish" />
 
 </navigation>

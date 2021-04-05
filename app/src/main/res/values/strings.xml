@@ -3,6 +3,7 @@
     <string name="made_by_yasina">Сделано Заляловой Ясиной\nTelegram: @yassinaa</string>
     <string name="empty_list">Данные не найдены</string>
     <string name="try_again">Повторить запрос</string>
+    <string name="rub">%s ₽</string>
 
     <!-- sign -->
     <string name="sign_in">Вход</string>
@@ -66,5 +67,11 @@
     <string name="search_dishes">Поиск блюд</string>
     <string name="category">Категория</string>
 
+    <!-- dish -->
+    <string name="dish">Блюдо</string>
+    <string name="add_to_basket">Добавить в корзину</string>
+    <string name="customer_reviews">Отзывы</string>
+    <string name="add_customer_review">Добавить отзыв</string>
+    <string name="empty_customer_reviews">Пока что нет отзывов по данному блюду</string>
 
 </resources>

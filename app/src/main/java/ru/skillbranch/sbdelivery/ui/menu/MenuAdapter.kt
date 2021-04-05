@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ItemMenuBinding
 
@@ -24,7 +23,7 @@ open class MenuAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     private var list: MutableList<MenuItem> = mutableListOf(
-        MenuItem(R.string.promotions, R.drawable.ic_star),
+        MenuItem(R.string.promotions, R.drawable.ic_promotion_star),
         MenuItem(R.string.drinks, R.drawable.ic_drink),
         MenuItem(R.string.sauces, R.drawable.ic_sauce),
         MenuItem(R.string.snacks, R.drawable.ic_snacks),
