@@ -1,18 +1,15 @@
-package ru.skillbranch.sbdelivery.ui.favorite
+package ru.skillbranch.sbdelivery.ui.category.viewpager
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import ru.skillbranch.sbdelivery.databinding.FragmentFavoriteBinding
 import ru.skillbranch.sbdelivery.ui.cards.CardAdapter
-import ru.skillbranch.sbdelivery.ui.cards.CardAdapter.Companion.FAVORITE
 
-class FavoriteFragment : Fragment() {
+class SingleCategoryFragment : Fragment() {
 
-    private lateinit var viewModel: FavoriteViewModel
     private var binding: FragmentFavoriteBinding? = null
 
     override fun onCreateView(
@@ -20,18 +17,15 @@ class FavoriteFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this).get(FavoriteViewModel::class.java)
-
         binding = FragmentFavoriteBinding.inflate(inflater, container, false)
-        val root: View = binding!!.root
-
-        binding?.rvItems?.adapter = CardAdapter(type=FAVORITE)
-
-        return root
+        return binding!!.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        arguments?.takeIf { it.containsKey(ARG_OBJECT) }?.apply {
+//            val textView: TextView = view.findViewById(android.R.id.text1)
+//            textView.text = getInt(ARG_OBJECT).toString()
+//        }
+        binding?.rvItems?.adapter = CardAdapter(type= CardAdapter.CATEGORY)
     }
 }

@@ -5,13 +5,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ItemMainRvBinding
-import ru.skillbranch.sbdelivery.databinding.ItemMenuBinding
-import ru.skillbranch.sbdelivery.ui.main.adapters.CardAdapter.Companion.MAIN
+import ru.skillbranch.sbdelivery.ui.cards.CardAdapter
+import ru.skillbranch.sbdelivery.ui.cards.CardAdapter.Companion.MAIN
 
 
 open class RecyclersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

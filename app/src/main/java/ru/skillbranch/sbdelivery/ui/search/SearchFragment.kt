@@ -2,11 +2,10 @@ package ru.skillbranch.sbdelivery.ui.search
 
 import android.os.Bundle
 import android.view.*
-import android.view.View.VISIBLE
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import ru.skillbranch.sbdelivery.databinding.FragmentSearchBinding
-import ru.skillbranch.sbdelivery.ui.main.adapters.CardAdapter
+import ru.skillbranch.sbdelivery.ui.cards.CardAdapter
 
 class SearchFragment : Fragment() {
 

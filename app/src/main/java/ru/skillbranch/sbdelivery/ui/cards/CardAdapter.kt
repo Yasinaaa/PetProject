@@ -1,4 +1,4 @@
-package ru.skillbranch.sbdelivery.ui.main.adapters
+package ru.skillbranch.sbdelivery.ui.cards
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -17,6 +17,7 @@ open class CardAdapter(val type: Int) : RecyclerView.Adapter<RecyclerView.ViewHo
     companion object{
         const val MAIN = 1
         const val FAVORITE = 2
+        const val CATEGORY = 3
     }
 
     class Item(val title: String, val price: String)
@@ -58,6 +59,11 @@ open class CardAdapter(val type: Int) : RecyclerView.Adapter<RecyclerView.ViewHo
                 }
             }else if (type == MAIN){
                 lp.width = 158.toDp(context)
+
+            }else if (type == CATEGORY){
+                if (position != 1 || position != 2) {
+                    lp.topMargin = 10.toDp(context)
+                }
             }
         }
     }

@@ -5,12 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import ru.skillbranch.sbdelivery.databinding.FragmentAboutAppBinding
-import ru.skillbranch.sbdelivery.databinding.FragmentFavoriteBinding
-import ru.skillbranch.sbdelivery.databinding.FragmentMainBinding
-import ru.skillbranch.sbdelivery.ui.main.adapters.CardAdapter
-import ru.skillbranch.sbdelivery.ui.main.adapters.CardAdapter.Companion.FAVORITE
 
 class AboutAppFragment : Fragment() {
 

@@ -2,7 +2,6 @@ package ru.skillbranch.sbdelivery.ui.notifications
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.skillbranch.sbdelivery.R
-import ru.skillbranch.sbdelivery.databinding.ItemMainRvBinding
-import ru.skillbranch.sbdelivery.databinding.ItemMenuBinding
 import ru.skillbranch.sbdelivery.databinding.ItemNotificationBinding
-import ru.skillbranch.sbdelivery.ui.main.adapters.CardAdapter.Companion.MAIN
 
 
 open class NotificationsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
