@@ -11,6 +11,7 @@
         android:textSize="14sp"
         android:textColor="@color/orange"
         android:textStyle="bold"
+        android:fontFamily="sans-serif"
         tools:text="+99">
     </TextView>
 </FrameLayout>

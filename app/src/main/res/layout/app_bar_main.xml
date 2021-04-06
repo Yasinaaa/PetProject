@@ -20,6 +20,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/grey_btn"
             app:title="@string/enter"
+            app:fontFamily="sans-serif"
             app:contentInsetStart="26dp"
             app:titleTextColor="@color/colorPrimary"
             android:elevation="10dp" />

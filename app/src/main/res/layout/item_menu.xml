@@ -16,6 +16,7 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
         app:cornerRadius="6dp"
         android:text="@string/promotions"
+        android:fontFamily="sans-serif"
         android:textColor="@color/orange"
         android:textSize="14sp"
         android:letterSpacing="0"

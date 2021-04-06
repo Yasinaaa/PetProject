@@ -13,6 +13,7 @@
         android:background="@color/grey_btn"
         app:tabGravity="fill"
         app:tabMode="fixed"
+        android:fontFamily="sans-serif"
         app:tabSelectedTextColor="@color/orange"
         app:tabTextColor="@color/grey_text"
         app:layout_constraintEnd_toEndOf="parent"

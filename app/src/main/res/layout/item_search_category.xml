@@ -16,6 +16,7 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
         app:cornerRadius="6dp"
         android:text="@string/sushi_and_rolls"
+        android:fontFamily="sans-serif"
         android:textColor="@android:color/white"
         android:textSize="14sp"
         android:letterSpacing="0"

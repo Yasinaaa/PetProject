@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         tools:text="Сидоров Иван"
+        android:fontFamily="sans-serif"
         android:textSize="16sp"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,6 +32,7 @@
         android:textSize="14sp"
         android:textColor="@color/grey"
         tools:text="sidorov.ivan@mail.ru"
+        android:fontFamily="sans-serif"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -44,6 +46,6 @@
         android:layout_marginBottom="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription,RtlSymmetry" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
