@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_basket">
+    app:startDestination="@+id/nav_input_address">
 
     <fragment
         android:id="@+id/nav_main"
@@ -70,5 +70,23 @@
         android:name="ru.skillbranch.sbdelivery.ui.dish.DishFragment"
         android:label="@string/dish"
         tools:layout="@layout/fragment_dish" />
+
+    <fragment
+        android:id="@+id/nav_proceed_to_checkout"
+        android:name="ru.skillbranch.sbdelivery.ui.orderdetails.OrderDetailsFragment"
+        android:label="@string/proceed_to_checkout"
+        tools:layout="@layout/fragment_order_details" />
+
+    <fragment
+        android:id="@+id/nav_input_address"
+        android:name="ru.skillbranch.sbdelivery.ui.orderdetails.inputaddress.InputAddressFragment"
+        android:label="@string/input_address"
+        tools:layout="@layout/fragment_input_address" />
+
+    <fragment
+        android:id="@+id/nav_map_address"
+        android:name="ru.skillbranch.sbdelivery.ui.orderdetails.map.MapAddressFragment"
+        android:label="@string/input_address"
+        tools:layout="@layout/fragment_map" />
 
 </navigation>

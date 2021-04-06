@@ -5,13 +5,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.skillbranch.sbdelivery.R
-import ru.skillbranch.sbdelivery.databinding.ItemNotificationBinding
 import ru.skillbranch.sbdelivery.databinding.ItemReviewBinding
-import ru.skillbranch.sbdelivery.ui.cards.CardAdapter
 import ru.skillbranch.sbdelivery.utils.toDp
 
 

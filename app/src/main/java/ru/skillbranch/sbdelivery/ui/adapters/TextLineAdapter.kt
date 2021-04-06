@@ -1,22 +1,25 @@
-package ru.skillbranch.sbdelivery.ui.search
+package ru.skillbranch.sbdelivery.ui.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ItemCacheSearchBinding
-import ru.skillbranch.sbdelivery.databinding.ItemMenuBinding
 
 
-open class CacheAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+open class TextLineAdapter(val type: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    class CacheItem(val title: String)
+    companion object{
+        const val CACHE = 1
+        const val ADDRESS = 2
+    }
+
+    class TextLineItem(val title: String)
 
     private lateinit var context: Context
 
@@ -24,10 +27,10 @@ open class CacheAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val bindingItem: ItemCacheSearchBinding? = DataBindingUtil.bind(view)
     }
 
-    private var list: MutableList<CacheItem> = mutableListOf(
-        CacheItem("Пицца"),
-        CacheItem("Пицца"),
-        CacheItem("Пицца")
+    private var list: MutableList<TextLineItem> = mutableListOf(
+        TextLineItem("Пицца"),
+        TextLineItem("Пицца"),
+        TextLineItem("Пицца")
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -42,6 +45,10 @@ open class CacheAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
             holder.bindingItem?.tvTitle?.text = list[position].title
+
+            if(type == ADDRESS){
+                holder.bindingItem?.ivClose?.visibility = GONE
+            }
         }
     }
 

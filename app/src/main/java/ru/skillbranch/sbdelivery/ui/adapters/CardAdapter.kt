@@ -1,4 +1,4 @@
-package ru.skillbranch.sbdelivery.ui.cards
+package ru.skillbranch.sbdelivery.ui.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context

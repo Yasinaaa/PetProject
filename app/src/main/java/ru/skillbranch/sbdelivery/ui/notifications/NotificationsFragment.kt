@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import ru.skillbranch.sbdelivery.databinding.FragmentNotificationsBinding
-
 class NotificationsFragment : Fragment() {
 
     private lateinit var menuViewModel: NotificationsViewModel

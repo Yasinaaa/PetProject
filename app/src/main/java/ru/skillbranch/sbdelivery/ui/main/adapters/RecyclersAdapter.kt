@@ -9,8 +9,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ItemMainRvBinding
-import ru.skillbranch.sbdelivery.ui.cards.CardAdapter
-import ru.skillbranch.sbdelivery.ui.cards.CardAdapter.Companion.MAIN
+import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter
+import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter.Companion.MAIN
 
 
 open class RecyclersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

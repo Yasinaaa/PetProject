@@ -82,7 +82,21 @@
     <string name="input_promocode">Введите промокод</string>
     <string name="apply">Применить</string>
     <string name="total">Итого</string>
-    <string name="proceed_to_checkout">Оформить заказ</string>
+    <string name="to_proceed_to_checkout">Оформить заказ</string>
     <string name="discount">Скидка %s рублей!</string>
+    
+    <!-- order details -->
+    <string name="proceed_to_checkout">Оформление заказа</string>
+    <string name="address">Адрес:</string>
+    <string name="write">Написать</string>
+    <string name="edit">Редактировать</string>
+    <string name="show_on_map">Указать на карте</string>
+    <string name="input_address">Указание адреса</string>
+    <string name="porch">Подъезд:</string>
+    <string name="floor">Этаж:</string>
+    <string name="flat">Квартира:</string>
+    <string name="intercom">Домофон:</string>
+    <string name="comment">Комментарий:</string>
+    <string name="choose_address">Выбрать адрес</string>
     
 </resources>

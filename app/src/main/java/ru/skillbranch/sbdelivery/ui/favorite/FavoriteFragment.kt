@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import ru.skillbranch.sbdelivery.databinding.FragmentFavoriteBinding
-import ru.skillbranch.sbdelivery.ui.cards.CardAdapter
-import ru.skillbranch.sbdelivery.ui.cards.CardAdapter.Companion.FAVORITE
+import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter
+import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter.Companion.FAVORITE
 
 class FavoriteFragment : Fragment() {
 
