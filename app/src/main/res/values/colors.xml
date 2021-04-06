@@ -27,5 +27,6 @@
     <color name="grey_stroke">#48484D</color>
     <color name="grey_box">#E5E5E5</color>
     <color name="grey_close">#BEBEBE</color>
+    <color name="grey_btn3">#33FFFFFF</color>
 
 </resources>

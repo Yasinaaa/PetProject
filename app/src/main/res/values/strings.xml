@@ -108,5 +108,17 @@
     <string name="change_password">Смена пароля</string>
     <string name="old_password">Старый пароль</string>
     <string name="new_password">Новый пароль</string>
-    
+
+    <!-- orders -->
+    <string name="current_orders">Актуальные</string>
+    <string name="completed_orders">Выполненные</string>
+
+    <!-- created order -->
+    <string name="created_order">Созданный заказ</string>
+    <string name="status">Статус:</string>
+    <string name="total_price">Сумма:</string>
+    <string name="date">Дата:</string>
+    <string name="cancel_the_order">Отменить заказ</string>
+    <string name="order_list">Состав заказа:</string>
+
 </resources>

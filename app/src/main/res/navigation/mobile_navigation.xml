@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_profile">
+    app:startDestination="@+id/nav_created_order">
 
     <fragment
         android:id="@+id/nav_main"
@@ -39,7 +39,7 @@
         android:id="@+id/nav_orders"
         android:name="ru.skillbranch.sbdelivery.ui.orders.OrdersFragment"
         android:label="@string/menu_orders"
-        tools:layout="@layout/fragment_order" />
+        tools:layout="@layout/fragment_created_order" />
 
     <fragment
         android:id="@+id/nav_notifications"
@@ -88,5 +88,11 @@
         android:name="ru.skillbranch.sbdelivery.ui.orderdetails.map.MapAddressFragment"
         android:label="@string/input_address"
         tools:layout="@layout/fragment_map" />
+
+    <fragment
+        android:id="@+id/nav_created_order"
+        android:name="ru.skillbranch.sbdelivery.ui.orders.createdorder.CreatedOrderFragment"
+        android:label="@string/created_order"
+        tools:layout="@layout/fragment_created_order" />
 
 </navigation>
