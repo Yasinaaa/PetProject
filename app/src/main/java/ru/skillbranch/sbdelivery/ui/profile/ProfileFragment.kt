@@ -6,28 +6,36 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import ru.skillbranch.sbdelivery.databinding.FragmentMainBinding
+import ru.skillbranch.sbdelivery.databinding.FragmentProfileBinding
+import ru.skillbranch.sbdelivery.ui.profile.password.PasswordDialogFragment
 
 class ProfileFragment : Fragment() {
 
-    private lateinit var menuViewModel: ProfileViewModel
-    private var _binding: FragmentMainBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var viewModel: ProfileViewModel
+    private var binding: FragmentProfileBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        menuViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
 
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
+        val root: View = binding!!.root
+
+        showChangePasswordDialog()
+
         return root
+    }
+
+    private fun showChangePasswordDialog(){
+        val reviewDialog = PasswordDialogFragment()
+        reviewDialog.show(parentFragmentManager, "password")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        binding = null
     }
 }

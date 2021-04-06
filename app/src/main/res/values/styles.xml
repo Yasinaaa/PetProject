@@ -46,4 +46,20 @@
     <style name="RoundedCornersDialog" parent="@style/Theme.MaterialComponents.Dialog">
         <item name="dialogCornerRadius">10dp</item>
     </style>
+
+    <style name="OutlinedBox" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="colorControlNormal">@color/grey_box</item>
+        <item name="colorControlActivated">@color/grey_box</item>
+        <item name="boxStrokeColor">@color/grey_button_color</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="strokeColor">@color/grey_box</item>
+        <item name="boxCornerRadiusBottomEnd">6dp</item>
+        <item name="boxCornerRadiusBottomStart">6dp</item>
+        <item name="boxCornerRadiusTopEnd">6dp</item>
+        <item name="boxCornerRadiusTopStart">6dp</item>
+        <item name="placeholderTextColor">@color/grey_box</item>
+        <item name="hintTextColor">@color/grey</item>
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="helperTextTextColor">@color/grey</item>
+    </style>
 </resources>

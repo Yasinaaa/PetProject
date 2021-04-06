@@ -98,5 +98,15 @@
     <string name="intercom">Домофон:</string>
     <string name="comment">Комментарий:</string>
     <string name="choose_address">Выбрать адрес</string>
+
+    <!-- profile -->
+    <string name="change">Изменить</string>
+    <string name="to_change_password">Сменить пароль</string>
+    <string name="cancel">Отменить</string>
+
+    <!-- change password -->
+    <string name="change_password">Смена пароля</string>
+    <string name="old_password">Старый пароль</string>
+    <string name="new_password">Новый пароль</string>
     
 </resources>
