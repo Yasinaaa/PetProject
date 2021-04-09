@@ -10,7 +10,7 @@ data class Cart(
 )
 
 data class CartItem(
-    @SerializedName("id") val id: String?,
+    @SerializedName("id") val id: String,
     @SerializedName("amount") val amount: Int?,
     @SerializedName("price") val price: Float?
 )

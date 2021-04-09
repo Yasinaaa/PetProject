@@ -10,7 +10,8 @@ import ru.skillbranch.sbdelivery.data.local.dao.DishesDao
 import ru.skillbranch.sbdelivery.data.local.entity.*
 
 @Database(entities = [DishEntity::class, CategoryEntity::class, OrderEntity::class,
-    ReviewEntity::class, CartEntity::class, CartItemEntity::class, OrderItemEntity::class],
+    ReviewEntity::class, CartEntity::class, CartItemEntity::class, OrderItemEntity::class,
+    OrderStatusEntity::class],
     version = AppDb.DATABASE_VERSION,
     exportSchema = false)
 abstract class AppDb : RoomDatabase() {

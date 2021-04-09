@@ -1,13 +1,12 @@
 package ru.skillbranch.sbdelivery.data.remote
 
-import com.google.gson.annotations.SerializedName
 import io.reactivex.rxjava3.core.Single
-import okhttp3.ResponseBody
+import okhttp3.Response
 import retrofit2.http.*
 import ru.skillbranch.sbdelivery.data.remote.models.request.*
 import ru.skillbranch.sbdelivery.data.remote.models.response.*
 
-interface DeliveryApi {
+interface RestService {
 
     @POST("auth/login")
     @Headers("Content-Type:application/json")
@@ -19,15 +18,15 @@ interface DeliveryApi {
 
     @POST("auth/recovery/email")
     @Headers("Content-Type:application/json")
-    fun recoveryEmail(@Query("email") email: String): Single<ResponseBody>
+    fun recoveryEmail(@Query("email") email: String): Single<Response>
 
     @POST("auth/recovery/code")
     @Headers("Content-Type:application/json")
-    fun recoveryCode(@Body request: RecoveryCodeRequest): Single<ResponseBody>
+    fun recoveryCode(@Body request: RecoveryCodeRequest): Single<Response>
 
     @POST("auth/recovery/password")
     @Headers("Content-Type:application/json")
-    fun recoveryPassword(@Body request: RecoveryPasswordRequest): Single<ResponseBody>
+    fun recoveryPassword(@Body request: RecoveryPasswordRequest): Single<Response>
 
     @POST("auth/refresh")
     @Headers("Content-Type:application/json")
@@ -43,13 +42,13 @@ interface DeliveryApi {
         @Query("firstName") firstName: String,
         @Query("lastName") lastName: String,
         @Query("email") email: String,
-        @Header("Authorization") token: String): Single<ResponseBody>
+        @Header("Authorization") token: String): Single<Response>
 
     @PUT("profile/password")
     @Headers("Content-Type:application/json")
     fun changePassword(
         @Body changePasswordRequest: ChangePasswordRequest,
-        @Header("Authorization") token: String): Single<ResponseBody>
+        @Header("Authorization") token: String): Single<Response>
 
     @GET("favorite")
     @Headers("Content-Type:application/json",
@@ -67,7 +66,7 @@ interface DeliveryApi {
         @Query("dishId") dishId: Int,
         @Query("favorite") favorite: Boolean,
         @Header("Authorization") token: String
-    ): Single<ResponseBody>
+    ): Single<Response>
 
     @GET("recommend")
     fun getRecommend(): Single<List<String>>
@@ -103,7 +102,7 @@ interface DeliveryApi {
         @Query("rating") rating: Int,
         @Path("text") text: String,
         @Header("Authorization") token: String
-    ): Single<ResponseBody>
+    ): Single<Response>
 
     @GET("cart")
     @Headers("If-Modified-Since: Mon, 1 Jun 2020 08:00:00 GMT")

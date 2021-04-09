@@ -1,16 +1,15 @@
 package ru.skillbranch.sbdelivery.data.local.dao
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Update
+import androidx.room.*
+import io.reactivex.rxjava3.core.Single
 
 interface BaseDao<T : Any> {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(list:List<T>):List<Long>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(obj:T):Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(list:List<T>): List<Long>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(obj:T): Long
 
     @Update
     fun update(list:List<T>)
