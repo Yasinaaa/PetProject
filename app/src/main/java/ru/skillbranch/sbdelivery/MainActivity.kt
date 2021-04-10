@@ -2,8 +2,7 @@ package ru.skillbranch.sbdelivery
 
 import android.os.Bundle
 import android.view.Menu
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.widget.TextView
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -14,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
+import androidx.navigation.fragment.findNavController
 import ru.skillbranch.sbdelivery.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -48,6 +48,13 @@ class MainActivity : AppCompatActivity() {
                 binding.appBarMain.toolbar.visibility = GONE
             }else{
                 binding.appBarMain.toolbar.visibility = VISIBLE
+            }
+
+            if (destination.id == R.id.nav_sign){
+                binding.appBarMain.toolbar.navigationIcon = null
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            }else{
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
             }
         }
 

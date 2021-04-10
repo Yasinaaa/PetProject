@@ -8,26 +8,6 @@
     android:background="@drawable/ic_background_with_icons"
     tools:ignore="MissingConstraints">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/apl"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/black"
-            app:title="@string/enter"
-            app:contentInsetStart="26dp"
-            app:titleTextColor="@color/colorPrimary"
-            android:elevation="10dp" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
     <TextView
         android:visibility="gone"
         android:layout_width="0dp"
@@ -39,7 +19,7 @@
         android:layout_marginTop="53dp"
         android:layout_marginStart="29dp"
         android:layout_marginEnd="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/apl"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_name_error"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -54,7 +34,7 @@
         android:textAlignment="textEnd"
         android:layout_marginTop="53dp"
         android:layout_marginEnd="29dp"
-        app:layout_constraintTop_toBottomOf="@+id/apl"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_name" />
 
@@ -161,7 +141,7 @@
         android:layout_marginTop="133dp"
         android:layout_marginStart="29dp"
         android:layout_marginEnd="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/apl"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_email_error"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -177,7 +157,7 @@
         android:layout_marginTop="133dp"
         android:layout_marginStart="29dp"
         android:layout_marginEnd="29dp"
-        app:layout_constraintTop_toBottomOf="@+id/apl"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_email" />
 

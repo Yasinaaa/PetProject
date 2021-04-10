@@ -3,7 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_created_order">
+    app:startDestination="@+id/nav_main">
+
+    <fragment
+        android:id="@+id/nav_sign"
+        android:name="ru.skillbranch.sbdelivery.ui.sign.SignFragment"
+        android:label="@string/enter"
+        tools:layout="@layout/fragment_sign" />
+
+    <fragment
+        android:id="@+id/nav_forget_passwords"
+        android:name="ru.skillbranch.sbdelivery.ui.sign.forgetpassword.ForgetPasswordFragment"
+        android:label="@string/forget_password"
+        tools:layout="@layout/fragment_forget_password" />
 
     <fragment
         android:id="@+id/nav_main"
