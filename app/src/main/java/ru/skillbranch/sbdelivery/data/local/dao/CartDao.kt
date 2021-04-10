@@ -11,6 +11,6 @@ import ru.skillbranch.sbdelivery.data.local.entity.CartItemEntity
 interface CartDao : BaseDao<CartEntity> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCartItems(obj:List<CartItemEntity>): Long
+    fun insertCartItems(obj:List<CartItemEntity>)
 
 }
