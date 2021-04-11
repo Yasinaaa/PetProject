@@ -5,16 +5,12 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.skillbranch.sbdelivery.data.local.dao.DishesDao
-import ru.skillbranch.sbdelivery.data.local.dao.ReviewDao
 import ru.skillbranch.sbdelivery.data.local.entity.DishEntity
-import ru.skillbranch.sbdelivery.data.mapper.DishesMapper
+import ru.skillbranch.sbdelivery.data.local.pref.PrefManager
+import ru.skillbranch.sbdelivery.data.mapper.IDishesMapper
 import ru.skillbranch.sbdelivery.data.remote.RestService
-import ru.skillbranch.sbdelivery.data.remote.RetrofitProvider
-import ru.skillbranch.sbdelivery.data.remote.models.request.RefreshToken
 import ru.skillbranch.sbdelivery.data.remote.models.response.Category
 import ru.skillbranch.sbdelivery.data.remote.models.response.Dish
-import ru.skillbranch.sbdelivery.data.remote.models.response.Favorite
-import ru.skillbranch.sbdelivery.data.remote.models.response.Review
 
 interface IDishRepository {
     fun getFavorite(offset: Int, limit: Int): Single<List<DishEntity>>
@@ -28,19 +24,15 @@ interface IDishRepository {
 }
 
 class DishesRepository(
+    private val prefs: PrefManager,
     private val api: RestService,
-    private val mapper: DishesMapper,
+    private val mapper: IDishesMapper,
     private val dishesDao: DishesDao
 ) : IDishRepository {
 
     override fun getDishes(offset: Int, limit: Int): Single<List<DishEntity>> =
-        api.refreshToken(RefreshToken(RetrofitProvider.REFRESH_TOKEN))
-            .flatMap {
-                api.getDishes(
-                    offset, limit,
-                    "${RetrofitProvider.BEARER} ${it.accessToken}"
-                )
-            }
+        api.getDishes(offset, limit,
+            "${PrefManager.BEARER} ${prefs.accessToken}")
             .doOnSuccess { dishes: List<Dish> ->
                 val savePersistDishes: List<DishEntity> = mapper.mapDtoToPersist(dishes)
                 dishesDao.insert(savePersistDishes)
@@ -58,11 +50,8 @@ class DishesRepository(
             .observeOn(AndroidSchedulers.mainThread())
 
     override fun getCategories(offset: Int, limit: Int): Single<List<Category>> =
-        api.refreshToken(RefreshToken(RetrofitProvider.REFRESH_TOKEN))
-            .flatMap {
-                api.getCategories(offset, limit,
-                    "${RetrofitProvider.BEARER} ${it.accessToken}")
-            }
+        api.getCategories(offset, limit,
+            "${PrefManager.BEARER} ${prefs.accessToken}")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
@@ -73,10 +62,8 @@ class DishesRepository(
             .observeOn(AndroidSchedulers.mainThread())
 
     override fun getFavorite(offset: Int, limit: Int): Single<List<DishEntity>> =
-        api.refreshToken(RefreshToken(RetrofitProvider.REFRESH_TOKEN))
-            .flatMap {
-                api.getFavorite(offset, limit, "${RetrofitProvider.BEARER} ${it.accessToken}")
-            }
+        api.getFavorite(offset, limit,
+            "${PrefManager.BEARER} ${prefs.accessToken}")
             .map {
                 dishesDao.updateFavorite(mapper.mapFavoriteToStringIds(it))
                 dishesDao.updateNotFavorite(mapper.mapFavoriteToStringIds(it))
@@ -89,17 +76,11 @@ class DishesRepository(
 
 
     override fun changeFavorite(dishId: Int, favorite: Boolean): Single<Boolean> =
-        api.refreshToken(RefreshToken(RetrofitProvider.REFRESH_TOKEN))
-            .flatMap {
-                api.changeFavorite(dishId, favorite,
-                    "${RetrofitProvider.BEARER} ${it.accessToken}")
-            }.saveResponseAsBool()
+        api.changeFavorite(dishId, favorite,
+            "${PrefManager.BEARER} ${prefs.accessToken}").saveResponseAsBool()
 
     override fun getRecommended(): Single<List<DishEntity>> =
-        api.refreshToken(RefreshToken(RetrofitProvider.REFRESH_TOKEN))
-            .flatMap {
-                api.getRecommend()
-            }
+        api.getRecommend()
             .flatMap {
                 dishesDao.findDishesByIds(it)
             }

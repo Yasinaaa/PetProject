@@ -25,7 +25,7 @@ class ProfileRepository(
     override fun getCachedProfile(): LiveData<User?> = prefs.profileLive
 
     override fun getProfile(): Single<User> {
-        return api.getProfile(prefs.accessToken)
+        return api.getProfile("${PrefManager.BEARER} ${prefs.accessToken}")
             .doOnSuccess {
                 prefs.profile = User(it.id, it.firstName, it.lastName, it.email)
             }
@@ -38,14 +38,15 @@ class ProfileRepository(
         lastName: String,
         email: String
     ): Single<Boolean> {
-        return api.putProfile(firstName, lastName, email, prefs.accessToken).saveResponseAsBool()
+        return api.putProfile(firstName, lastName, email,
+            "${PrefManager.BEARER} ${prefs.accessToken}").saveResponseAsBool()
     }
 
     override fun changePassword(
         oldPassword: String,
         newPassword: String
     ): Single<Boolean> {
-        return api.changePassword(ChangePasswordRequest(oldPassword, newPassword), prefs.accessToken)
-            .saveResponseAsBool()
+        return api.changePassword(ChangePasswordRequest(oldPassword, newPassword),
+            "${PrefManager.BEARER} ${prefs.accessToken}").saveResponseAsBool()
     }
 }

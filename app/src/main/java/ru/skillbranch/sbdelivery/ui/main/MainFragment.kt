@@ -18,7 +18,7 @@ import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclersAdapter
 
 class MainFragment : Fragment() {
 
-    private val mainViewModel: MainViewModel by viewModel()
+    private val viewModel: MainViewModel by viewModel()
     private var binding: FragmentMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,8 +35,8 @@ class MainFragment : Fragment() {
         val root: View = binding!!.root
         binding!!.rv.adapter = RecyclersAdapter()
 
-        findNavController().navigate(R.id.nav_sign)
-
+        //findNavController().navigate(R.id.nav_sign)
+        viewModel.getFavorite()
         return root
     }
 

@@ -13,6 +13,13 @@ import ru.skillbranch.sbdelivery.data.remote.models.response.User
 
 class PrefManager(context: Context, moshi: Moshi) {
 
+    companion object{
+        const val BEARER = "Bearer"
+        const val REFRESH_TOKEN =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmN2M2OWNjODIyMDk1MDAzYzZkZDI3Yi" +
+                    "IsImlhdCI6MTYwNjM0MTc5OH0.-udWT__SrFAGpOV8jxbchWIgjWDWRij9zKoy398gX9Y"
+    }
+
     internal val preferences: SharedPreferences by lazy {
         PreferenceManager.getDefaultSharedPreferences(context)
     }

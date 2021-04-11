@@ -1,6 +1,7 @@
 package ru.skillbranch.sbdelivery.data.remote
 
 import io.reactivex.rxjava3.core.Single
+import retrofit2.Call
 import okhttp3.Response
 import retrofit2.http.*
 import ru.skillbranch.sbdelivery.data.remote.models.request.*
@@ -30,7 +31,7 @@ interface RestService {
 
     @POST("auth/refresh")
     @Headers("Content-Type:application/json")
-    fun refreshToken(@Body refreshToken: RefreshToken): Single<Token>
+    fun refreshToken(@Body refreshToken: RefreshToken): Call<Token>
 
     @GET("profile")
     @Headers("Content-Type:application/json")

@@ -6,10 +6,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.skillbranch.sbdelivery.data.local.dao.CartDao
 import ru.skillbranch.sbdelivery.data.local.entity.CartItemEntity
 import ru.skillbranch.sbdelivery.data.local.entity.CartWithItems
-import ru.skillbranch.sbdelivery.data.mapper.CartMapper
+import ru.skillbranch.sbdelivery.data.local.pref.PrefManager
+import ru.skillbranch.sbdelivery.data.mapper.ICartMapper
 import ru.skillbranch.sbdelivery.data.remote.RestService
-import ru.skillbranch.sbdelivery.data.remote.RetrofitProvider
-import ru.skillbranch.sbdelivery.data.remote.models.request.RefreshToken
 import ru.skillbranch.sbdelivery.data.remote.models.response.*
 
 interface ICartRepository {
@@ -18,25 +17,20 @@ interface ICartRepository {
 }
 
 class CartRepository(
+    private val prefs: PrefManager,
     private val api: RestService,
-    private val mapper: CartMapper,
+    private val mapper: ICartMapper,
     private val cartDao: CartDao
 ): ICartRepository {
 
     override fun getCart(): Single<CartWithItems> =
-        api.refreshToken(RefreshToken(RetrofitProvider.REFRESH_TOKEN))
-            .flatMap {
-                api.getCart("${RetrofitProvider.BEARER} ${it.accessToken}")
-            }
+        api.getCart("${PrefManager.BEARER} ${prefs.accessToken}")
             .saveCart()
 
 
     override fun updateCart(promoCode: String, items: List<CartItemEntity>): Single<CartWithItems> =
-        api.refreshToken(RefreshToken(RetrofitProvider.REFRESH_TOKEN))
-            .flatMap {
-                api.updateCart(promoCode, mapper.mapItemEntityToItemRequestList(items),
-                    "${RetrofitProvider.BEARER} ${it.accessToken}")
-            }
+        api.updateCart(promoCode, mapper.mapItemEntityToItemRequestList(items),
+            "${PrefManager.BEARER} ${prefs.accessToken}")
             .saveCart()
 
     private fun Single<Cart>.saveCart(): Single<CartWithItems> {

@@ -53,7 +53,6 @@ class SignUpRepository(
             .saveResponseAsBool()
     }
 
-    //extensions
     private fun Single<UserWithTokens>.saveTokensAndUser(): Single<UserWithTokens> {
         return doOnSuccess {
                 prefs.accessToken = it.accessToken
