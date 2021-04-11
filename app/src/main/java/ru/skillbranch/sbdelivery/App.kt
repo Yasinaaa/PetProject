@@ -25,10 +25,10 @@ class App : Application() {
             androidContext(this@App)
             modules(
                 listOf(
-                    AppModule.prefModule(),
+                    AppModule.appModule(),
                     AppModule.databaseModule(),
                     AppModule.networkModule(),
-                    AppModule.appModule(),
+                    AppModule.dataModule(),
                     AppModule.viewModelModule(),
                 )
             )

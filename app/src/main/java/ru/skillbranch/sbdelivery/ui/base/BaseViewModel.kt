@@ -1,4 +1,4 @@
-package ru.skillbranch.sbdelivery.core
+package ru.skillbranch.sbdelivery.ui.base
 
 import android.os.Bundle
 import androidx.annotation.UiThread
@@ -6,13 +6,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
-import java.net.SocketTimeoutException
 
 abstract class BaseViewModel<T : IViewModelState>(
     private val handleState: SavedStateHandle,

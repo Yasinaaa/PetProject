@@ -1,4 +1,4 @@
-package ru.skillbranch.sbdelivery.core
+package ru.skillbranch.sbdelivery.utils
 
 import android.content.Context
 import androidx.annotation.StringRes

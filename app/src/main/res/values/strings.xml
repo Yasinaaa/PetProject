@@ -36,6 +36,7 @@
     <string name="menu_orders">Заказы</string>
     <string name="menu_notifications">Уведомления</string>
     <string name="menu_about_app">О приложении</string>
+    <string name="to_enter_to_the_profile">Войти в профиль</string>
 
     <!-- menu -->
     <string name="search">Поиск</string>

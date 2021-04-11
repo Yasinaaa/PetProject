@@ -1,6 +1,5 @@
 package ru.skillbranch.sbdelivery.di
 
-import android.content.Context
 import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -10,13 +9,11 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ru.skillbranch.sbdelivery.BuildConfig.BASE_URL
-import ru.skillbranch.sbdelivery.core.ResourceManager
+import ru.skillbranch.sbdelivery.utils.ResourceManager
 import ru.skillbranch.sbdelivery.data.local.AppDb
 import ru.skillbranch.sbdelivery.data.local.pref.PrefManager
-import ru.skillbranch.sbdelivery.data.mapper.CategoriesMapper
 import ru.skillbranch.sbdelivery.data.mapper.DishesMapper
 import ru.skillbranch.sbdelivery.data.mapper.IDishesMapper
 import ru.skillbranch.sbdelivery.data.remote.NetworkMonitor
@@ -26,13 +23,17 @@ import ru.skillbranch.sbdelivery.data.remote.interceptors.NetworkStatusIntercept
 import ru.skillbranch.sbdelivery.data.remote.interceptors.TokenAuthenticator
 import ru.skillbranch.sbdelivery.data.repository.DishesRepository
 import ru.skillbranch.sbdelivery.data.repository.IDishRepository
+import ru.skillbranch.sbdelivery.data.repository.IProfileRepository
+import ru.skillbranch.sbdelivery.data.repository.ProfileRepository
+import ru.skillbranch.sbdelivery.ui.root.RootViewModel
 import ru.skillbranch.sbdelivery.ui.main.MainViewModel
 import java.util.concurrent.TimeUnit
 
 object AppModule {
 
-    fun prefModule() = module {
+    fun appModule() = module {
         single { PrefManager(context = get(), moshi = get()) }
+        single { ResourceManager(context = get()) }
     }
 
     fun networkModule() = module {
@@ -73,16 +74,12 @@ object AppModule {
         single { get<Retrofit>().create(RestService::class.java)}
     }
 
-    fun appModule() = module {
+    fun dataModule() = module {
+        single<IProfileRepository> { ProfileRepository(api = get(), prefs = get()) }
         single<IDishesMapper> { DishesMapper() }
         single<IDishRepository> {
-            DishesRepository(
-                prefs = get(),
-                api = get(),
-                mapper = get(),
-                dishesDao = get())
+            DishesRepository(prefs = get(), api = get(), mapper = get(), dishesDao = get())
         }
-        single { ResourceManager(context = get()) }
     }
 
     fun databaseModule() = module {
@@ -102,6 +99,7 @@ object AppModule {
     }
 
     fun viewModelModule() = module {
+        viewModel { RootViewModel(handle = get(), repository = get())}
         viewModel { MainViewModel(handle = get(), repository = get(), dishesMapper = get())}
     }
 

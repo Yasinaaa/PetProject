@@ -14,7 +14,7 @@
         android:theme="@style/Theme.SBDelivery"
         android:name=".App">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.root.RootActivity"
             android:theme="@style/Theme.SBDelivery.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -4,8 +4,8 @@ package ru.skillbranch.sbdelivery.ui.main
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import ru.skillbranch.sbdelivery.core.BaseViewModel
-import ru.skillbranch.sbdelivery.core.IViewModelState
+import ru.skillbranch.sbdelivery.ui.base.BaseViewModel
+import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 import ru.skillbranch.sbdelivery.data.mapper.IDishesMapper
 import ru.skillbranch.sbdelivery.data.repository.IDishRepository
 

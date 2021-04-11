@@ -2,6 +2,7 @@ package ru.skillbranch.sbdelivery.data.remote.interceptors
 
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.context.GlobalContext
 import org.koin.java.KoinJavaComponent.inject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -14,6 +15,8 @@ import ru.skillbranch.sbdelivery.data.remote.models.request.RefreshToken
 class TokenAuthenticator(
     val prefManager: PrefManager)
 : Authenticator {
+
+    //val lazyApi by lazy { GlobalContext.get().get<RestService>() }
 
     override fun authenticate(route: Route?, response: Response): Request? {
         return if (response.code == 401) {

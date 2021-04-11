@@ -24,6 +24,8 @@ class ProfileRepository(
 
     override fun getCachedProfile(): LiveData<User?> = prefs.profileLive
 
+    fun isAuth(): LiveData<Boolean> = prefs.isAuthLive
+
     override fun getProfile(): Single<User> {
         return api.getProfile("${PrefManager.BEARER} ${prefs.accessToken}")
             .doOnSuccess {
