@@ -20,6 +20,7 @@ import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclersAdapter
 import ru.skillbranch.sbdelivery.ui.root.RootActivity
+import ru.skillbranch.sbdelivery.utils.RenderProp
 
 class MainFragment : BaseFragment<MainViewModel>() {
 
@@ -70,6 +71,7 @@ class MainFragment : BaseFragment<MainViewModel>() {
     }
 
     inner class MainBinding : Binding() {
+
         override fun bind(data: IViewModelState) {
 
         }

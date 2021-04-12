@@ -104,7 +104,7 @@ object AppModule {
 
     fun viewModelModule() = module {
         viewModel{ RootViewModel(handle = get(), repository = get())}
-        viewModel { MainViewModel(handle = get(), repository = get(), dishesMapper = get())}
+        viewModel { MainViewModel(handle = get(), repository = get())}
 
 //        scope<RootActivity> {
 //            scoped { Session() }

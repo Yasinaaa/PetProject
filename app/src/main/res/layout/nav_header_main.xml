@@ -17,7 +17,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="@string/to_enter"
         tools:text="Сидоров Иван"
         android:fontFamily="sans-serif"
         android:textSize="16sp"
@@ -27,7 +26,6 @@
         app:layout_constraintEnd_toStartOf="@+id/ib_logout"/>
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/tv_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +37,6 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageButton
-        android:visibility="gone"
         android:id="@+id/ib_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

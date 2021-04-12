@@ -19,6 +19,13 @@ class RootViewModel(
         subscribeOnDataSource(repository.isAuth()) { isAuth, state ->
             state.copy(isAuth = isAuth)
         }
+        subscribeOnDataSource(repository.getCachedProfile()) { profile, state ->
+            profile ?: return@subscribeOnDataSource null
+            state.copy(
+                fullName = profile.firstName + " " + profile.lastName,
+                email = profile.email
+            )
+        }
     }
 
     override fun navigate(command: NavigationCommand) {
@@ -37,5 +44,7 @@ class RootViewModel(
 }
 
 data class RootState(
-    val isAuth: Boolean = false
+    val isAuth: Boolean = false,
+    val fullName: String? = null,
+    val email: String? = null
 ) : IViewModelState

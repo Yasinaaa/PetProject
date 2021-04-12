@@ -14,15 +14,19 @@ import androidx.drawerlayout.widget.DrawerLayout
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ActivityRootBinding
+import ru.skillbranch.sbdelivery.databinding.NavHeaderMainBinding
 import ru.skillbranch.sbdelivery.ui.base.BaseActivity
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 import ru.skillbranch.sbdelivery.ui.base.Notify
+import ru.skillbranch.sbdelivery.utils.toDp
 
 class RootActivity : BaseActivity<RootViewModel>(){
 
     public override val viewModel: RootViewModel by stateViewModel()
     private lateinit var appBarConfiguration: AppBarConfiguration
     override lateinit var binding: ActivityRootBinding
+
+    private lateinit var navHeaderMainBinding: NavHeaderMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +63,30 @@ class RootActivity : BaseActivity<RootViewModel>(){
         aboutApp.setOnClickListener {
             drawerLayout.closeDrawers()
             navController.navigate(R.id.nav_about_app)
+        }
+
+        val headerView = binding.navView.getHeaderView(0)
+        navHeaderMainBinding = NavHeaderMainBinding.bind(headerView)
+        if (!viewModel.currentState.isAuth) {
+            navHeaderMainBinding.ibLogout.visibility = GONE
+            navHeaderMainBinding.tvEmail.visibility = GONE
+            navHeaderMainBinding.tvUsername.setPadding(
+                navHeaderMainBinding.tvUsername.paddingLeft,
+                navHeaderMainBinding.tvUsername.paddingTop,
+                navHeaderMainBinding.tvUsername.paddingRight,
+                15.toDp(baseContext)
+            )
+            navHeaderMainBinding.tvUsername.text = getString(R.string.enter_to_the_profile)
+        }else{
+            //TODO
+            navHeaderMainBinding.ibLogout.visibility = VISIBLE
+            navHeaderMainBinding.tvEmail.visibility = VISIBLE
+            navHeaderMainBinding.tvUsername.setPadding(
+                navHeaderMainBinding.tvUsername.paddingLeft,
+                navHeaderMainBinding.tvUsername.paddingTop,
+                navHeaderMainBinding.tvUsername.paddingRight,
+                0
+            )
         }
     }
 
