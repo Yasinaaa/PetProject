@@ -27,6 +27,19 @@ class MainViewModel(
             })
     }
 
+    fun getRecommended(){
+        repository.getRecommended()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                if (it.isEmpty())
+                    Log.d("MainViewModel", "it.isEmpty()")
+                else
+                    Log.d("MainViewModel", "it.size=" + it.size)
+            }, {
+                Log.d("MainViewModel", "it.error=" + it.message)
+            })
+    }
+
 }
 
 data class MainState(

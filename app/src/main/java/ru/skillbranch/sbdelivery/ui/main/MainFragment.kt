@@ -18,15 +18,25 @@ import ru.skillbranch.sbdelivery.databinding.FragmentMainBinding
 import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
+import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclerItem
+import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclerViewsDelegate
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclersAdapter
 import ru.skillbranch.sbdelivery.ui.root.RootActivity
 import ru.skillbranch.sbdelivery.utils.RenderProp
 
 class MainFragment : BaseFragment<MainViewModel>() {
 
+    private var recyclersList: MutableList<RecyclerItem> = mutableListOf(
+        RecyclerItem(R.string.recommend),
+        RecyclerItem(R.string.best),
+        RecyclerItem(R.string.popular)
+    )
+
     override val viewModel: MainViewModel by stateViewModel()
+    override val baseBinding: MainBinding by lazy { MainBinding() }
+
     private var binding: FragmentMainBinding? = null
-    override val baseBinding: MainBinding by lazy {MainBinding()}
+    private val recyclerViewsAdapter by lazy { RecyclerViewsDelegate().createAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,10 +50,14 @@ class MainFragment : BaseFragment<MainViewModel>() {
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         rootView = binding!!.root
-        binding!!.rv.adapter = RecyclersAdapter()
 
-        //findNavController().navigate(R.id.nav_sign)
-        viewModel.getFavorite()
+        with(binding!!.rv){
+            adapter = recyclerViewsAdapter
+            recyclerViewsAdapter.items = recyclersList
+        }
+
+        viewModel.getRecommended()
+        //viewModel.getFavorite()
         return rootView
     }
 

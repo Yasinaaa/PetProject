@@ -84,10 +84,12 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.0.3'
 
     // DI
-//    implementation "org.koin:koin-androidx-scope:$koin_version"
-//    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     implementation "io.insert-koin:koin-android-ext:$koin_version"
     implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+
+    // delegate
+    implementation 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl:4.3.0'
+    implementation 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:4.3.0'
 
     // rx binding
     implementation 'com.jakewharton.rxbinding4:rxbinding-core:4.0.0'

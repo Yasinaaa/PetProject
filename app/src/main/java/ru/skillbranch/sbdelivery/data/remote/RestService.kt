@@ -69,7 +69,8 @@ interface RestService {
         @Header("Authorization") token: String
     ): Single<Response>
 
-    @GET("recommend")
+    @GET("main/recommend")
+    @Headers("Content-Type:application/json")
     fun getRecommend(): Single<List<String>>
 
     @GET("categories")

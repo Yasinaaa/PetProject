@@ -55,9 +55,11 @@ class RootActivity : BaseActivity<RootViewModel>(){
                 binding.appBarMain.toolbar.navigationIcon = null
                 binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             }else{
-                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
+                //binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
             }
         }
+
+        binding.drawerLayout.closeDrawers()
 
         val aboutApp = navView.findViewById<TextView>(R.id.tv_about_app)
         aboutApp.setOnClickListener {
