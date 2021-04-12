@@ -10,8 +10,7 @@ import ru.skillbranch.sbdelivery.ui.root.RootActivity
 
 abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment() {
 
-    val root: RootActivity by inject()
-
+    lateinit var root: RootActivity
     lateinit var rootView: View
     open val baseBinding: Binding? = null
 
@@ -25,6 +24,11 @@ abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment()
 
     //set listeners, tuning views
     abstract fun setupViews()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        root = activity as RootActivity
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

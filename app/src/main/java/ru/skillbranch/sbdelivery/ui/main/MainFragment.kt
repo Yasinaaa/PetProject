@@ -19,6 +19,7 @@ import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclersAdapter
+import ru.skillbranch.sbdelivery.ui.root.RootActivity
 
 class MainFragment : BaseFragment<MainViewModel>() {
 
