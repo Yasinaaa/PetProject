@@ -20,8 +20,7 @@ import ru.skillbranch.sbdelivery.ui.base.Notify
 
 class RootActivity : BaseActivity<RootViewModel>(){
 
-    override val viewModel: RootViewModel by stateViewModel()
-
+    public override val viewModel: RootViewModel by stateViewModel()
     private lateinit var appBarConfiguration: AppBarConfiguration
     override lateinit var binding: ActivityRootBinding
 

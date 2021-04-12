@@ -10,11 +10,10 @@ import ru.skillbranch.sbdelivery.ui.root.RootActivity
 
 abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment() {
 
-//    @Inject
-//    lateinit
     val root: RootActivity by inject()
 
-    //open var binding: Binding? = null
+    lateinit var rootView: View
+    open val baseBinding: Binding? = null
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     abstract val viewModel: T
@@ -27,26 +26,20 @@ abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment()
     //set listeners, tuning views
     abstract fun setupViews()
 
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? = inflater.inflate(layout, container, false)
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //restore state
-        //viewModel.restoreState()
-        //binding?.restoreUi(savedInstanceState)
+        viewModel.restoreState()
+        baseBinding?.restoreUi(savedInstanceState)
 
         //owner it is view
-//        viewModel.observeState(viewLifecycleOwner) { binding?.bind(it) }
-//        //bind default values if viewmodel not loaded data
-//        if (binding?.isInflated == false) binding?.onFinishInflate()
+        viewModel.observeState(viewLifecycleOwner) { baseBinding?.bind(it) }
+        //bind default values if viewmodel not loaded data
+        if (baseBinding?.isInflated == false) baseBinding?.onFinishInflate()
 
-        //viewModel.observeNotifications(viewLifecycleOwner) { root.renderNotification(it) }
-        //viewModel.observeNavigation(viewLifecycleOwner) { root.viewModel.navigate(it) }
+        viewModel.observeNotifications(viewLifecycleOwner) { root.renderNotification(it) }
+        viewModel.observeNavigation(viewLifecycleOwner) { root.viewModel.navigate(it) }
         viewModel.observeLoading(viewLifecycleOwner) { renderLoading(it) }
 
     }
@@ -55,40 +48,40 @@ abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment()
         super.onViewStateRestored(savedInstanceState)
 
         //prepare toolbar
-//        root.toolbarBuilder
-//            .invalidate()
-//            .prepare(prepareToolbar)
-//            .build(root.binding)
+        root.toolbarBuilder
+            .invalidate()
+            .prepare(prepareToolbar)
+            .build(root.binding)
 
         setupViews()
 
-        //binding?.rebind()
+        baseBinding?.rebind()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        //viewModel.saveState()
-        //binding?.saveUi(outState)
+        viewModel.saveState()
+        baseBinding?.saveUi(outState)
         super.onSaveInstanceState(outState)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-//        if (root.toolbarBuilder.items.isNotEmpty()) {
-//            for ((index, menuHolder) in root.toolbarBuilder.items.withIndex()) {
-//                val item = menu.add(0, menuHolder.menuId, index, menuHolder.title)
-//                item.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS or MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
-//                    .setIcon(menuHolder.icon)
-//                    .setOnMenuItemClickListener {
-//                        menuHolder.clickListener?.invoke(it)?.let { true } ?: false
-//                    }
-//
-//                if (menuHolder.actionViewLayout != null) item.setActionView(menuHolder.actionViewLayout)
-//            }
-//        } else menu.clear()
+        if (root.toolbarBuilder.items.isNotEmpty()) {
+            for ((index, menuHolder) in root.toolbarBuilder.items.withIndex()) {
+                val item = menu.add(0, menuHolder.menuId, index, menuHolder.title)
+                item.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS or MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
+                    .setIcon(menuHolder.icon)
+                    .setOnMenuItemClickListener {
+                        menuHolder.clickListener?.invoke(it)?.let { true } ?: false
+                    }
+
+                if (menuHolder.actionViewLayout != null) item.setActionView(menuHolder.actionViewLayout)
+            }
+        } else menu.clear()
         super.onPrepareOptionsMenu(menu)
     }
 
     //open for overwrite in fregment if need
     open fun renderLoading(loadingState: Loading) {
-        //root.renderLoading(loadingState)
+        root.renderLoading(loadingState)
     }
 }

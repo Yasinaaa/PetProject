@@ -16,12 +16,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.FragmentMainBinding
 import ru.skillbranch.sbdelivery.ui.base.BaseFragment
+import ru.skillbranch.sbdelivery.ui.base.Binding
+import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclersAdapter
 
 class MainFragment : BaseFragment<MainViewModel>() {
 
     override val viewModel: MainViewModel by stateViewModel()
     private var binding: FragmentMainBinding? = null
+    override val baseBinding: MainBinding by lazy {MainBinding()}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +37,12 @@ class MainFragment : BaseFragment<MainViewModel>() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
-        val root: View = binding!!.root
+        rootView = binding!!.root
         binding!!.rv.adapter = RecyclersAdapter()
 
         //findNavController().navigate(R.id.nav_sign)
         viewModel.getFavorite()
-        return root
+        return rootView
     }
 
     override fun setupViews() {
@@ -63,6 +66,12 @@ class MainFragment : BaseFragment<MainViewModel>() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    inner class MainBinding : Binding() {
+        override fun bind(data: IViewModelState) {
+
+        }
     }
 
 }
