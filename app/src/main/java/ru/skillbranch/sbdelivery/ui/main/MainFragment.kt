@@ -11,14 +11,16 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.FragmentMainBinding
+import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclersAdapter
 
-class MainFragment : Fragment() {
+class MainFragment : BaseFragment<MainViewModel>() {
 
-    private val viewModel: MainViewModel by viewModel()
+    override val viewModel: MainViewModel by stateViewModel()
     private var binding: FragmentMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +40,10 @@ class MainFragment : Fragment() {
         //findNavController().navigate(R.id.nav_sign)
         viewModel.getFavorite()
         return root
+    }
+
+    override fun setupViews() {
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

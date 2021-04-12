@@ -13,7 +13,7 @@ import ru.skillbranch.sbdelivery.ui.base.Loading.*
 abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatActivity() {
 
     protected abstract val viewModel: T
-    protected abstract var binding: ActivityRootBinding
+    abstract var binding: ActivityRootBinding
     lateinit var navController: NavController
 
     val toolbarBuilder = ToolbarBuilder()

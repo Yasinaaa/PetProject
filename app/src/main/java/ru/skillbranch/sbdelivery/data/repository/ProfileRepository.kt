@@ -11,6 +11,7 @@ import ru.skillbranch.sbdelivery.data.remote.models.request.*
 import ru.skillbranch.sbdelivery.data.remote.models.response.User
 
 interface IProfileRepository {
+    fun isAuth(): LiveData<Boolean>
     fun getCachedProfile(): LiveData<User?>
     fun getProfile(): Single<User>
     fun putProfile(firstName: String, lastName: String, email: String): Single<Boolean>
@@ -24,7 +25,7 @@ class ProfileRepository(
 
     override fun getCachedProfile(): LiveData<User?> = prefs.profileLive
 
-    fun isAuth(): LiveData<Boolean> = prefs.isAuthLive
+    override fun isAuth(): LiveData<Boolean> = prefs.isAuthLive
 
     override fun getProfile(): Single<User> {
         return api.getProfile("${PrefManager.BEARER} ${prefs.accessToken}")

@@ -1,15 +1,16 @@
 package ru.skillbranch.sbdelivery.ui.root
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import ru.skillbranch.sbdelivery.R
+import ru.skillbranch.sbdelivery.data.repository.IProfileRepository
 import ru.skillbranch.sbdelivery.ui.base.BaseViewModel
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 import ru.skillbranch.sbdelivery.ui.base.NavigationCommand
-import ru.skillbranch.sbdelivery.data.repository.ProfileRepository
 
 class RootViewModel(
     handle: SavedStateHandle,
-    repository: ProfileRepository
+    repository: IProfileRepository
 ): BaseViewModel<RootState>(handle, RootState()) {
 
     private val privateRoutes = listOf(R.id.nav_orders, )

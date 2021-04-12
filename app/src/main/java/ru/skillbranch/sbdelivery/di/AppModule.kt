@@ -1,11 +1,13 @@
 package ru.skillbranch.sbdelivery.di
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
@@ -25,8 +27,10 @@ import ru.skillbranch.sbdelivery.data.repository.DishesRepository
 import ru.skillbranch.sbdelivery.data.repository.IDishRepository
 import ru.skillbranch.sbdelivery.data.repository.IProfileRepository
 import ru.skillbranch.sbdelivery.data.repository.ProfileRepository
+import ru.skillbranch.sbdelivery.ui.base.BaseViewModel
 import ru.skillbranch.sbdelivery.ui.root.RootViewModel
 import ru.skillbranch.sbdelivery.ui.main.MainViewModel
+import ru.skillbranch.sbdelivery.ui.root.RootActivity
 import java.util.concurrent.TimeUnit
 
 object AppModule {
@@ -99,8 +103,22 @@ object AppModule {
     }
 
     fun viewModelModule() = module {
-        viewModel { RootViewModel(handle = get(), repository = get())}
+        viewModel{ RootViewModel(handle = get(), repository = get())}
         viewModel { MainViewModel(handle = get(), repository = get(), dishesMapper = get())}
+
+//        scope<RootActivity> {
+//            scoped { Session() }
+//            viewModel<RootViewModel>(named("vm3"))
+//        }
     }
+
+
+//    scope<MVVMActivity> {
+//        scoped { Session() }
+//        fragment { MVVMFragment(get()) }
+//        viewModel { ExtSimpleViewModel(get()) }
+//        viewModel<ExtSimpleViewModel>(named("ext"))
+//        viewModel<SavedStateViewModel>(named("vm3")) // graph injected usage + builder API
+//    }
 
 }

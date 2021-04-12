@@ -1,11 +1,8 @@
 package ru.skillbranch.sbdelivery.ui.root
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.View.*
 import android.widget.TextView
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -14,33 +11,25 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.NavController
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ActivityRootBinding
 import ru.skillbranch.sbdelivery.ui.base.BaseActivity
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 import ru.skillbranch.sbdelivery.ui.base.Notify
 
-class RootActivity : AppCompatActivity() {//BaseActivity<RootViewModel>(){
+class RootActivity : BaseActivity<RootViewModel>(){
 
-    //public override
-    val viewModel: RootViewModel by viewModels()
+    override val viewModel: RootViewModel by stateViewModel()
+
     private lateinit var appBarConfiguration: AppBarConfiguration
-    //public override
-    lateinit var binding: ActivityRootBinding
-    lateinit var navController: NavController
+    override lateinit var binding: ActivityRootBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityRootBinding.inflate(layoutInflater)
-
-        setContentView(binding.root)
-        setSupportActionBar(binding.appBarMain.toolbar)
-
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-        navController = findNavController(R.id.nav_host_fragment_content_main)
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -79,12 +68,12 @@ class RootActivity : AppCompatActivity() {//BaseActivity<RootViewModel>(){
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-//    override fun subscribeOnState(state: IViewModelState) {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun renderNotification(notify: Notify) {
-//        TODO("Not yet implemented")
-//    }
+    override fun subscribeOnState(state: IViewModelState) {
+
+    }
+
+    override fun renderNotification(notify: Notify) {
+
+    }
 
 }

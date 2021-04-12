@@ -14,11 +14,10 @@ abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment()
 //    lateinit
     val root: RootActivity by inject()
 
-    open val binding: Binding? = null
+    //open var binding: Binding? = null
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     abstract val viewModel: T
-    protected abstract val layout: Int
 
     open val prepareToolbar: (BaseActivity.ToolbarBuilder.() -> Unit)? = null
 
@@ -28,26 +27,26 @@ abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment()
     //set listeners, tuning views
     abstract fun setupViews()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(layout, container, false)
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? = inflater.inflate(layout, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //restore state
-        viewModel.restoreState()
-        binding?.restoreUi(savedInstanceState)
+        //viewModel.restoreState()
+        //binding?.restoreUi(savedInstanceState)
 
         //owner it is view
-        viewModel.observeState(viewLifecycleOwner) { binding?.bind(it) }
-        //bind default values if viewmodel not loaded data
-        if (binding?.isInflated == false) binding?.onFinishInflate()
+//        viewModel.observeState(viewLifecycleOwner) { binding?.bind(it) }
+//        //bind default values if viewmodel not loaded data
+//        if (binding?.isInflated == false) binding?.onFinishInflate()
 
         //viewModel.observeNotifications(viewLifecycleOwner) { root.renderNotification(it) }
-        viewModel.observeNavigation(viewLifecycleOwner) { root.viewModel.navigate(it) }
+        //viewModel.observeNavigation(viewLifecycleOwner) { root.viewModel.navigate(it) }
         viewModel.observeLoading(viewLifecycleOwner) { renderLoading(it) }
 
     }
@@ -63,12 +62,12 @@ abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment()
 
         setupViews()
 
-        binding?.rebind()
+        //binding?.rebind()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        viewModel.saveState()
-        binding?.saveUi(outState)
+        //viewModel.saveState()
+        //binding?.saveUi(outState)
         super.onSaveInstanceState(outState)
     }
 
