@@ -11,14 +11,17 @@ import ru.skillbranch.sbdelivery.data.mapper.IDishesMapper
 import ru.skillbranch.sbdelivery.data.remote.RestService
 import ru.skillbranch.sbdelivery.data.remote.models.response.Category
 import ru.skillbranch.sbdelivery.data.remote.models.response.Dish
+import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
 
 interface IDishRepository {
     fun getFavorite(offset: Int, limit: Int): Single<List<DishEntity>>
     fun changeFavorite(dishId: Int, favorite: Boolean): Single<Boolean>
-    fun getRecommended(): Single<List<DishEntity>>
+    fun getRecommended(offset: Int, limit: Int): Single<MutableList<CardItem>>
     fun getCategories(offset: Int, limit: Int): Single<List<Category>>
     fun getDishes(offset: Int, limit: Int): Single<List<DishEntity>>
     fun getCachedDishes(): Single<List<DishEntity>>
+    fun getBestDishes(): Single<MutableList<CardItem>>
+    fun getMostLikedDishes(): Single<MutableList<CardItem>>
     //
     fun findDishesByName(searchText: String): Observable<List<DishEntity>>
 }
@@ -79,11 +82,59 @@ class DishesRepository(
         api.changeFavorite(dishId, favorite,
             "${PrefManager.BEARER} ${prefs.accessToken}").saveResponseAsBool()
 
-    override fun getRecommended(): Single<List<DishEntity>> =
-        api.getRecommend()
-            .flatMap {
-                dishesDao.findDishesByIds(it)
+    override fun getRecommended(offset: Int, limit: Int): Single<MutableList<CardItem>> {
+        val allDishes =
+            api.getDishes(offset, limit, "${PrefManager.BEARER} ${prefs.accessToken}")
+                .doOnSuccess { dishes: List<Dish> ->
+                    val savePersistDishes: List<DishEntity> = mapper.mapDtoToPersist(dishes)
+                    dishesDao.insert(savePersistDishes)
+                }
+                .flatMap {
+                    dishesDao.getAllDishes()
+                }
+
+        val recommendedIds = api.getRecommend()
+
+        return Single.zip(allDishes, recommendedIds, { dish, recom ->
+            mapper.mapDishToCardItem(dish, recom)
+        })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+//            .flatMap {
+//                dishesDao.findDishesByIds(it)
+//            }
+    }
+
+    override fun getBestDishes(): Single<MutableList<CardItem>>{
+        return dishesDao.getAllDishes()
+            .map {
+                var result = mutableListOf<DishEntity>()
+                for (item in it){
+                    if (item.rating >= 4.8 && result.size < 10){
+                        result.add(item)
+                    }
+                }
+
+                if (result.size < 4){
+                    result = mutableListOf()
+                }
+                mapper.mapDishToCardItem(result)
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getMostLikedDishes(): Single<MutableList<CardItem>>{
+        return dishesDao.getAllDishes()
+            .map {
+                it.sortedBy { item -> item.likes }
+                if(it.size < 4)
+                    mutableListOf()
+                else
+                    mapper.mapDishToCardItem(it).subList(0, 4)
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }

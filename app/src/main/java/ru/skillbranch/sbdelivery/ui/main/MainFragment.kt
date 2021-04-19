@@ -1,18 +1,8 @@
 package ru.skillbranch.sbdelivery.ui.main
 
-import android.graphics.Color
-import android.graphics.LightingColorFilter
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.view.*
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.FragmentMainBinding
 import ru.skillbranch.sbdelivery.ui.base.BaseFragment
@@ -20,17 +10,14 @@ import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclerItem
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclerViewsDelegate
-import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclersAdapter
-import ru.skillbranch.sbdelivery.ui.root.RootActivity
-import ru.skillbranch.sbdelivery.utils.RenderProp
 
 class MainFragment : BaseFragment<MainViewModel>() {
 
-    private var recyclersList: MutableList<RecyclerItem> = mutableListOf(
-        RecyclerItem(R.string.recommend),
-        RecyclerItem(R.string.best),
-        RecyclerItem(R.string.popular)
-    )
+//    private var recyclersList: MutableList<RecyclerItem> = mutableListOf(
+//        RecyclerItem(R.string.recommend),
+//        RecyclerItem(R.string.best),
+//        RecyclerItem(R.string.popular)
+//    )
 
     override val viewModel: MainViewModel by stateViewModel()
     override val baseBinding: MainBinding by lazy { MainBinding() }
@@ -41,6 +28,13 @@ class MainFragment : BaseFragment<MainViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
+        val recyclersList: MutableList<RecyclerItem> = mutableListOf(
+            RecyclerItem(R.string.recommend),
+            RecyclerItem(R.string.promotions),
+            RecyclerItem(R.string.popular),
+        )
+        recyclerViewsAdapter.items = recyclersList
     }
 
     override fun onCreateView(
@@ -50,19 +44,20 @@ class MainFragment : BaseFragment<MainViewModel>() {
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         rootView = binding!!.root
-
-        with(binding!!.rv){
-            adapter = recyclerViewsAdapter
-            recyclerViewsAdapter.items = recyclersList
-        }
-
-        viewModel.getRecommended()
-        //viewModel.getFavorite()
         return rootView
     }
 
     override fun setupViews() {
-
+        viewModel.recommendDishesLists(viewLifecycleOwner){
+            recyclerViewsAdapter.items[0].cards = it
+            binding!!.rv.adapter = recyclerViewsAdapter
+        }
+        viewModel.bestDishesLists(viewLifecycleOwner){
+            recyclerViewsAdapter.items[1].cards = it
+        }
+        viewModel.mostLikedDishesLists(viewLifecycleOwner){
+            recyclerViewsAdapter.items[2].cards = it
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
