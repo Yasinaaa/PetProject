@@ -21,7 +21,7 @@ abstract class BaseViewModel<T : IViewModelState>(
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     val permissions = MutableLiveData<Event<List<String>>>()
 
-    private val loading = MutableLiveData<Loading>(Loading.HIDE_LOADING)
+    private val loading = MutableLiveData<Loading>(Loading.SHOW_LOADING)
 
     /***
      * Инициализация начального состояния аргументом конструктоа, и объявления состояния как

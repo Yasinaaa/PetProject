@@ -79,7 +79,7 @@ interface RestService {
         @Query("offset") offset: Int,
         @Query("limit") limit: Int,
         @Header("Authorization") token: String
-    ): Single<List<Category>>
+    ): Single<MutableList<Category>>
 
     @GET("dishes")
     @Headers("If-Modified-Since: Mon, 1 Jun 2020 08:00:00 GMT")

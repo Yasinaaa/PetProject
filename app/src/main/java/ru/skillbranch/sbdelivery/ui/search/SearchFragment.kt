@@ -2,14 +2,24 @@ package ru.skillbranch.sbdelivery.ui.search
 
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import com.jakewharton.rxbinding4.appcompat.queryTextChanges
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import ru.skillbranch.sbdelivery.data.local.entity.CategoryEntity
 import ru.skillbranch.sbdelivery.databinding.FragmentSearchBinding
 import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter
+import ru.skillbranch.sbdelivery.ui.adapters.TextLineAdapter
+import ru.skillbranch.sbdelivery.ui.base.BaseFragment
+import ru.skillbranch.sbdelivery.ui.base.Binding
+import ru.skillbranch.sbdelivery.ui.base.IViewModelState
+import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
+import ru.skillbranch.sbdelivery.utils.RenderProp
 
-class SearchFragment : Fragment() {
+class SearchFragment : BaseFragment<SearchViewModel>() {
 
-    private lateinit var viewModel: SearchViewModel
+    override val viewModel: SearchViewModel by stateViewModel()
+    override val baseBinding: SearchBinding by lazy { SearchBinding() }
     private var binding: FragmentSearchBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,22 +32,55 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
-
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         val root: View = binding!!.root
 
-//        binding?.rvCache?.adapter = CacheAdapter(type=TextLineAdapter.CACHE)
-//        binding?.rvCache?.visibility = VISIBLE
-
-        binding?.rvCategories?.adapter = CategoriesAdapter()
-        binding?.rvProducts?.adapter = CardAdapter(type= CardAdapter.FAVORITE)
-
+        val searchEvent = binding?.searchView?.queryTextChanges()?.skipInitialValue()?.map { it.toString() }
+        viewModel.returnSearchText(searchEvent!!, viewLifecycleOwner){
+            viewModel.setSearchEvent(it)
+        }
         return root
+    }
+
+    override fun setupViews() {
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
     }
+
+    inner class SearchBinding : Binding() {
+
+        private var foundCategories: MutableList<CategoryEntity>
+        by RenderProp(mutableListOf()) {
+            if(it.isNotEmpty()) {
+                binding?.rvCache?.visibility = GONE
+                binding?.rvCategories?.visibility = VISIBLE
+                binding?.rvCategories?.adapter = CategoriesAdapter(it)
+            }
+        }
+
+        private var foundDishes: MutableList<CardItem> by RenderProp(mutableListOf()) {
+            if(it.isNotEmpty()) {
+                binding?.rvCache?.visibility = GONE
+                binding?.rvProducts?.visibility = VISIBLE
+                binding?.rvProducts?.adapter = CardAdapter(type = CardAdapter.FAVORITE, it)
+            }
+        }
+
+        private var searchHistory: MutableSet<String> by RenderProp(mutableSetOf()) {
+            binding?.rvCache?.adapter = TextLineAdapter(type=TextLineAdapter.CACHE, it)
+            binding?.rvCache?.visibility = VISIBLE
+        }
+
+        override fun bind(data: IViewModelState) {
+            data as SearchState
+            searchHistory = data.searchHistory
+            foundDishes = data.dishes
+            foundCategories = data.foundCategories
+        }
+    }
+
 }

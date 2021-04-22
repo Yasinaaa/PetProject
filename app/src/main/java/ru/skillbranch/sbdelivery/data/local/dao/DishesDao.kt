@@ -16,7 +16,7 @@ interface DishesDao {
     @Query("SELECT * FROM dishes_table WHERE id IN (:ids)")
     fun findDishesByIds(ids: List<String>): Single<List<DishEntity>>
 
-    @Query("SELECT * FROM dishes_table WHERE name LIKE :searchText ORDER BY name ASC")
+    @Query("SELECT * FROM dishes_table WHERE name LIKE '%' || :searchText || '%' ") // ORDER BY name ASC
     fun findDishesByName(searchText: String): Single<List<DishEntity>>
 
     @Query("UPDATE dishes_table SET favorite=1 WHERE id IN (:ids)")

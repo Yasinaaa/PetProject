@@ -1,9 +1,13 @@
 package ru.skillbranch.sbdelivery.data.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
+import okhttp3.internal.notify
+import ru.skillbranch.sbdelivery.data.local.dao.CategoryDao
 import ru.skillbranch.sbdelivery.data.local.dao.DishesDao
 import ru.skillbranch.sbdelivery.data.local.entity.DishEntity
 import ru.skillbranch.sbdelivery.data.local.pref.PrefManager
@@ -11,19 +15,21 @@ import ru.skillbranch.sbdelivery.data.mapper.IDishesMapper
 import ru.skillbranch.sbdelivery.data.remote.RestService
 import ru.skillbranch.sbdelivery.data.remote.models.response.Category
 import ru.skillbranch.sbdelivery.data.remote.models.response.Dish
+import ru.skillbranch.sbdelivery.data.remote.models.response.User
 import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
+import java.util.function.Function
 
 interface IDishRepository {
+    fun getCachedSearchHistory(): LiveData<MutableSet<String>>
     fun getFavorite(offset: Int, limit: Int): Single<List<DishEntity>>
     fun changeFavorite(dishId: Int, favorite: Boolean): Single<Boolean>
     fun getRecommended(offset: Int, limit: Int): Single<MutableList<CardItem>>
-    fun getCategories(offset: Int, limit: Int): Single<List<Category>>
     fun getDishes(offset: Int, limit: Int): Single<List<DishEntity>>
     fun getCachedDishes(): Single<List<DishEntity>>
     fun getBestDishes(): Single<MutableList<CardItem>>
     fun getMostLikedDishes(): Single<MutableList<CardItem>>
     //
-    fun findDishesByName(searchText: String): Observable<List<DishEntity>>
+    fun findDishesByName(searchText: String): Observable<MutableList<CardItem>>
 }
 
 class DishesRepository(
@@ -32,6 +38,8 @@ class DishesRepository(
     private val mapper: IDishesMapper,
     private val dishesDao: DishesDao
 ) : IDishRepository {
+
+    override fun getCachedSearchHistory(): LiveData<MutableSet<String>> = prefs.searchHistoryLive
 
     override fun getDishes(offset: Int, limit: Int): Single<List<DishEntity>> =
         api.getDishes(offset, limit,
@@ -52,14 +60,14 @@ class DishesRepository(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    override fun getCategories(offset: Int, limit: Int): Single<List<Category>> =
-        api.getCategories(offset, limit,
-            "${PrefManager.BEARER} ${prefs.accessToken}")
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-
-    override fun findDishesByName(searchText: String): Observable<List<DishEntity>> =
+    override fun findDishesByName(searchText: String): Observable<MutableList<CardItem>> =
         dishesDao.findDishesByName(searchText)
+            .map {
+                mapper.mapDishToCardItem(it)
+            }
+            .doOnSuccess {
+                prefs.searchHistory.add(searchText)
+            }
             .toObservable()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

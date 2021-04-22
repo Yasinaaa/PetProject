@@ -1,9 +1,11 @@
 package ru.skillbranch.sbdelivery.ui.main.adapters
 
+import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
+import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ItemMainRvBinding
 import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter
 
@@ -19,18 +21,10 @@ class RecyclerViewsDelegate {
             })
         {
             bind {
-                if(item.cards.size == 0) {
-                    itemView.visibility = GONE
-                    binding.cl.visibility = GONE
-                    binding.root.visibility = GONE
-                }else{
-                    itemView.visibility = VISIBLE
-                    binding.cl.visibility = VISIBLE
-                    binding.tvTitle.text = context.getString(item.title)
-                    val adapter = CardAdapter(type = CardAdapter.MAIN)
-                    adapter.list = item.cards
-                    binding.rvItems.adapter = adapter
-                }
+                binding.tvTitle.text = context.getString(item.title)
+                val adapter = CardAdapter(type = CardAdapter.MAIN)
+                adapter.list = item.cards
+                binding.rvItems.adapter = adapter
             }
         }
 }

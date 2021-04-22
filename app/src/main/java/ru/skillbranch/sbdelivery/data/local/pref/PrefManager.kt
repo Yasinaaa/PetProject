@@ -26,7 +26,8 @@ class PrefManager(context: Context, moshi: Moshi) {
 
     var accessToken by PrefDelegate("")
     var refreshToken by PrefDelegate("")
-    var profile: User? by PrefObjDelegate(moshi.adapter(User::class.java))
+    var profile: User? by PrefObjDelegate(adapter = moshi.adapter(User::class.java))
+    var searchHistory: MutableSet<String> by PrefSetDelegate()
 
     val isAuthLive: LiveData<Boolean> by lazy {
         val token by PrefLiveDelegate("accessToken", "", preferences)
@@ -38,6 +39,9 @@ class PrefManager(context: Context, moshi: Moshi) {
         moshi.adapter(User::class.java),
         preferences
     )
+
+    val searchHistoryLive: LiveData<MutableSet<String>> by
+    PrefLiveObjDelegateSet("searchHistory", preferences)
 
     fun clearAll() {
         preferences.edit().clear().apply()

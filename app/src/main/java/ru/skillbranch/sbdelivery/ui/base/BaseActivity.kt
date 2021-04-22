@@ -34,7 +34,7 @@ abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatA
         viewModel.observeNotifications(this) { renderNotification(it) }
         viewModel.observeNavigation(this) { subscribeOnNavigation(it) }
         viewModel.observeLoading(this) { renderLoading(it) }
-
+        renderLoading(SHOW_LOADING)
         navController = findNavController(R.id.nav_host_fragment_content_main)
     }
 

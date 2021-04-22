@@ -20,7 +20,10 @@ import ru.skillbranch.sbdelivery.utils.removeZero
 import ru.skillbranch.sbdelivery.utils.toDp
 
 
-open class CardAdapter(val type: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+open class CardAdapter(
+    val type: Int,
+    var list: MutableList<CardItem> = mutableListOf()
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object{
         const val MAIN = 1
@@ -33,8 +36,6 @@ open class CardAdapter(val type: Int) : RecyclerView.Adapter<RecyclerView.ViewHo
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val bindingItem: ItemProductCardBinding? = DataBindingUtil.bind(view)
     }
-
-    var list: MutableList<CardItem> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         context = parent.context

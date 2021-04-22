@@ -1,13 +1,13 @@
 package ru.skillbranch.sbdelivery.di
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.room.Room
+import coil.ImageLoader
+import coil.decode.SvgDecoder
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
@@ -16,21 +16,20 @@ import ru.skillbranch.sbdelivery.BuildConfig.BASE_URL
 import ru.skillbranch.sbdelivery.utils.ResourceManager
 import ru.skillbranch.sbdelivery.data.local.AppDb
 import ru.skillbranch.sbdelivery.data.local.pref.PrefManager
+import ru.skillbranch.sbdelivery.data.mapper.CategoriesMapper
 import ru.skillbranch.sbdelivery.data.mapper.DishesMapper
+import ru.skillbranch.sbdelivery.data.mapper.ICategoriesMapper
 import ru.skillbranch.sbdelivery.data.mapper.IDishesMapper
 import ru.skillbranch.sbdelivery.data.remote.NetworkMonitor
 import ru.skillbranch.sbdelivery.data.remote.RestService
 import ru.skillbranch.sbdelivery.data.remote.interceptors.ErrorStatusInterceptor
 import ru.skillbranch.sbdelivery.data.remote.interceptors.NetworkStatusInterceptor
 import ru.skillbranch.sbdelivery.data.remote.interceptors.TokenAuthenticator
-import ru.skillbranch.sbdelivery.data.repository.DishesRepository
-import ru.skillbranch.sbdelivery.data.repository.IDishRepository
-import ru.skillbranch.sbdelivery.data.repository.IProfileRepository
-import ru.skillbranch.sbdelivery.data.repository.ProfileRepository
-import ru.skillbranch.sbdelivery.ui.base.BaseViewModel
+import ru.skillbranch.sbdelivery.data.repository.*
 import ru.skillbranch.sbdelivery.ui.root.RootViewModel
 import ru.skillbranch.sbdelivery.ui.main.MainViewModel
-import ru.skillbranch.sbdelivery.ui.root.RootActivity
+import ru.skillbranch.sbdelivery.ui.menu.MenuViewModel
+import ru.skillbranch.sbdelivery.ui.search.SearchViewModel
 import java.util.concurrent.TimeUnit
 
 object AppModule {
@@ -38,6 +37,11 @@ object AppModule {
     fun appModule() = module {
         single { PrefManager(context = get(), moshi = get()) }
         single { ResourceManager(context = get()) }
+        single {
+            ImageLoader.Builder(context= get())
+                .componentRegistry { add(SvgDecoder(context= get())) }
+                .build()
+        }
     }
 
     fun networkModule() = module {
@@ -80,9 +84,15 @@ object AppModule {
 
     fun dataModule() = module {
         single<IProfileRepository> { ProfileRepository(api = get(), prefs = get()) }
+
         single<IDishesMapper> { DishesMapper() }
         single<IDishRepository> {
             DishesRepository(prefs = get(), api = get(), mapper = get(), dishesDao = get())
+        }
+
+        single<ICategoriesMapper> { CategoriesMapper() }
+        single<ICategoryRepository> {
+            CategoriesRepository(prefs = get(), api = get(), mapper = get(), categoryDao = get())
         }
     }
 
@@ -103,9 +113,10 @@ object AppModule {
     }
 
     fun viewModelModule() = module {
-        viewModel{ RootViewModel(handle = get(), repository = get())}
-        viewModel { MainViewModel(handle = get(), repository = get())}
-
+        viewModel{ RootViewModel(handle = get(), repository = get()) }
+        viewModel { MainViewModel(handle = get(), repository = get()) }
+        viewModel { SearchViewModel(handle = get(), categoryRepo = get(), dishRepo = get()) }
+        viewModel { MenuViewModel(handle = get(), repository = get()) }
 //        scope<RootActivity> {
 //            scoped { Session() }
 //            viewModel<RootViewModel>(named("vm3"))

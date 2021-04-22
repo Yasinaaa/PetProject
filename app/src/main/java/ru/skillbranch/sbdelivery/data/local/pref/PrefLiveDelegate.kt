@@ -19,7 +19,9 @@ class PrefLiveDelegate<T>(
              storedValue = SharedPreferenceLiveData(preferences, fieldKey, defaultValue)
          }
          return storedValue!!
-     }
+    }
+
+
 }
 
 
@@ -54,6 +56,7 @@ internal class SharedPreferenceLiveData<T>(
             is Float -> sharedPrefs.getFloat(key, defaultValue as Float) as T
             is String -> sharedPrefs.getString(key, defaultValue as String) as T
             is Boolean -> sharedPrefs.getBoolean(key, defaultValue as Boolean) as T
+            is MutableSet<*> -> sharedPrefs.getStringSet(key, defaultValue as MutableSet<String>) as T
             else -> error("This type $defaultValue can not be stored into Preferences")
         }
     }
@@ -102,5 +105,48 @@ internal class SharedPreferenceObjLiveData<T>(
     private fun readValue(): T? {
         val string = sharedPrefs.getString(key, null)
         return string?.let { adapter.fromJson(it) }
+    }
+}
+
+class PrefLiveObjDelegateSet(
+    private val fieldKey: String,
+    private val preferences: SharedPreferences
+) : ReadOnlyProperty<Any, LiveData<MutableSet<String>>> {
+    private var storedValue: LiveData<MutableSet<String>>? = null
+
+    override fun getValue(thisRef: Any, property: KProperty<*>): LiveData<MutableSet<String>> {
+        if (storedValue == null) {
+            storedValue = SharedPreferenceSetLiveData(preferences, fieldKey)
+        }
+        return storedValue!!
+    }
+}
+
+internal class SharedPreferenceSetLiveData(
+    var sharedPrefs: SharedPreferences,
+    var key: String,
+) : LiveData<MutableSet<String>>() {
+    private val preferenceChangeListener =
+        SharedPreferences.OnSharedPreferenceChangeListener { _, shKey ->
+            Log.e("PrefDelegate", "shared listener: $shKey");
+            if (shKey == key) {
+                value = readValue()
+            }
+        }
+
+    override fun onActive() {
+        super.onActive()
+        value = readValue()
+        sharedPrefs.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
+    }
+
+    override fun onInactive() {
+        sharedPrefs.unregisterOnSharedPreferenceChangeListener(preferenceChangeListener)
+        super.onInactive()
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun readValue(): MutableSet<String> {
+        return sharedPrefs.getStringSet(key, mutableSetOf()) ?: mutableSetOf()
     }
 }

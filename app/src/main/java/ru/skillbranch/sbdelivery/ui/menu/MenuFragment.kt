@@ -5,12 +5,16 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import coil.ImageLoader
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.java.KoinJavaComponent.inject
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.FragmentMenuBinding
+import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 
-class MenuFragment : Fragment() {
+class MenuFragment : BaseFragment<MenuViewModel>() {
 
-    private lateinit var menuViewModel: MenuViewModel
+    override val viewModel: MenuViewModel by stateViewModel()
     private var binding: FragmentMenuBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,13 +27,15 @@ class MenuFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        menuViewModel = ViewModelProvider(this).get(MenuViewModel::class.java)
-
         binding = FragmentMenuBinding.inflate(inflater, container, false)
         val root: View = binding!!.root
-
-        binding!!.rvItems.adapter = MenuAdapter()
         return root
+    }
+
+    override fun setupViews() {
+        viewModel.getCategories(viewLifecycleOwner){
+            binding!!.rvItems.adapter = MenuAdapter(it)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -50,4 +56,5 @@ class MenuFragment : Fragment() {
         super.onDestroyView()
         binding = null
     }
+
 }

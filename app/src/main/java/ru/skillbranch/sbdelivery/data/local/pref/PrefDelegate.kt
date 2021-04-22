@@ -22,6 +22,8 @@ class PrefDelegate<T>(private val defaultValue: T) {
                         is Float -> thisRef.preferences.getFloat(key,defaultValue as Float) as T
                         is String -> thisRef.preferences.getString(key,defaultValue as String) as T
                         is Boolean -> thisRef.preferences.getBoolean(key,defaultValue as Boolean) as T
+                        is Set<*> -> thisRef.preferences.
+                        getStringSet(key, defaultValue as MutableSet<String>) as T
                         else -> error("This type can not be stored into Preferences")
                     }
                 }
@@ -36,6 +38,7 @@ class PrefDelegate<T>(private val defaultValue: T) {
                         is Boolean -> putBoolean(key, value)
                         is Long -> putLong(key, value)
                         is Float -> putFloat(key, value)
+                        is MutableSet<*> -> putStringSet(key, value as MutableSet<String>)
                         else -> error("Only primitive types can be stored into Preferences")
                     }
                     apply()
@@ -70,6 +73,35 @@ class PrefObjDelegate<T>(
                 storedValue = value
                 with(thisRef.preferences.edit()){
                     putString(key, value?.let { adapter.toJson(it) })
+                    apply()
+                }
+            }
+
+        }
+    }
+}
+
+class PrefSetDelegate{
+    private var storedValue: MutableSet<String> = mutableSetOf()
+
+    operator fun provideDelegate(
+        thisRef: PrefManager,
+        prop: KProperty<*>
+    ): ReadWriteProperty<PrefManager, MutableSet<String>> {
+        val key = prop.name
+        return object : ReadWriteProperty<PrefManager, MutableSet<String>>{
+            override fun getValue(thisRef: PrefManager, property: KProperty<*>): MutableSet<String> {
+                if(storedValue.isEmpty()){
+                    storedValue = thisRef.preferences.
+                    getStringSet(key, mutableSetOf<String>()) as MutableSet<String>
+                }
+                return storedValue
+            }
+
+            override fun setValue(thisRef: PrefManager, property: KProperty<*>, value: MutableSet<String>) {
+                storedValue = value
+                with(thisRef.preferences.edit()){
+                    putStringSet(key, value as MutableSet<String>)
                     apply()
                 }
             }

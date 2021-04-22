@@ -1,40 +1,35 @@
 package ru.skillbranch.sbdelivery.ui.main
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.FragmentMainBinding
 import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
+import ru.skillbranch.sbdelivery.ui.base.Loading
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclerItem
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclerViewsDelegate
+import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclersAdapter
+import ru.skillbranch.sbdelivery.utils.RenderProp
 
 class MainFragment : BaseFragment<MainViewModel>() {
-
-//    private var recyclersList: MutableList<RecyclerItem> = mutableListOf(
-//        RecyclerItem(R.string.recommend),
-//        RecyclerItem(R.string.best),
-//        RecyclerItem(R.string.popular)
-//    )
 
     override val viewModel: MainViewModel by stateViewModel()
     override val baseBinding: MainBinding by lazy { MainBinding() }
 
     private var binding: FragmentMainBinding? = null
-    private val recyclerViewsAdapter by lazy { RecyclerViewsDelegate().createAdapter() }
+    private lateinit var recyclerViewsAdapter: RecyclersAdapter
+    //private val recyclerViewsAdapter by lazy { RecyclerViewsDelegate().createAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
-        val recyclersList: MutableList<RecyclerItem> = mutableListOf(
-            RecyclerItem(R.string.recommend),
-            RecyclerItem(R.string.promotions),
-            RecyclerItem(R.string.popular),
-        )
-        recyclerViewsAdapter.items = recyclersList
+        recyclerViewsAdapter = RecyclersAdapter()
     }
 
     override fun onCreateView(
@@ -44,19 +39,16 @@ class MainFragment : BaseFragment<MainViewModel>() {
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         rootView = binding!!.root
+        binding!!.rv.adapter = recyclerViewsAdapter
+        //findNavController().navigate(R.id.nav_menu)
         return rootView
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun setupViews() {
         viewModel.recommendDishesLists(viewLifecycleOwner){
-            recyclerViewsAdapter.items[0].cards = it
-            binding!!.rv.adapter = recyclerViewsAdapter
-        }
-        viewModel.bestDishesLists(viewLifecycleOwner){
-            recyclerViewsAdapter.items[1].cards = it
-        }
-        viewModel.mostLikedDishesLists(viewLifecycleOwner){
-            recyclerViewsAdapter.items[2].cards = it
+            recyclerViewsAdapter.list = it
+            recyclerViewsAdapter.notifyDataSetChanged()
         }
     }
 
@@ -81,8 +73,13 @@ class MainFragment : BaseFragment<MainViewModel>() {
 
     inner class MainBinding : Binding() {
 
-        override fun bind(data: IViewModelState) {
+//        private var isLoading: Boolean by RenderProp(false) {
+//            renderLoading(Loading.SHOW_LOADING)
+//        }
 
+        override fun bind(data: IViewModelState) {
+            data as MainState
+            //isLoading = data.isLoading
         }
     }
 
