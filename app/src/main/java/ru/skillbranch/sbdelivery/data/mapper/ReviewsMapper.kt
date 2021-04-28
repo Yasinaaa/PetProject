@@ -1,12 +1,23 @@
 package ru.skillbranch.sbdelivery.data.mapper
 
+import ru.skillbranch.sbdelivery.data.dto.ReviewDto
 import ru.skillbranch.sbdelivery.data.local.entity.ReviewEntity
 import ru.skillbranch.sbdelivery.data.remote.models.response.Review
+import ru.skillbranch.sbdelivery.utils.parseDate
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+
+
+
 
 interface IReviewsMapper {
     fun mapReviewListToEntityList(review: List<Review>): List<ReviewEntity>
     fun mapReviewToEntity(review: Review): ReviewEntity
     fun createReview(rating: Int, text: String): ReviewEntity
+    fun mapReviewEntityToDto(review: ReviewEntity): ReviewDto
+    fun mapReviewEntitiesToDto(list: List<ReviewEntity>): List<ReviewDto>
 }
 
 open class ReviewsMapper : IReviewsMapper {
@@ -46,4 +57,15 @@ open class ReviewsMapper : IReviewsMapper {
         createdAt = "", //TODO
         updatedAt = "", //TODO
     )
+
+    override fun mapReviewEntityToDto(review: ReviewEntity): ReviewDto = ReviewDto(
+        title =  "${review.author}, ${review.date?.parseDate()}",
+        stars = review.rating ?: 0F,
+        text = review.text ?: "",
+    )
+
+    override fun mapReviewEntitiesToDto(list: List<ReviewEntity>): List<ReviewDto> =
+        list.map {
+            mapReviewEntityToDto(it)
+        }
 }

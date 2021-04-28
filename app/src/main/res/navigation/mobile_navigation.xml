@@ -21,7 +21,11 @@
         android:id="@+id/nav_main"
         android:name="ru.skillbranch.sbdelivery.ui.main.MainFragment"
         android:label="@string/menu_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/dish_page"
+            app:destination="@id/nav_dish" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_menu"

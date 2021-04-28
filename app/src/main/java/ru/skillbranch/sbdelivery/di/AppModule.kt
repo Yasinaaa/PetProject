@@ -16,16 +16,15 @@ import ru.skillbranch.sbdelivery.BuildConfig.BASE_URL
 import ru.skillbranch.sbdelivery.utils.ResourceManager
 import ru.skillbranch.sbdelivery.data.local.AppDb
 import ru.skillbranch.sbdelivery.data.local.pref.PrefManager
-import ru.skillbranch.sbdelivery.data.mapper.CategoriesMapper
-import ru.skillbranch.sbdelivery.data.mapper.DishesMapper
-import ru.skillbranch.sbdelivery.data.mapper.ICategoriesMapper
-import ru.skillbranch.sbdelivery.data.mapper.IDishesMapper
+import ru.skillbranch.sbdelivery.data.mapper.*
 import ru.skillbranch.sbdelivery.data.remote.NetworkMonitor
 import ru.skillbranch.sbdelivery.data.remote.RestService
 import ru.skillbranch.sbdelivery.data.remote.interceptors.ErrorStatusInterceptor
 import ru.skillbranch.sbdelivery.data.remote.interceptors.NetworkStatusInterceptor
 import ru.skillbranch.sbdelivery.data.remote.interceptors.TokenAuthenticator
 import ru.skillbranch.sbdelivery.data.repository.*
+import ru.skillbranch.sbdelivery.ui.dish.DishViewModel
+import ru.skillbranch.sbdelivery.ui.dish.review.ReviewDialogViewModel
 import ru.skillbranch.sbdelivery.ui.root.RootViewModel
 import ru.skillbranch.sbdelivery.ui.main.MainViewModel
 import ru.skillbranch.sbdelivery.ui.menu.MenuViewModel
@@ -85,9 +84,14 @@ object AppModule {
     fun dataModule() = module {
         single<IProfileRepository> { ProfileRepository(api = get(), prefs = get()) }
 
-        single<IDishesMapper> { DishesMapper() }
+        single<IDishesMapper> { DishesMapper(context = get()) }
         single<IDishRepository> {
             DishesRepository(prefs = get(), api = get(), mapper = get(), dishesDao = get())
+        }
+
+        single<IReviewsMapper> { ReviewsMapper() }
+        single<IReviewsRepository> {
+            ReviewsRepository(prefs = get(), api = get(), mapper = get(), reviewDao = get())
         }
 
         single<ICategoriesMapper> { CategoriesMapper() }
@@ -117,6 +121,9 @@ object AppModule {
         viewModel { MainViewModel(handle = get(), repository = get()) }
         viewModel { SearchViewModel(handle = get(), categoryRepo = get(), dishRepo = get()) }
         viewModel { MenuViewModel(handle = get(), repository = get()) }
+        viewModel { DishViewModel(handle = get(), dishRep = get(),
+            reviewRep = get(), dishesMapper = get(), reviewsMapper = get()) }
+        viewModel { ReviewDialogViewModel(handle = get(), reviewsMapper = get(), reviewRep = get()) }
 //        scope<RootActivity> {
 //            scoped { Session() }
 //            viewModel<RootViewModel>(named("vm3"))

@@ -92,9 +92,9 @@ interface RestService {
     @GET("reviews/{dishId}")
     @Headers("If-Modified-Since: Mon, 1 Jun 2020 08:00:00 GMT")
     fun getReviews(
+        @Path("dishId") dishId: String,
         @Query("offset") offset: Int,
         @Query("limit") limit: Int,
-        @Path("dishId") dishId: String,
         @Header("Authorization") token: String
     ): Single<List<Review>>
 

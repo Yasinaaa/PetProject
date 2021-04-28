@@ -74,6 +74,7 @@
     <string name="customer_reviews">Отзывы</string>
     <string name="add_customer_review">Добавить отзыв</string>
     <string name="empty_customer_reviews">Пока что нет отзывов по данному блюду</string>
+    <string name="rating">%s/5</string>
 
     <!-- review dialog -->
     <string name="leave_a_review">Оставить отзыв</string>

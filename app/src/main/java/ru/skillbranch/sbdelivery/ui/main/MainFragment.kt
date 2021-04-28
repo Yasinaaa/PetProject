@@ -9,7 +9,9 @@ import ru.skillbranch.sbdelivery.databinding.FragmentMainBinding
 import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
+import ru.skillbranch.sbdelivery.ui.base.NavigationCommand
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclersAdapter
+import ru.skillbranch.sbdelivery.ui.search.SearchFragmentDirections
 
 class MainFragment : BaseFragment<MainViewModel>() {
 
@@ -23,7 +25,10 @@ class MainFragment : BaseFragment<MainViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        recyclerViewsAdapter = RecyclersAdapter()
+        recyclerViewsAdapter = RecyclersAdapter{
+            val action = SearchFragmentDirections.dishPage(it.id)
+            viewModel.navigate(NavigationCommand.To(action.actionId, action.arguments))
+        }
     }
 
     override fun onCreateView(
@@ -67,13 +72,8 @@ class MainFragment : BaseFragment<MainViewModel>() {
 
     inner class MainBinding : Binding() {
 
-//        private var isLoading: Boolean by RenderProp(false) {
-//            renderLoading(Loading.SHOW_LOADING)
-//        }
-
         override fun bind(data: IViewModelState) {
             data as MainState
-            //isLoading = data.isLoading
         }
     }
 

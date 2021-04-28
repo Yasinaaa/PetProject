@@ -8,6 +8,7 @@ import ru.skillbranch.sbdelivery.data.local.entity.ReviewEntity
 import ru.skillbranch.sbdelivery.data.local.pref.PrefManager
 import ru.skillbranch.sbdelivery.data.mapper.IReviewsMapper
 import ru.skillbranch.sbdelivery.data.remote.RestService
+import ru.skillbranch.sbdelivery.utils.getDate
 
 interface IReviewsRepository {
     fun getReviews(offset: Int, limit: Int, dishId: String): Single<List<ReviewEntity>>
@@ -26,12 +27,12 @@ class ReviewsRepository(
         limit: Int,
         dishId: String
     ): Single<List<ReviewEntity>> =
-        api.getReviews(offset, limit, dishId,
+        api.getReviews(dishId, offset, limit,
             "${PrefManager.BEARER} ${prefs.accessToken}")
             .doOnSuccess {
                 reviewDao.insert(mapper.mapReviewListToEntityList(it))
             }.map {
-                mapper.mapReviewListToEntityList(it)
+                mapper.mapReviewListToEntityList(it.sortedByDescending { review -> review.date?.getDate() })
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

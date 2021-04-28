@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:scaleType="centerCrop"
+                app:imageUrl="@{viewModel.currentDish.image}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -35,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/promotion"
-                android:visibility="@{viewModel.currentDish.favorite ? View.VISIBLE : View.GONE}"
+                android:visibility="@{viewModel.currentDish.isHasPromotion ? View.VISIBLE : View.GONE}"
                 android:fontFamily="sans-serif"
                 android:background="@drawable/rect_promotion"
                 android:textSize="13.53sp"
@@ -61,7 +62,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="ContentDescription"
-                android:visibility="@{viewModel.currentDish.favorite ? View.VISIBLE : View.GONE}"/>
+                android:visibility="@{viewModel.currentDish.isFavorite ? View.VISIBLE : View.GONE}"/>
 
             <TextView
                 android:id="@+id/tv_title"
@@ -71,6 +72,7 @@
                 android:textColor="@color/colorTextWhite"
                 android:textSize="24sp"
                 tools:text="Пицца Маргарита"
+                android:text="@{viewModel.currentDish.name}"
                 android:fontFamily="sans-serif"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
@@ -84,6 +86,7 @@
                 android:id="@+id/tv_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:text="@{viewModel.currentDish.description}"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
                 android:fontFamily="sans-serif"
                 android:textSize="13sp"
@@ -102,6 +105,7 @@
                 android:textColor="@color/colorTextWhite"
                 android:textSize="24sp"
                 tools:text="780 Р"
+                android:text="@{viewModel.currentDish.oldPrice}"
                 android:fontFamily="sans-serif"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="40dp"
@@ -116,6 +120,7 @@
                 android:textColor="@color/orange"
                 android:textSize="24sp"
                 tools:text="680 Р"
+                android:text="@{viewModel.currentDish.price}"
                 android:fontFamily="sans-serif"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="16dp"
@@ -129,7 +134,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/mb_minus"
                 android:background="@drawable/rect_minus"
-                app:backgroundTint="@color/grey_stroke"
+                app:backgroundTintMode="add"
+                app:backgroundTint="@color/black"
                 android:text="-"
                 android:fontFamily="sans-serif"
                 android:textSize="24sp"
@@ -139,14 +145,18 @@
                 android:minWidth="50dp"
                 app:layout_constraintEnd_toStartOf="@+id/mb_num"
                 app:layout_constraintTop_toTopOf="@+id/tv_price"
-                tools:ignore="HardcodedText"/>
+                tools:ignore="HardcodedText"
+                android:visibility="@{viewModel.dishCount > 1 ? View.VISIBLE : View.GONE}"
+                android:onClick="@{view -> viewModel.onMinusClick(view)}"/>
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:id="@+id/mb_num"
                 android:background="@drawable/rect"
-                android:text="1"
+                android:text="@{viewModel.dishCount.toString()}"
+                tools:text="1"
                 android:fontFamily="sans-serif"
                 android:textSize="24sp"
                 android:textAlignment="center"
@@ -160,6 +170,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/mb_plus"
                 tools:ignore="RtlCompat,HardcodedText"/>
 
+<!--          -->
             <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -174,6 +185,7 @@
                 android:padding="0dp"
                 android:minWidth="50dp"
                 android:layout_marginEnd="16dp"
+                android:onClick="@{view -> viewModel.onPlusClick(view)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_price"
                 tools:ignore="HardcodedText" />
@@ -197,8 +209,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mb_minus"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/mb_num"
+                app:layout_constraintStart_toStartOf="parent"
+                android:onClick="@{view -> viewModel.onAddToCartBtnClick(view)}"/>
 
             <View
                 android:id="@+id/ib_back"
@@ -248,6 +261,7 @@
                 android:textColor="@color/orange"
                 android:textSize="14sp"
                 tools:text="4.8/5"
+                android:text="@{viewModel.currentDish.rating}"
                 android:fontFamily="sans-serif"
                 android:layout_marginStart="10dp"
                 app:layout_constraintStart_toEndOf="@+id/ib_star"
@@ -275,7 +289,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mb_add_to_cart"/>
+                app:layout_constraintTop_toBottomOf="@+id/mb_add_to_cart"
+                android:onClick="@{view -> viewModel.onAddReviewClick(view)}"/>
 
             <TextView
                 android:id="@+id/tv_empty_reviews_title"

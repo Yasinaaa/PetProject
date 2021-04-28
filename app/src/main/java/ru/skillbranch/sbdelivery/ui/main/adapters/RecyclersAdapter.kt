@@ -14,7 +14,9 @@ import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter
 import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter.Companion.MAIN
 
 
-open class RecyclersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+open class RecyclersAdapter(
+    private val click: (CardItem) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var context: Context
 
@@ -43,7 +45,7 @@ open class RecyclersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 holder.bindingItem?.tvTitle?.text = context.getString(list[position].title)
                 val adapter = CardAdapter(type = CardAdapter.MAIN, list[position].cards){
-
+                    click.invoke(it)
                 }
                 holder.bindingItem?.rvItems?.adapter = adapter
             }

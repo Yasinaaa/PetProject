@@ -1,14 +1,19 @@
 package ru.skillbranch.sbdelivery.data.mapper
 
+import android.content.Context
+import ru.skillbranch.sbdelivery.R
+import ru.skillbranch.sbdelivery.data.dto.DishDto
 import ru.skillbranch.sbdelivery.data.local.entity.DishEntity
 import ru.skillbranch.sbdelivery.data.remote.models.response.Dish
 import ru.skillbranch.sbdelivery.data.remote.models.response.Favorite
 import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
+import ru.skillbranch.sbdelivery.utils.removeZero
 
 interface IDishesMapper {
     fun mapDtoToPersist(dishesDto: List<Dish>): List<DishEntity>
     fun mapFavoriteToStringIds(dishesDto: List<Favorite>): List<String>
-
+    fun mapEntitiesToDto(dishes: List<DishEntity>): List<DishDto>
+    fun mapEntityToDto(dish: DishEntity): DishDto
 
     fun mapDishToCardItem(
         dishes: List<DishEntity>,
@@ -16,7 +21,9 @@ interface IDishesMapper {
     ): MutableList<CardItem>
 }
 
-open class DishesMapper : IDishesMapper {
+open class DishesMapper(
+    val context: Context
+) : IDishesMapper {
 
     override fun mapDtoToPersist(dishesDto: List<Dish>): List<DishEntity> =
         dishesDto.map {
@@ -69,6 +76,24 @@ open class DishesMapper : IDishesMapper {
             img = dish.image ?: "",
             isFavorite = false, //TODO
             isPromotion = dish.oldPrice.compareTo(dish.price) > 0
+        )
+
+    override fun mapEntitiesToDto(dishes: List<DishEntity>): List<DishDto> =
+        dishes.map { mapEntityToDto(it) }
+
+    override fun mapEntityToDto(dish: DishEntity): DishDto =
+        DishDto(
+            dish.id ?: "",
+            dish.name ?: "",
+            dish.description ?: "",
+            dish.image ?: "",
+            String.format(context.getString(R.string.rub), dish.oldPrice.removeZero()),
+            String.format(context.getString(R.string.rub), dish.price.removeZero()),
+            String.format(context.getString(R.string.rating), dish.rating.removeZero()),
+            dish.likes ?: 0,
+            dish.commentsCount,
+            dish.oldPrice.compareTo(dish.price) > 0,
+            dish.active ?: false,
         )
 
 }
