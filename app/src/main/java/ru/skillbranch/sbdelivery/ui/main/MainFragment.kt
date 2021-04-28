@@ -3,19 +3,13 @@ package ru.skillbranch.sbdelivery.ui.main
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
-import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.FragmentMainBinding
 import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
-import ru.skillbranch.sbdelivery.ui.base.Loading
-import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclerItem
-import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclerViewsDelegate
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclersAdapter
-import ru.skillbranch.sbdelivery.utils.RenderProp
 
 class MainFragment : BaseFragment<MainViewModel>() {
 

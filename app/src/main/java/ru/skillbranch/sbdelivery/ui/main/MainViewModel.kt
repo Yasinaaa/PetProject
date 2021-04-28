@@ -16,6 +16,7 @@ import ru.skillbranch.sbdelivery.data.repository.IProfileRepository
 import ru.skillbranch.sbdelivery.ui.base.Loading
 import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclerItem
+import java.io.File
 
 class MainViewModel(
     handle: SavedStateHandle,
@@ -63,7 +64,6 @@ class MainViewModel(
                 Log.d("MainViewModel", "it.error=" + it.message)
                 hideLoading()
             })
-
 //        repository.getRecommended(0, 1000)
 //            .observeOn(AndroidSchedulers.mainThread())
 

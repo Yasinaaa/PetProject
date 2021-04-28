@@ -13,7 +13,9 @@ import ru.skillbranch.sbdelivery.data.repository.ICategoryRepository
 import ru.skillbranch.sbdelivery.data.repository.IDishRepository
 import ru.skillbranch.sbdelivery.ui.base.BaseViewModel
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
+import ru.skillbranch.sbdelivery.ui.main.MainState
 import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 class SearchViewModel(
@@ -34,12 +36,9 @@ class SearchViewModel(
         hideLoading()
     }
 
-    fun returnSearchText(searchEvent: Observable<String>,
-                         owner: LifecycleOwner,
-                         onChange: (list: String) -> Unit
-    ){
+    fun searchText(searchEvent: Observable<String>){
         showLoading()
-        searchText.observe(owner, { onChange(it) })
+        var search = ""
         searchEvent
             .delay(2, TimeUnit.SECONDS)
             .debounce(800L, TimeUnit.MILLISECONDS)
@@ -47,29 +46,32 @@ class SearchViewModel(
                 it.isNotBlank()
             }
             .distinctUntilChanged()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                searchText.value = it
-            }
-    }
-
-    fun setSearchEvent(searchText: String) {
-        dishRepo.findDishesByName(searchText)
-            .doOnNext { dishes ->
-                if (dishes.isNotEmpty()){
-                    updateState { it.copy(dishes = dishes) }
-                }
+            .doOnNext {
+                search = it
             }
             .flatMap {
-                categoryRepo.findCategoriesByName(searchText)
+                dishRepo.findDishesByName(it)
+            }
+            .flatMap { dishes ->
+                categoryRepo.findCategoriesByName(search).map {
+                    dishes to it
+                }
+            }
+            .map {
+                it.first to it.second
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { categs ->
-                if (categs.isNotEmpty()){
-                    updateState { it.copy(foundCategories = categs) }
+            .subscribe({ pair ->
+                if (pair.first.isNotEmpty()){
+                    updateState { it.copy(dishes = pair.first) }
+                }
+                if (pair.second.isNotEmpty()){
+                    updateState { it.copy(foundCategories = pair.second) }
                 }
                 hideLoading()
-            }
+            }, {
+                it.printStackTrace()
+            })
     }
 }
 

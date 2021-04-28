@@ -22,7 +22,8 @@ import ru.skillbranch.sbdelivery.utils.toDp
 
 open class CardAdapter(
     val type: Int,
-    var list: MutableList<CardItem> = mutableListOf()
+    var list: MutableList<CardItem> = mutableListOf(),
+    private val addClick: (CardItem) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object{
@@ -82,6 +83,8 @@ open class CardAdapter(
                     lp.topMargin = 10.toDp(context)
                 }
             }
+
+            holder.bindingItem.cv.setOnClickListener { addClick.invoke(list[position]) }
         }
     }
 

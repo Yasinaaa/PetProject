@@ -13,6 +13,9 @@ interface DishesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(list:List<DishEntity>)
 
+    @Query("SELECT * FROM dishes_table WHERE id=:id")
+    fun getDishesById(id: String): Single<DishEntity?>
+
     @Query("SELECT * FROM dishes_table WHERE id IN (:ids)")
     fun findDishesByIds(ids: List<String>): Single<List<DishEntity>>
 

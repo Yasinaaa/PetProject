@@ -63,6 +63,7 @@ open class DishesMapper : IDishesMapper {
 
     private fun createCardItem(dish: DishEntity) =
         CardItem(
+            id = dish.id,
             title = dish.name ?: "",
             price = dish.price,
             img = dish.image ?: "",

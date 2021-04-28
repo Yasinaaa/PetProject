@@ -6,6 +6,7 @@ data class RecyclerItem(
 )
 
 data class CardItem(
+    val id: String,
     val title: String,
     val img: String,
     val price: Float,

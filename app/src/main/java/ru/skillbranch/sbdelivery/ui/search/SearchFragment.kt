@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.navigation.fragment.findNavController
 import com.jakewharton.rxbinding4.appcompat.queryTextChanges
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.data.local.entity.CategoryEntity
 import ru.skillbranch.sbdelivery.databinding.FragmentSearchBinding
 import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter
@@ -13,6 +15,7 @@ import ru.skillbranch.sbdelivery.ui.adapters.TextLineAdapter
 import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
+import ru.skillbranch.sbdelivery.ui.base.NavigationCommand
 import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
 import ru.skillbranch.sbdelivery.utils.RenderProp
 
@@ -36,9 +39,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
         val root: View = binding!!.root
 
         val searchEvent = binding?.searchView?.queryTextChanges()?.skipInitialValue()?.map { it.toString() }
-        viewModel.returnSearchText(searchEvent!!, viewLifecycleOwner){
-            viewModel.setSearchEvent(it)
-        }
+        viewModel.searchText(searchEvent!!)
         return root
     }
 
@@ -66,7 +67,11 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
             if(it.isNotEmpty()) {
                 binding?.rvCache?.visibility = GONE
                 binding?.rvProducts?.visibility = VISIBLE
-                binding?.rvProducts?.adapter = CardAdapter(type = CardAdapter.FAVORITE, it)
+                binding?.rvProducts?.adapter =
+                    CardAdapter(type = CardAdapter.FAVORITE, it) { item ->
+                    val action = SearchFragmentDirections.dishPage(item.id)
+                    viewModel.navigate(NavigationCommand.To(action.actionId, action.arguments))
+                }
             }
         }
 

@@ -69,7 +69,11 @@
         android:id="@+id/nav_search"
         android:name="ru.skillbranch.sbdelivery.ui.search.SearchFragment"
         android:label="@string/search_dishes"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/dish_page"
+            app:destination="@id/nav_dish" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_category"
@@ -81,7 +85,11 @@
         android:id="@+id/nav_dish"
         android:name="ru.skillbranch.sbdelivery.ui.dish.DishFragment"
         android:label="@string/dish"
-        tools:layout="@layout/fragment_dish" />
+        tools:layout="@layout/fragment_dish">
+        <argument
+            android:name="dish_id"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_proceed_to_checkout"

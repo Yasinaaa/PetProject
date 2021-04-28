@@ -26,6 +26,8 @@ class SingleCategoryFragment : Fragment() {
 //            val textView: TextView = view.findViewById(android.R.id.text1)
 //            textView.text = getInt(ARG_OBJECT).toString()
 //        }
-        binding?.rvItems?.adapter = CardAdapter(type= CardAdapter.CATEGORY)
+        binding?.rvItems?.adapter = CardAdapter(type=CardAdapter.CATEGORY){
+
+        }
     }
 }

@@ -28,8 +28,8 @@ interface IDishRepository {
     fun getCachedDishes(): Single<List<DishEntity>>
     fun getBestDishes(): Single<MutableList<CardItem>>
     fun getMostLikedDishes(): Single<MutableList<CardItem>>
-    //
     fun findDishesByName(searchText: String): Observable<MutableList<CardItem>>
+    fun getDishById(id: String): Single<DishEntity?>
 }
 
 class DishesRepository(
@@ -69,6 +69,11 @@ class DishesRepository(
                 prefs.searchHistory.add(searchText)
             }
             .toObservable()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    override fun getDishById(id: String): Single<DishEntity?> =
+        dishesDao.getDishesById(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 

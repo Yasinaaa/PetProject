@@ -25,7 +25,9 @@ class FavoriteFragment : Fragment() {
         binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         val root: View = binding!!.root
 
-        binding?.rvItems?.adapter = CardAdapter(type=FAVORITE)
+        binding?.rvItems?.adapter = CardAdapter(type=FAVORITE){
+
+        }
 
         return root
     }

@@ -42,8 +42,9 @@ open class RecyclersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.bindingItem?.cl?.visibility = VISIBLE
 
                 holder.bindingItem?.tvTitle?.text = context.getString(list[position].title)
-                val adapter = CardAdapter(type = CardAdapter.MAIN)
-                adapter.list = list[position].cards
+                val adapter = CardAdapter(type = CardAdapter.MAIN, list[position].cards){
+
+                }
                 holder.bindingItem?.rvItems?.adapter = adapter
             }
         }
