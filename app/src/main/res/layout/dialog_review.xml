@@ -3,6 +3,7 @@
     <data>
         <import type="android.view.View"/>
         <import type="ru.skillbranch.sbdelivery.R"/>
+        <import type="androidx.core.content.ContextCompat" />
         <variable
             name="viewModel"
             type="ru.skillbranch.sbdelivery.ui.dish.review.ReviewDialogViewModel" />
@@ -44,76 +45,30 @@
             android:minHeight="0dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/ib_star5"
             tools:ignore="ContentDescription,RtlSymmetry"
             android:onClick="@{view -> viewModel.onCloseDialogClick()}"/>
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/ib_star1"
+        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+            android:id="@+id/rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_star"
-            android:tint="@{viewModel.starCount >= 1 ? @color/orange : @color/grey}"
-            android:backgroundTint="@android:color/transparent"
-            android:layout_marginStart="51dp"
+            android:rating="2"
+            android:numStars="5"
+            android:stepSize="1"
+            android:scaleY="0.9"
+            android:scaleX="0.9"
+            android:progressBackgroundTint="@color/darker_grey"
+            app:mrb_progressTint="@color/orange"
+            app:mrb_fillBackgroundStars="true"
             android:paddingTop="17dp"
+            android:paddingEnd="29dp"
+            android:paddingStart="29dp"
+            android:paddingBottom="20dp"
+            android:layout_marginStart="50dp"
+            style="@style/Widget.MaterialRatingBar.RatingBar"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ib_star2"
-            android:onClick="@{view -> viewModel.onStarClick(1)}"/>
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/ib_star2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star"
-            android:backgroundTint="@android:color/transparent"
-            android:tint="@{viewModel.starCount >= 2 ? @color/orange : @color/grey}"
-            android:paddingTop="17dp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
-            app:layout_constraintStart_toEndOf="@+id/ib_star1"
-            app:layout_constraintEnd_toStartOf="@+id/ib_star3"
-            android:onClick="@{view -> viewModel.onStarClick(2)}"/>
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/ib_star3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star"
-            android:backgroundTint="@android:color/transparent"
-            android:tint="@{viewModel.starCount >= 3 ? @color/orange : @color/grey}"
-            android:paddingTop="17dp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
-            app:layout_constraintStart_toEndOf="@+id/ib_star2"
-            app:layout_constraintEnd_toStartOf="@+id/ib_star4"
-            android:onClick="@{view -> viewModel.onStarClick(3)}"/>
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/ib_star4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star"
-            android:backgroundTint="@android:color/transparent"
-            android:paddingTop="17dp"
-            android:tint="@{viewModel.starCount >= 4 ? @color/orange : @color/grey}"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
-            app:layout_constraintStart_toEndOf="@+id/ib_star3"
-            app:layout_constraintEnd_toStartOf="@+id/ib_star5"
-            android:onClick="@{view -> viewModel.onStarClick(4)}"/>
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/ib_star5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star"
-            android:backgroundTint="@android:color/transparent"
-            android:tint="@{viewModel.starCount >= 1 ? R.color.orange : R.color.grey}"
-            android:paddingTop="17dp"
-            android:layout_marginEnd="51dp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
-            app:layout_constraintStart_toEndOf="@+id/ib_star4"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:onClick="@{view -> viewModel.onStarClick(5)}"/>
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            app:layout_constraintEnd_toStartOf="@+id/ib_close"/>
 
         <EditText
             android:id="@+id/et_review"
@@ -136,9 +91,8 @@
             android:textColorHint="@color/grey"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ib_star1"
+            app:layout_constraintTop_toBottomOf="@+id/rating"
             tools:ignore="RtlHardcoded" />
 
         <com.google.android.material.button.MaterialButton
@@ -165,5 +119,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

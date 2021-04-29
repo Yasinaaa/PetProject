@@ -19,6 +19,8 @@
     <color name="colorTextWhite">#FAFAFA</color>
     <color name="yellow">#FEC90D</color>
 
+
+    <color name="darker_grey">#BDBDBD</color>
     <color name="grey">#B3BFCF</color>
     <color name="grey_btn">#24222C</color>
     <color name="grey_text">#A6A6B2</color>

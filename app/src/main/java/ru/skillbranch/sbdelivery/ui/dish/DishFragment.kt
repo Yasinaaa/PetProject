@@ -37,6 +37,9 @@ class DishFragment : BaseFragment<DishViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        showCreateReviewDialog()
+
         viewModel.addReview.observe(viewLifecycleOwner, {
             showCreateReviewDialog()
         })

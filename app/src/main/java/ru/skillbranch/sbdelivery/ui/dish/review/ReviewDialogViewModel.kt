@@ -1,12 +1,15 @@
 package ru.skillbranch.sbdelivery.ui.dish.review
 
 import android.view.View
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.functions.BiFunction
 import io.reactivex.rxjava3.schedulers.Schedulers
+import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.data.dto.DishDto
 import ru.skillbranch.sbdelivery.data.dto.ReviewDto
 import ru.skillbranch.sbdelivery.data.mapper.IDishesMapper
@@ -24,17 +27,9 @@ class ReviewDialogViewModel(
 ): BaseViewModel<ReviewState>(handle, ReviewState()){
 
     val cancelDialog = MutableLiveData<Boolean>()
-    val starCount = MutableLiveData<Int>()
 
     fun sendReview(dishId: String){
 
-    }
-
-    fun onStarClick(star: Int){
-        if (star == starCount.value){
-            starCount.value = star - 1
-        }else
-            starCount.value = star
     }
 
     fun onSendReviewClick(view: View){
