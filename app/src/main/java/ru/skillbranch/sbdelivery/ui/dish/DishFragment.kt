@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.skillbranch.sbdelivery.data.dto.ReviewDto
@@ -14,6 +15,7 @@ import ru.skillbranch.sbdelivery.databinding.FragmentDishBinding
 import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
+import ru.skillbranch.sbdelivery.ui.base.NavigationCommand
 import ru.skillbranch.sbdelivery.ui.dish.review.ReviewDialogFragment
 import ru.skillbranch.sbdelivery.utils.RenderProp
 
@@ -38,22 +40,40 @@ class DishFragment : BaseFragment<DishViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        showCreateReviewDialog()
-
         viewModel.addReview.observe(viewLifecycleOwner, {
-            showCreateReviewDialog()
+            if (it)
+                showCreateReviewDialog()
+            else
+                openLogInPage()
         })
         viewModel.getDish(args.dishId)
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.
+        getLiveData<Boolean>("update")?.observe(
+            viewLifecycleOwner) { if (it) viewModel.getDish(args.dishId) }
     }
 
     override fun setupViews() {
         binding?.tvStrikePrice?.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
         binding?.tvEmptyReviewsTitle?.visibility = VISIBLE
+
+        viewModel.addToCart.observe(viewLifecycleOwner, {
+            openBasketPage(it)
+        })
     }
 
     private fun showCreateReviewDialog(){
-        val reviewDialog = ReviewDialogFragment()
-        reviewDialog.show(parentFragmentManager, "review")
+        val action = DishFragmentDirections.addReviewPage(args.dishId)
+        viewModel.navigate(NavigationCommand.To(action.actionId, action.arguments))
+    }
+
+    private fun openLogInPage(){
+        viewModel.navigate(NavigationCommand.To(DishFragmentDirections.signPage().actionId))
+    }
+
+    private fun openBasketPage(dishCount: Int){
+        val action = DishFragmentDirections.basketPage(args.dishId, dishCount)
+        viewModel.navigate(NavigationCommand.To(action.actionId, action.arguments))
     }
 
     override fun onDestroyView() {

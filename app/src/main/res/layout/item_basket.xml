@@ -12,7 +12,6 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:id="@+id/iv_product"
-            android:background="@drawable/wallpaper"
             app:shapeAppearanceOverlay="@style/roundedImageView"
             android:layout_marginTop="20dp"
             android:layout_marginStart="16dp"

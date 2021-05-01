@@ -8,6 +8,8 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.skillbranch.sbdelivery.R
@@ -18,6 +20,7 @@ class ReviewDialogFragment: DialogFragment() {
 
     private var binding: DialogReviewBinding? = null
     private val viewModel: ReviewDialogViewModel by stateViewModel()
+    private val args: ReviewDialogFragmentArgs by navArgs()
 
     override fun getTheme() = R.style.RoundedCornersDialog
 
@@ -28,6 +31,7 @@ class ReviewDialogFragment: DialogFragment() {
     ): View {
         binding = DialogReviewBinding.inflate(inflater, container, false)
         binding?.viewModel = viewModel
+        viewModel.setDish(args.dishId)
 
         requireActivity().window.setDimAmount(0f)
         requireActivity().window.setBackgroundDrawableResource(android.R.color.transparent)
@@ -38,6 +42,7 @@ class ReviewDialogFragment: DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.cancelDialog.observe(viewLifecycleOwner, {
+            findNavController().previousBackStackEntry?.savedStateHandle?.set("update", true)
             dismiss()
         })
     }

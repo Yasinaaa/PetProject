@@ -13,12 +13,15 @@ import ru.skillbranch.sbdelivery.data.mapper.IDishesMapper
 import ru.skillbranch.sbdelivery.data.mapper.IReviewsMapper
 import ru.skillbranch.sbdelivery.data.mapper.ReviewsMapper
 import ru.skillbranch.sbdelivery.data.repository.IDishRepository
+import ru.skillbranch.sbdelivery.data.repository.IProfileRepository
 import ru.skillbranch.sbdelivery.data.repository.IReviewsRepository
+import ru.skillbranch.sbdelivery.data.repository.ProfileRepository
 import ru.skillbranch.sbdelivery.ui.base.BaseViewModel
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 
 class DishViewModel(
     handle: SavedStateHandle,
+    profRep: IProfileRepository,
     private val dishRep: IDishRepository,
     private val reviewRep: IReviewsRepository,
     private val dishesMapper: IDishesMapper,
@@ -28,13 +31,16 @@ class DishViewModel(
     val currentDish = MutableLiveData<DishDto>()
     val dishCount = MutableLiveData<Int>()
     val addReview = MutableLiveData<Boolean>()
+    val addToCart = MutableLiveData<Int>()
 
     private val minus = MutableLiveData<Boolean>()
     private val plus = MutableLiveData<Boolean>()
-    private val addToCart = MutableLiveData<Boolean>()
 
     init {
         dishCount.value = 1
+        subscribeOnDataSource(profRep.isAuth()) { isAuth, state ->
+            state.copy(isAuth = isAuth)
+        }
     }
 
     fun getDish(id: String){
@@ -73,23 +79,24 @@ class DishViewModel(
             })
     }
 
-    fun onMinusClick(view: View){
-
+    fun onMinusClick(){
+        dishCount.value = dishCount.value?.minus(1)
     }
 
-    fun onPlusClick(view: View){
-
+    fun onPlusClick(){
+        dishCount.value = dishCount.value?.plus(1)
     }
 
-    fun onAddToCartBtnClick(view: View){
-
+    fun onAddToCartBtnClick(){
+        addToCart.value = dishCount.value
     }
 
-    fun onAddReviewClick(view: View){
-        addReview.value = true
+    fun onAddReviewClick(){
+        addReview.value = currentState.isAuth
     }
 }
 
 data class DishState(
+    val isAuth: Boolean = false,
     val comments: MutableList<ReviewDto> = mutableListOf()
 ): IViewModelState

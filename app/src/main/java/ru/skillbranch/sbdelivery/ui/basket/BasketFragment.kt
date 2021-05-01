@@ -6,30 +6,42 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.skillbranch.sbdelivery.databinding.FragmentBasketBinding
+import ru.skillbranch.sbdelivery.ui.base.BaseFragment
+import ru.skillbranch.sbdelivery.ui.base.Binding
+import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 
-class BasketFragment : Fragment() {
+class BasketFragment : BaseFragment<BasketViewModel>() {
 
-    private lateinit var viewModel: BasketViewModel
+    override val viewModel: BasketViewModel by stateViewModel()
     private var binding: FragmentBasketBinding? = null
+    override val baseBinding: BasketBinding by lazy { BasketBinding() }
+    private lateinit var basketAdapter: BasketAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this).get(BasketViewModel::class.java)
-
         binding = FragmentBasketBinding.inflate(inflater, container, false)
-        val root: View = binding!!.root
+        //binding?.rvItems?.adapter = BasketAdapter()
+        return binding!!.root
+    }
 
-        binding?.rvItems?.adapter = BasketAdapter()
+    override fun setupViews() {
 
-        return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    inner class BasketBinding : Binding() {
+
+        override fun bind(data: IViewModelState) {
+            data as BasketState
+        }
     }
 }

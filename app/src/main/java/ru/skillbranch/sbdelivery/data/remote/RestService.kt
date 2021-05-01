@@ -2,7 +2,7 @@ package ru.skillbranch.sbdelivery.data.remote
 
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Call
-import okhttp3.Response
+import okhttp3.ResponseBody
 import retrofit2.http.*
 import ru.skillbranch.sbdelivery.data.remote.models.request.*
 import ru.skillbranch.sbdelivery.data.remote.models.response.*
@@ -19,15 +19,15 @@ interface RestService {
 
     @POST("auth/recovery/email")
     @Headers("Content-Type:application/json")
-    fun recoveryEmail(@Query("email") email: String): Single<Response>
+    fun recoveryEmail(@Query("email") email: String): Single<ResponseBody>
 
     @POST("auth/recovery/code")
     @Headers("Content-Type:application/json")
-    fun recoveryCode(@Body request: RecoveryCodeRequest): Single<Response>
+    fun recoveryCode(@Body request: RecoveryCodeRequest): Single<ResponseBody>
 
     @POST("auth/recovery/password")
     @Headers("Content-Type:application/json")
-    fun recoveryPassword(@Body request: RecoveryPasswordRequest): Single<Response>
+    fun recoveryPassword(@Body request: RecoveryPasswordRequest): Single<ResponseBody>
 
     @POST("auth/refresh")
     @Headers("Content-Type:application/json")
@@ -43,13 +43,13 @@ interface RestService {
         @Query("firstName") firstName: String,
         @Query("lastName") lastName: String,
         @Query("email") email: String,
-        @Header("Authorization") token: String): Single<Response>
+        @Header("Authorization") token: String): Single<ResponseBody>
 
     @PUT("profile/password")
     @Headers("Content-Type:application/json")
     fun changePassword(
         @Body changePasswordRequest: ChangePasswordRequest,
-        @Header("Authorization") token: String): Single<Response>
+        @Header("Authorization") token: String): Single<ResponseBody>
 
     @GET("favorite")
     @Headers("Content-Type:application/json",
@@ -67,7 +67,7 @@ interface RestService {
         @Query("dishId") dishId: Int,
         @Query("favorite") favorite: Boolean,
         @Header("Authorization") token: String
-    ): Single<Response>
+    ): Single<ResponseBody>
 
     @GET("main/recommend")
     @Headers("Content-Type:application/json")
@@ -101,10 +101,11 @@ interface RestService {
     @POST("reviews/{dishId}")
     @Headers("If-Modified-Since: Mon, 1 Jun 2020 08:00:00 GMT")
     fun addReview(
+        @Path("dishId") dishId: String,
+        @Query("text") text: String,
         @Query("rating") rating: Int,
-        @Path("text") text: String,
-        @Header("Authorization") token: String
-    ): Single<Response>
+        @Header("Authorization") token: String,
+    ): Single<ResponseBody>
 
     @GET("cart")
     @Headers("If-Modified-Since: Mon, 1 Jun 2020 08:00:00 GMT")

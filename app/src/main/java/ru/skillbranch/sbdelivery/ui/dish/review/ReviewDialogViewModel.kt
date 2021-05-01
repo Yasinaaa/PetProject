@@ -26,14 +26,27 @@ class ReviewDialogViewModel(
     private val reviewsMapper: IReviewsMapper
 ): BaseViewModel<ReviewState>(handle, ReviewState()){
 
+    private lateinit var dishId: String
     val cancelDialog = MutableLiveData<Boolean>()
+    val rating = MutableLiveData<Float>()
+    val reviewText = MutableLiveData<String>()
 
-    fun sendReview(dishId: String){
-
+    init {
+        rating.value = 5f
     }
 
-    fun onSendReviewClick(view: View){
+    fun setDish(dish: String){
+        dishId = dish
+    }
 
+    fun onSendReviewClick(){
+        reviewRep.addReview(dishId, rating.value!!.toInt(), reviewText.value!!)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                cancelDialog.value = true
+            },{
+                cancelDialog.value = true
+            })
     }
 
     fun onCloseDialogClick(){

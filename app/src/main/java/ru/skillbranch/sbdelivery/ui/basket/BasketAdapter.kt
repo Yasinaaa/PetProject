@@ -16,7 +16,9 @@ import ru.skillbranch.sbdelivery.databinding.ItemNotificationBinding
 import ru.skillbranch.sbdelivery.utils.removeZero
 
 
-open class BasketAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+open class BasketAdapter(
+    var list: MutableList<BasketItem> = mutableListOf()
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class BasketItem(val title: String, val count: Int, val price: Float)
 
@@ -25,14 +27,6 @@ open class BasketAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val bindingItem: ItemBasketBinding? = DataBindingUtil.bind(view)
     }
-
-    private var list: MutableList<BasketItem> = mutableListOf(
-        BasketItem("Сет Королевский", 2, 1280f),
-        BasketItem("Сет Королевский", 2, 1280f),
-        BasketItem("Сет Королевский", 2, 1280f),
-        BasketItem("Сет Королевский", 2, 1280f),
-        BasketItem("Сет Королевский", 2, 1280f),
-    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         context = parent.context

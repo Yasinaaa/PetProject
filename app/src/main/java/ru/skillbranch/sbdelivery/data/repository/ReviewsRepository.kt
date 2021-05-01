@@ -12,7 +12,7 @@ import ru.skillbranch.sbdelivery.utils.getDate
 
 interface IReviewsRepository {
     fun getReviews(offset: Int, limit: Int, dishId: String): Single<List<ReviewEntity>>
-    fun addReview(rating: Int, text: String): Single<ReviewEntity>
+    fun addReview(dishId: String, rating: Int, text: String): Single<ReviewEntity>
 }
 
 class ReviewsRepository(
@@ -37,11 +37,11 @@ class ReviewsRepository(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    override fun addReview(rating: Int, text: String): Single<ReviewEntity> =
-        api.addReview(rating, text,
+    override fun addReview(dishId: String, rating: Int, text: String): Single<ReviewEntity> =
+        api.addReview(dishId, text, rating,
             "${PrefManager.BEARER} ${prefs.accessToken}")
             .doOnSuccess {
-                if (it.isSuccessful)
+                //if (it.)
                     reviewDao.insert(mapper.createReview(rating, text))
             }.map {
                 mapper.createReview(rating, text)

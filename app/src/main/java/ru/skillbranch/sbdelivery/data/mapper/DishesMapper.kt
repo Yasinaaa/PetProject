@@ -8,6 +8,9 @@ import ru.skillbranch.sbdelivery.data.remote.models.response.Dish
 import ru.skillbranch.sbdelivery.data.remote.models.response.Favorite
 import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
 import ru.skillbranch.sbdelivery.utils.removeZero
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 interface IDishesMapper {
     fun mapDtoToPersist(dishesDto: List<Dish>): List<DishEntity>
@@ -81,19 +84,21 @@ open class DishesMapper(
     override fun mapEntitiesToDto(dishes: List<DishEntity>): List<DishDto> =
         dishes.map { mapEntityToDto(it) }
 
-    override fun mapEntityToDto(dish: DishEntity): DishDto =
-        DishDto(
+    override fun mapEntityToDto(dish: DishEntity): DishDto {
+        return DishDto(
             dish.id ?: "",
             dish.name ?: "",
             dish.description ?: "",
             dish.image ?: "",
             String.format(context.getString(R.string.rub), dish.oldPrice.removeZero()),
             String.format(context.getString(R.string.rub), dish.price.removeZero()),
-            String.format(context.getString(R.string.rating), dish.rating.removeZero()),
+            String.format(context.getString(R.string.rating),
+                dish.rating.toBigDecimal().setScale(1, RoundingMode.UP).toString()),
             dish.likes ?: 0,
             dish.commentsCount,
             dish.oldPrice.compareTo(dish.price) > 0,
             dish.active ?: false,
         )
+    }
 
 }

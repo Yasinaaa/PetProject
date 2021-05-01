@@ -23,6 +23,7 @@ import ru.skillbranch.sbdelivery.data.remote.interceptors.ErrorStatusInterceptor
 import ru.skillbranch.sbdelivery.data.remote.interceptors.NetworkStatusInterceptor
 import ru.skillbranch.sbdelivery.data.remote.interceptors.TokenAuthenticator
 import ru.skillbranch.sbdelivery.data.repository.*
+import ru.skillbranch.sbdelivery.ui.basket.BasketViewModel
 import ru.skillbranch.sbdelivery.ui.dish.DishViewModel
 import ru.skillbranch.sbdelivery.ui.dish.review.ReviewDialogViewModel
 import ru.skillbranch.sbdelivery.ui.root.RootViewModel
@@ -98,6 +99,11 @@ object AppModule {
         single<ICategoryRepository> {
             CategoriesRepository(prefs = get(), api = get(), mapper = get(), categoryDao = get())
         }
+
+        single<ICartMapper> { CartMapper() }
+        single<ICartRepository> {
+            CartRepository(prefs = get(), api = get(), mapper = get(), cartDao = get())
+        }
     }
 
     fun databaseModule() = module {
@@ -121,9 +127,15 @@ object AppModule {
         viewModel { MainViewModel(handle = get(), repository = get()) }
         viewModel { SearchViewModel(handle = get(), categoryRepo = get(), dishRepo = get()) }
         viewModel { MenuViewModel(handle = get(), repository = get()) }
-        viewModel { DishViewModel(handle = get(), dishRep = get(),
+        viewModel { DishViewModel(handle = get(),
+            profRep = get(), dishRep = get(),
             reviewRep = get(), dishesMapper = get(), reviewsMapper = get()) }
-        viewModel { ReviewDialogViewModel(handle = get(), reviewsMapper = get(), reviewRep = get()) }
+        viewModel {
+            ReviewDialogViewModel(handle = get(), reviewsMapper = get(), reviewRep = get())
+        }
+        viewModel {
+            BasketViewModel(handle = get(), cartRep = get())
+        }
 //        scope<RootActivity> {
 //            scoped { Session() }
 //            viewModel<RootViewModel>(named("vm3"))

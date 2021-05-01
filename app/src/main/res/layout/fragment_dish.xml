@@ -147,7 +147,7 @@
                 app:layout_constraintTop_toTopOf="@+id/tv_price"
                 tools:ignore="HardcodedText"
                 android:visibility="@{viewModel.dishCount > 1 ? View.VISIBLE : View.GONE}"
-                android:onClick="@{view -> viewModel.onMinusClick(view)}"/>
+                android:onClick="@{view -> viewModel.onMinusClick()}"/>
 
 
             <TextView
@@ -170,7 +170,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/mb_plus"
                 tools:ignore="RtlCompat,HardcodedText"/>
 
-<!--          -->
             <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -185,7 +184,7 @@
                 android:padding="0dp"
                 android:minWidth="50dp"
                 android:layout_marginEnd="16dp"
-                android:onClick="@{view -> viewModel.onPlusClick(view)}"
+                android:onClick="@{view -> viewModel.onPlusClick()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_price"
                 tools:ignore="HardcodedText" />
@@ -211,7 +210,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mb_num"
                 app:layout_constraintStart_toStartOf="parent"
-                android:onClick="@{view -> viewModel.onAddToCartBtnClick(view)}"/>
+                android:onClick="@{view -> viewModel.onAddToCartBtnClick()}"/>
 
             <View
                 android:id="@+id/ib_back"
@@ -290,7 +289,7 @@
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mb_add_to_cart"
-                android:onClick="@{view -> viewModel.onAddReviewClick(view)}"/>
+                android:onClick="@{view -> viewModel.onAddReviewClick()}"/>
 
             <TextView
                 android:id="@+id/tv_empty_reviews_title"
