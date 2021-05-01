@@ -26,6 +26,7 @@ class BasketFragment : BaseFragment<BasketViewModel>() {
     ): View {
         binding = FragmentBasketBinding.inflate(inflater, container, false)
         //binding?.rvItems?.adapter = BasketAdapter()
+        viewModel.getBasket()
         return binding!!.root
     }
 

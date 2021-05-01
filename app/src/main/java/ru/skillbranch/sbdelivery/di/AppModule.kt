@@ -128,7 +128,7 @@ object AppModule {
         viewModel { SearchViewModel(handle = get(), categoryRepo = get(), dishRepo = get()) }
         viewModel { MenuViewModel(handle = get(), repository = get()) }
         viewModel { DishViewModel(handle = get(),
-            profRep = get(), dishRep = get(),
+            profRep = get(), dishRep = get(), basketRep = get(),
             reviewRep = get(), dishesMapper = get(), reviewsMapper = get()) }
         viewModel {
             ReviewDialogViewModel(handle = get(), reviewsMapper = get(), reviewRep = get())

@@ -5,14 +5,14 @@ import androidx.room.ForeignKey.CASCADE
 
 @Entity(tableName = "cart_table")
 data class CartEntity(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int,
-    @ColumnInfo(name = "promocode") val promoCode: String?,
-    @ColumnInfo(name = "promotext") val promoText: String?,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long,
+    @ColumnInfo(name = "promocode") val promoCode: String? = null,
+    @ColumnInfo(name = "promotext") val promoText: String? = null,
     @ColumnInfo(name = "total") val total: Float?,
 ){
-    constructor(promoCode: String?,
-                promoText: String?,
-                total: Float?) : this(0, promoCode, promoText, total)
+    constructor(promoCode: String? = null,
+                promoText: String? = null,
+                total: Float? = null) : this(0, promoCode, promoText, total)
 }
 
 @Entity(tableName = "cart_item_table", foreignKeys = [ForeignKey(
@@ -22,10 +22,11 @@ data class CartEntity(
     onDelete = CASCADE
 )])
 data class CartItemEntity(
-    @PrimaryKey @ColumnInfo(name = "id_cart_item") val id: String,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id_cart_item") var id: Long = 0,
+    @ColumnInfo(name = "remote_id_cart") val remoteId: String? = null,
     @ColumnInfo(name = "amount") val amount: Int?,
     @ColumnInfo(name = "price") val price: Float?,
-    @ColumnInfo(name = "cartId") val cartId: String?
+    @ColumnInfo(name = "cartId") val cartId: Long
 )
 
 data class CartWithItems(
@@ -35,7 +36,7 @@ data class CartWithItems(
 
     @Relation(
         parentColumn = "id",
-        entityColumn = "id_cart_item"
+        entityColumn = "cartId"
     )
     val items: List<CartItemEntity>
 

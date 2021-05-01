@@ -9,7 +9,7 @@ interface BaseDao<T : Any> {
     fun insert(list:List<T>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(obj:T): Long
+    fun insert(obj:T): Single<Long>
 
     @Update
     fun update(list:List<T>)

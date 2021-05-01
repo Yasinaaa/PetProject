@@ -93,7 +93,7 @@ open class DishesMapper(
             String.format(context.getString(R.string.rub), dish.oldPrice.removeZero()),
             String.format(context.getString(R.string.rub), dish.price.removeZero()),
             String.format(context.getString(R.string.rating),
-                dish.rating.toBigDecimal().setScale(1, RoundingMode.UP).toString()),
+                dish.rating.toBigDecimal().setScale(2, RoundingMode.UP).toString()),
             dish.likes ?: 0,
             dish.commentsCount,
             dish.oldPrice.compareTo(dish.price) > 0,

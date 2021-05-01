@@ -114,7 +114,7 @@ interface RestService {
     @PUT("cart")
     @Headers("Content-Type:application/json",
         "If-Modified-Since: Mon, 1 Jun 2020 08:00:00 GMT")
-    fun updateCart(@Query("promocode") promoCode: String,
+    fun updateCart(@Query("promocode") promoCode: String?,
                    @Query("items") items: List<CartItemRequest>,
                    @Header("Authorization") token: String): Single<Cart>
 
