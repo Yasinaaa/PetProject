@@ -1,7 +1,11 @@
 package ru.skillbranch.sbdelivery.data.repository
 
+import android.util.Log
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.annotations.NonNull
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Maybe
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.skillbranch.sbdelivery.data.dto.DishDto
@@ -19,7 +23,8 @@ interface ICartRepository {
 //    fun getCart(): Single<CartWithItems>
 //    fun updateCart(promoCode: String?, items: List<CartItemEntity>): Single<CartWithItems>
     fun getLocalCart(): Single<CartWithItems>
-    fun saveLocally(dish: DishEntity, count: Int): Single<CartWithItems>
+    fun saveLocally(dish: DishEntity, count: Int): Observable<Long>
+    fun getCurrentCount(dish: DishEntity): Single<Int>
 }
 
 class CartRepository(
@@ -67,18 +72,26 @@ class CartRepository(
 //            .observeOn(AndroidSchedulers.mainThread())
 //    }
 
-    override fun saveLocally(dish: DishEntity, count: Int): Single<CartWithItems> {
-        return cartDao.insert(CartEntity())
-            .flatMap {
-                //todo dishId exist add +1 count
-                cartDao.insertCartItems(mapper.dishDtoPlusCartToCartItemsEntity(
-                    cartId = 1,
-                    dish = dish,
-                    count = count
-                ))
-            }
-            .map{
-                mapper.mapCartToEntity(dish, count, 1, it)
+    override fun saveLocally(dish: DishEntity, count: Int): Observable<Long> {
+       return cartDao.insert(CartEntity())
+           .toObservable()
+           .flatMap {
+               cartDao.insertCartItems(
+                   mapper.dishDtoToCartItemEntity(
+                       cartId = 1,
+                       dish = dish,
+                       count = count
+                   )).toObservable()
+           }
+           .subscribeOn(Schedulers.io())
+           .observeOn(AndroidSchedulers.mainThread())
+    }
+
+
+    override fun getCurrentCount(dish: DishEntity): Single<Int> {
+        return cartDao.getCartItemCountById(dishId = dish.id)
+            .map {
+                it.amount ?: 0
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

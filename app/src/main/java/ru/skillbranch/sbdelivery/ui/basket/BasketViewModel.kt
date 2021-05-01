@@ -12,20 +12,22 @@ class BasketViewModel(
     private val cartRep: ICartRepository
 ): BaseViewModel<BasketState>(handle, BasketState()) {
 
+    //todo empty state, loading, finish, has sale
     fun getBasket(){
         cartRep.getLocalCart()
             .observeOn(AndroidSchedulers.mainThread())
+            .doFinally {
+                hideLoading()
+            }
             .subscribe({
                 if (it == null)
                     Log.d("MainViewModel", "it.isEmpty()")
                 else {
-                    //Log.d("MainViewModel", "it.size=" + it.size)
                     //dishes.value = it
                     hideLoading()
                 }
             }, {
                 Log.d("MainViewModel", "it.error=" + it.message)
-                hideLoading()
             })
     }
 

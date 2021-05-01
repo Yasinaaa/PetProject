@@ -87,17 +87,24 @@ class DishViewModel(
     }
 
     fun onAddToCartBtnClick(){
-        //addToCart.value = dishCount.value
         if (currentDishEntity != null) {
-            basketRep.saveLocally(currentDishEntity!!, dishCount.value!!)
+            basketRep.getCurrentCount(currentDishEntity!!)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    addToCart.value = dishCount.value
-                    hideLoading()
+                    insertOrUpdate(it + dishCount.value!!)
                 }, {
-                    Log.d("MainViewModel", it.message!!)
+                    insertOrUpdate(dishCount.value!!)
                 })
         }
+    }
+
+    private fun insertOrUpdate(count: Int){
+        basketRep.saveLocally(currentDishEntity!!, count)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{
+                addToCart.value = dishCount.value
+                hideLoading()
+            }
     }
 
     fun onAddReviewClick(){

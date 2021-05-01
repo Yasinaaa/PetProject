@@ -8,10 +8,10 @@ import ru.skillbranch.sbdelivery.data.remote.models.response.Cart
 interface ICartMapper {
     fun mapCartToEntity(cart: Cart): CartEntity
     fun mapItemEntityToItemRequestList(items: List<CartItemEntity>): List<CartItemRequest>
-    fun dishDtoPlusCartToCartItemsEntity(cartId: Long, dish: DishEntity, count: Int): CartItemEntity
+    fun dishDtoToCartItemEntity(cartId: Long, dish: DishEntity, count: Int): CartItemEntity
     fun mapCartToEntity(
         dish: DishEntity, count: Int,
-        cartEntityId: Long, cartItemId: Long
+        cartEntityId: Long
     ): CartWithItems
 }
 
@@ -42,20 +42,21 @@ open class CartMapper : ICartMapper {
 
     override fun mapCartToEntity(
         dish: DishEntity, count: Int,
-        cartEntityId: Long, cartItemId: Long
+        cartEntityId: Long
     ): CartWithItems = CartWithItems(
         cart = CartEntity(
             id = cartEntityId,
             total = dish.price * count
         ),
         items = listOf(
-            CartItemEntity(
-                id = cartItemId,
-                amount = count,
-                price = dish.price,
-                cartId = cartEntityId
-            )
+
         )
+    //CartItemEntity(
+        //                dishId = dish.id,
+        //                amount = count,
+        //                price = dish.price,
+        //                cartId = cartEntityId
+        //            )
     )
 
     override fun mapItemEntityToItemRequestList(
@@ -68,11 +69,12 @@ open class CartMapper : ICartMapper {
             )
         }
 
-    override fun dishDtoPlusCartToCartItemsEntity(
+    override fun dishDtoToCartItemEntity(
         cartId: Long,
         dish: DishEntity,
         count: Int
     ): CartItemEntity = CartItemEntity(
+            dishId = dish.id,
             amount = count,
             price = dish.price,
             cartId = cartId

@@ -22,7 +22,7 @@ data class CartEntity(
     onDelete = CASCADE
 )])
 data class CartItemEntity(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id_cart_item") var id: Long = 0,
+    @PrimaryKey @ColumnInfo(name = "dish_id") val dishId: String,
     @ColumnInfo(name = "remote_id_cart") val remoteId: String? = null,
     @ColumnInfo(name = "amount") val amount: Int?,
     @ColumnInfo(name = "price") val price: Float?,
@@ -38,6 +38,18 @@ data class CartWithItems(
         parentColumn = "id",
         entityColumn = "cartId"
     )
-    val items: List<CartItemEntity>
+    val items: List<CartWithImage>
 
+)
+
+@DatabaseView("SELECT cart_item_table.amount, cart_item_table.price, cart_item_table.cartId, " +
+        "cart_item_table.dish_id, dishes_table.image, dishes_table.name FROM cart_item_table " +
+        "LEFT JOIN dishes_table ON cart_item_table.dish_id=dishes_table.id")
+data class CartWithImage(
+    @ColumnInfo(name = "dish_id") val dishId: String,
+    @ColumnInfo(name = "amount") val amount: Int?,
+    @ColumnInfo(name = "price") val price: Float?,
+    @ColumnInfo(name = "cartId") val cartId: Long,
+    @ColumnInfo(name = "image") val image: String,
+    @ColumnInfo(name = "name") val name: String
 )
