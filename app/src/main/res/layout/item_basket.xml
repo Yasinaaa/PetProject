@@ -13,6 +13,8 @@
             android:layout_height="80dp"
             android:id="@+id/iv_product"
             app:shapeAppearanceOverlay="@style/roundedImageView"
+            android:scaleType="centerCrop"
+            tools:srcCompat="@drawable/wallpaper"
             android:layout_marginTop="20dp"
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,11 +36,13 @@
             app:layout_constraintStart_toEndOf="@+id/iv_product"/>
 
         <com.google.android.material.button.MaterialButton
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/mb_minus"
             android:background="@drawable/rect_minus"
-            app:backgroundTint="@color/grey_stroke"
+            app:backgroundTintMode="add"
+            app:backgroundTint="@color/black"
             android:text="-"
             android:fontFamily="sans-serif"
             android:textSize="24sp"
@@ -49,12 +53,13 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:minHeight="34dp"
-            android:minWidth="30dp"
+            android:minWidth="33dp"
             android:layout_marginTop="25dp"
-            android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@+id/iv_product"
+            android:layout_marginBottom="10dp"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_product"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_num"
+            app:layout_constraintStart_toEndOf="@+id/iv_product"
+            android:layout_marginStart="18dp"
             tools:ignore="HardcodedText"/>
 
         <TextView
@@ -73,9 +78,10 @@
             android:minHeight="34dp"
             android:minWidth="30dp"
             android:textColor="@color/orange"
-            app:layout_constraintStart_toEndOf="@+id/mb_minus"
-            app:layout_constraintTop_toTopOf="@+id/mb_minus"
-            app:layout_constraintBottom_toBottomOf="@+id/mb_minus"
+            android:layout_marginStart="33dp"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            app:layout_constraintTop_toTopOf="@+id/mb_plus"
+            app:layout_constraintBottom_toBottomOf="@+id/mb_plus"
             tools:ignore="RtlCompat,HardcodedText"/>
 
         <com.google.android.material.button.MaterialButton
@@ -97,6 +103,7 @@
             android:minHeight="34dp"
             android:minWidth="30dp"
             android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintStart_toEndOf="@+id/tv_num"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
             app:layout_constraintBottom_toBottomOf="@+id/iv_product"

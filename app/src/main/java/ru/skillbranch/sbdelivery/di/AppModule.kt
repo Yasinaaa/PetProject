@@ -134,7 +134,7 @@ object AppModule {
             ReviewDialogViewModel(handle = get(), reviewsMapper = get(), reviewRep = get())
         }
         viewModel {
-            BasketViewModel(handle = get(), cartRep = get())
+            BasketViewModel(handle = get(), cartRep = get(), mapper = get())
         }
 //        scope<RootActivity> {
 //            scoped { Session() }

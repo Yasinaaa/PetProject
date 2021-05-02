@@ -1,5 +1,6 @@
 package ru.skillbranch.sbdelivery.data.mapper
 
+import ru.skillbranch.sbdelivery.data.dto.CartWithImageDto
 import ru.skillbranch.sbdelivery.data.dto.DishDto
 import ru.skillbranch.sbdelivery.data.local.entity.*
 import ru.skillbranch.sbdelivery.data.remote.models.request.CartItemRequest
@@ -13,6 +14,7 @@ interface ICartMapper {
         dish: DishEntity, count: Int,
         cartEntityId: Long
     ): CartWithItems
+    fun mapEntityToDtoList(items: List<CartWithImage>): MutableList<CartWithImageDto>
 }
 
 open class CartMapper : ICartMapper {
@@ -79,4 +81,17 @@ open class CartMapper : ICartMapper {
             price = dish.price,
             cartId = cartId
         )
+
+    override fun mapEntityToDtoList(items: List<CartWithImage>): MutableList<CartWithImageDto> =
+        items.map {
+            CartWithImageDto(
+                dishId = it.dishId,
+                amount = it.amount,
+                price = it.price,
+                cartId = it.cartId,
+                image = it.image,
+                name = it.name
+            )
+        }.toMutableList()
+
 }

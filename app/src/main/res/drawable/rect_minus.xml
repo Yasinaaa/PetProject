@@ -1,50 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <shape android:shape="rectangle" >
-            <solid android:color="@android:color/black" />
-        </shape>
-    </item>
-    <item>
-        <shape android:shape="rectangle" >
-            <padding
-                android:top="2dp" />
-            <solid android:color="@color/grey_stroke" />
-            <corners
-                android:topLeftRadius="6dp"
-                android:bottomLeftRadius="6dp"/>
-        </shape>
-    </item>
-    <item>
-        <shape android:shape="rectangle" >
-            <padding
-                android:left="2dp" />
-            <solid android:color="@color/grey_stroke" />
-            <corners
-                android:topLeftRadius="6dp"
-                android:bottomLeftRadius="6dp"/>
-        </shape>
-    </item>
-    <item>
-        <shape android:shape="rectangle" >
-            <padding android:bottom="2dp" />
-            <solid android:color="@color/grey_stroke" />
-            <corners
-                android:topLeftRadius="6dp"
-                android:bottomLeftRadius="6dp"/>
-        </shape>
-    </item>
-    <item>
-        <shape android:shape="rectangle" >
-            <solid android:color="@android:color/black" />
-        </shape>
-    </item>
-</layer-list>
-<!--<shape xmlns:android="http://schemas.android.com/apk/res/android">-->
-<!--    <stroke android:width="2dp" android:color="@color/grey_stroke" />-->
-<!--    <solid android:color="@android:color/transparent" />-->
-<!--    <corners-->
-<!--        android:topLeftRadius="6dp"-->
-<!--        android:bottomLeftRadius="6dp"/>-->
-<!--</shape>-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke android:width="2dp" android:color="@color/grey_stroke" />
+    <solid android:color="@android:color/transparent" />
+    <corners
+        android:topLeftRadius="6dp"
+        android:bottomLeftRadius="6dp"/>
+</shape>
