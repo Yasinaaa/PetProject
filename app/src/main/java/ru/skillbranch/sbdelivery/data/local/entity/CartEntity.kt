@@ -26,7 +26,7 @@ data class CartItemEntity(
     @ColumnInfo(name = "remote_id_cart") val remoteId: String? = null,
     @ColumnInfo(name = "amount") val amount: Int?,
     @ColumnInfo(name = "price") val price: Float?,
-    @ColumnInfo(name = "cartId") val cartId: Long
+    @ColumnInfo(name = "cartId", index = true) val cartId: Long
 )
 
 data class CartWithItems(

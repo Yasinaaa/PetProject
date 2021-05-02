@@ -10,7 +10,7 @@ import ru.skillbranch.sbdelivery.databinding.FragmentBasketBinding
 import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
-import ru.skillbranch.sbdelivery.ui.base.Loading
+import ru.skillbranch.sbdelivery.utils.RenderProp
 
 class BasketFragment : BaseFragment<BasketViewModel>() {
 
@@ -25,13 +25,20 @@ class BasketFragment : BaseFragment<BasketViewModel>() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentBasketBinding.inflate(inflater, container, false)
-        viewModel.getBasket()
         return binding!!.root
     }
 
     override fun setupViews() {
+        viewModel.getBasket()
+
         viewModel.items.observe(viewLifecycleOwner, {
-            basketAdapter = BasketAdapter(it)
+            basketAdapter = BasketAdapter(it){ item, numChanger, size ->
+                if (item != null && numChanger != null)
+                    viewModel.updateItem(item, numChanger)
+                else if(size == 0){
+                    baseBinding.isEmptyCart = true
+                }
+            }
             binding?.rvItems?.adapter = basketAdapter
         })
 
@@ -40,22 +47,30 @@ class BasketFragment : BaseFragment<BasketViewModel>() {
         })
     }
 
-    override fun renderLoading(loadingState: Loading) {
-        super.renderLoading(loadingState)
-        when(loadingState){
-            Loading.SHOW_LOADING, Loading.SHOW_BLOCKING_LOADING -> {
-                binding?.etPromocode?.visibility = GONE
-                binding?.mbApply?.visibility = GONE
-                binding?.tvDiscount?.visibility = GONE
-                binding?.tvTotal?.visibility = GONE
-                binding?.tvTotalPrice?.visibility = GONE
-                binding?.mbProceedToCheckout?.visibility = GONE
-            }
-            Loading.HIDE_LOADING -> {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+//        onBackPressedDispatcher.addCallback(
+//            this,
+//            object : OnBackPressedCallback(true) {
+//                override fun handleOnBackPressed() {
+//                    onBackPressed()
+//                }
+//            }
+//        )
 
-            }
-        }
     }
+
+//    override fun renderLoading(loadingState: Loading) {
+//        super.renderLoading(loadingState)
+//        when(loadingState){
+//            Loading.SHOW_LOADING, Loading.SHOW_BLOCKING_LOADING -> {
+//
+//            }
+//            Loading.HIDE_LOADING -> {
+//
+//            }
+//        }
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -64,9 +79,17 @@ class BasketFragment : BaseFragment<BasketViewModel>() {
 
     inner class BasketBinding : Binding() {
 
+        var isEmptyCart: Boolean by RenderProp(false){
+            if(it){
+                binding?.tvEmptyBasket?.visibility = VISIBLE
+            }else{
+                binding?.tvEmptyBasket?.visibility = GONE
+            }
+        }
+
         override fun bind(data: IViewModelState) {
             data as BasketState
-
+            isEmptyCart = data.isEmptyCart
         }
     }
 }

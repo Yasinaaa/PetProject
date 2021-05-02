@@ -7,28 +7,23 @@ import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
-import androidx.core.view.marginStart
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
-import coil.size.Scale
 import com.google.android.material.button.MaterialButton
+import com.jakewharton.rxbinding4.widget.textChanges
+import io.reactivex.rxjava3.core.Observable
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.data.dto.CartWithImageDto
-import ru.skillbranch.sbdelivery.data.local.entity.CartWithImage
 import ru.skillbranch.sbdelivery.databinding.ItemBasketBinding
-import ru.skillbranch.sbdelivery.databinding.ItemNotificationBinding
 import ru.skillbranch.sbdelivery.utils.removeZero
-import ru.skillbranch.sbdelivery.utils.toDp
 
 
 open class BasketAdapter(
-    var list: MutableList<CartWithImageDto> = mutableListOf()
+    var list: MutableList<CartWithImageDto> = mutableListOf(),
+    private val numChange: (CartWithImageDto?, Observable<Int>?, Int?) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var context: Context
@@ -59,21 +54,23 @@ open class BasketAdapter(
 
             val requestBuild = ImageRequest.Builder(context)
                 .data(list[position].image)
-                //.scale(Scale.)
                 .target { drawable -> holder.bindingItem?.ivProduct?.setImageDrawable(drawable) }
                 .build()
             imageLoader.enqueue(requestBuild)
 
-            setNumStartMargin(list[position], holder.bindingItem?.tvNum, holder.bindingItem?.mbMinus)
+            val observable = holder.bindingItem?.tvNum?.textChanges()?.skipInitialValue()?.
+            map {
+                it.toString().toInt()
+            }
+            numChange.invoke(list[position], observable, list.size)
 
             holder.bindingItem?.mbMinus?.setOnClickListener {
-                changeNum(list[position], -1, holder.bindingItem.tvNum,
-                    holder.bindingItem.mbMinus)
+                if(list[position].amount!! > 0)
+                    changeNum(list[position], -1, holder.bindingItem.tvNum)
             }
 
             holder.bindingItem?.mbPlus?.setOnClickListener {
-                changeNum(list[position], 1, holder.bindingItem.tvNum,
-                    holder.bindingItem.mbMinus)
+                changeNum(list[position], 1, holder.bindingItem.tvNum)
             }
 
             if (position == list.lastIndex){
@@ -86,25 +83,17 @@ open class BasketAdapter(
         return list.size
     }
 
-    private fun changeNum(item: CartWithImageDto, count: Int, tv: TextView, mbMinus: MaterialButton){
+    @SuppressLint("NotifyDataSetChanged")
+    private fun changeNum(
+        item: CartWithImageDto, count: Int, tv: TextView
+    ){
         item.amount = item.amount!! + count
         tv.text = item.amount.toString()
-        setNumStartMargin(item, tv, mbMinus)
-    }
 
-    private fun setNumStartMargin(item: CartWithImageDto, tv: TextView?, mbMinus: MaterialButton?){
-        if (item.amount!! <= 1){
-            mbMinus?.visibility = GONE
-            changeMarginStart(tv, 0.toDp(context))
-        }else{
-            mbMinus?.visibility = VISIBLE
-            changeMarginStart(tv, 33.toDp(context))
+        if (item.amount == 0) {
+            list.remove(item)
+            numChange.invoke(null, null, list.size)
+            notifyDataSetChanged()
         }
-    }
-
-    private fun changeMarginStart(tv: TextView?, num: Int){
-        val layoutParams = tv?.layoutParams as ConstraintLayout.LayoutParams
-        layoutParams.marginStart = num
-        tv.layoutParams = layoutParams
     }
 }

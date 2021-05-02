@@ -50,16 +50,19 @@ class DishFragment : BaseFragment<DishViewModel>() {
 
         findNavController().currentBackStackEntry?.savedStateHandle?.
         getLiveData<Boolean>("update")?.observe(
-            viewLifecycleOwner) { if (it) viewModel.getDish(args.dishId) }
+            viewLifecycleOwner) {
+            if (it)
+                viewModel.getDish(args.dishId)
+        }
     }
 
     override fun setupViews() {
         binding?.tvStrikePrice?.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
         binding?.tvEmptyReviewsTitle?.visibility = VISIBLE
 
-        viewModel.addToCart.observe(viewLifecycleOwner, {
-            openBasketPage(it)
-        })
+//        viewModel.addToCart2.observe(viewLifecycleOwner, {
+//            openBasketPage(it)
+//        })
     }
 
     private fun showCreateReviewDialog(){

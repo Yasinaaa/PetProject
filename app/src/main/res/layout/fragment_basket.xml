@@ -25,6 +25,8 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
+        android:visibility="gone"
+        tools:visibility="visible"
         android:id="@+id/et_promocode"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -43,6 +45,8 @@
         tools:ignore="Autofill,MissingConstraints,TextFields" />
 
     <com.google.android.material.button.MaterialButton
+        android:visibility="gone"
+        tools:visibility="visible"
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -68,6 +72,8 @@
         app:layout_constraintTop_toBottomOf="@+id/rv_items"/>
 
     <TextView
+        android:visibility="gone"
+        tools:visibility="visible"
         android:id="@+id/tv_discount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -85,6 +91,8 @@
         app:layout_constraintTop_toBottomOf="@+id/et_promocode"/>
 
     <TextView
+        android:visibility="gone"
+        tools:visibility="visible"
         android:id="@+id/tv_total"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -102,6 +110,8 @@
         app:layout_constraintBottom_toTopOf="@+id/mb_proceed_to_checkout"/>
 
     <TextView
+        android:visibility="gone"
+        tools:visibility="visible"
         android:id="@+id/tv_total_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -119,6 +129,8 @@
         app:layout_constraintBottom_toTopOf="@+id/mb_proceed_to_checkout"/>
 
     <com.google.android.material.button.MaterialButton
+        android:visibility="gone"
+        tools:visibility="visible"
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -140,5 +152,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_empty_basket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:textSize="20sp"
+        android:layout_weight="3"
+        android:textColor="@android:color/white"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/empty_basket"
+        android:fontFamily="sans-serif"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,6 +14,7 @@ import ru.skillbranch.sbdelivery.data.mapper.IReviewsMapper
 import ru.skillbranch.sbdelivery.data.repository.*
 import ru.skillbranch.sbdelivery.ui.base.BaseViewModel
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
+import ru.skillbranch.sbdelivery.ui.base.NavigationCommand
 
 class DishViewModel(
     handle: SavedStateHandle,
@@ -33,6 +34,7 @@ class DishViewModel(
     val dishCount = MutableLiveData<Int>()
     val addReview = MutableLiveData<Boolean>()
     val addToCart = MutableLiveData<Int>()
+    val addToCart2 = MutableLiveData<Int>()
 
     init {
         dishCount.value = 1
@@ -102,7 +104,8 @@ class DishViewModel(
         basketRep.saveLocally(currentDishEntity!!, count)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe{
-                addToCart.value = dishCount.value
+                val action = DishFragmentDirections.basketPage(currentDishEntity?.id!!, count)
+                navigate(NavigationCommand.To(action.actionId, action.arguments))
                 hideLoading()
             }
     }

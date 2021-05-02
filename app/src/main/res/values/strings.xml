@@ -86,6 +86,7 @@
     <string name="total">Итого</string>
     <string name="to_proceed_to_checkout">Оформить заказ</string>
     <string name="discount">Скидка %s рублей!</string>
+    <string name="empty_basket">Корзина пуста.\nДобавьте блюда в корзину,\nчтобы увидеть их здесь</string>
     
     <!-- order details -->
     <string name="proceed_to_checkout">Оформление заказа</string>

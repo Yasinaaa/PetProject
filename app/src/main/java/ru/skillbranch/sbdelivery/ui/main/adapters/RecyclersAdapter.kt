@@ -44,7 +44,7 @@ open class RecyclersAdapter(
                 holder.bindingItem?.cl?.visibility = VISIBLE
 
                 holder.bindingItem?.tvTitle?.text = context.getString(list[position].title)
-                val adapter = CardAdapter(type = CardAdapter.MAIN, list[position].cards){
+                val adapter = CardAdapter(type = MAIN, list[position].cards){
                     click.invoke(it)
                 }
                 holder.bindingItem?.rvItems?.adapter = adapter

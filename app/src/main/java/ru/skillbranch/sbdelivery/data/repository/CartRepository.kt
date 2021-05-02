@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
+import ru.skillbranch.sbdelivery.data.dto.CartWithImageDto
 import ru.skillbranch.sbdelivery.data.dto.DishDto
 import ru.skillbranch.sbdelivery.data.local.dao.CartDao
 import ru.skillbranch.sbdelivery.data.local.entity.CartEntity
@@ -22,9 +23,11 @@ import ru.skillbranch.sbdelivery.data.remote.models.response.*
 interface ICartRepository {
 //    fun getCart(): Single<CartWithItems>
 //    fun updateCart(promoCode: String?, items: List<CartItemEntity>): Single<CartWithItems>
-    fun getLocalCart(): Single<CartWithItems>
+    fun getLocalCart(): Observable<CartWithItems?>
     fun saveLocally(dish: DishEntity, count: Int): Observable<Long>
     fun getCurrentCount(dish: DishEntity): Single<Int>
+    fun updateCartItem(dish: CartWithImageDto, count: Int): Observable<Long>
+    fun removeCartItem(dish: CartWithImageDto): Observable<Long>
 }
 
 class CartRepository(
@@ -34,10 +37,15 @@ class CartRepository(
     private val cartDao: CartDao
 ): ICartRepository {
 
-    override fun getLocalCart(): Single<CartWithItems> {
+    override fun getLocalCart(): Observable<CartWithItems?> {
         return cartDao.getCart()
-            .subscribeOn(Schedulers.io())
+            .toObservable()
             .observeOn(AndroidSchedulers.mainThread())
+            .onErrorReturn {
+                null
+            }
+            .subscribeOn(Schedulers.io())
+
 
     }
 
@@ -72,8 +80,8 @@ class CartRepository(
 //            .observeOn(AndroidSchedulers.mainThread())
 //    }
 
-    override fun saveLocally(dish: DishEntity, count: Int): Observable<Long> {
-       return cartDao.insert(CartEntity())
+    override fun saveLocally(dish: DishEntity, count: Int): Observable<Long> =
+       cartDao.insertCart(CartEntity())
            .toObservable()
            .flatMap {
                cartDao.insertCartItems(
@@ -85,13 +93,48 @@ class CartRepository(
            }
            .subscribeOn(Schedulers.io())
            .observeOn(AndroidSchedulers.mainThread())
-    }
 
 
-    override fun getCurrentCount(dish: DishEntity): Single<Int> {
-        return cartDao.getCartItemCountById(dishId = dish.id)
+    override fun getCurrentCount(dish: DishEntity): Single<Int> =
+        cartDao.getCartItemCountById(dishId = dish.id)
             .map {
                 it.amount ?: 0
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    override fun updateCartItem(dish: CartWithImageDto, count: Int): Observable<Long> {
+        val car = CartItemEntity(
+            dishId = dish.dishId,
+            remoteId = null,
+            amount = count,
+            price = dish.price,
+            cartId = dish.cartId
+        )
+        return cartDao.updateCartItem(dish.dishId, count)
+            .toObservable()
+            .map {
+                it.toLong()
+            }
+            .onErrorReturn {
+                1
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun removeCartItem(dish: CartWithImageDto): Observable<Long> {
+        val car = CartItemEntity(
+            dishId = dish.dishId,
+            remoteId = null,
+            amount = dish.amount,
+            price = dish.price,
+            cartId = dish.cartId
+        )
+        return cartDao.deleteItem(car)
+            .toObservable()
+            .map {
+                it.toLong()
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
