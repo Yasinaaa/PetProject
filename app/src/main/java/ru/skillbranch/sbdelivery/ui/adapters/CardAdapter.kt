@@ -2,7 +2,6 @@ package ru.skillbranch.sbdelivery.ui.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -12,11 +11,10 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ItemProductCardBinding
 import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
-import ru.skillbranch.sbdelivery.utils.removeZero
+import ru.skillbranch.sbdelivery.utils.removeZeroAndReplaceComma
 import ru.skillbranch.sbdelivery.utils.toDp
 
 
@@ -52,7 +50,7 @@ open class CardAdapter(
 
             holder.bindingItem?.tvTitle?.text = list[position].title
             holder.bindingItem?.tvPrice?.text = String.format(context.getString(R.string.rub),
-                list[position].price.removeZero())
+                list[position].price.removeZeroAndReplaceComma())
 
             Glide.with(context)
                 .load(list[position].img)

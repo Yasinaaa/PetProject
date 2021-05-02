@@ -39,13 +39,6 @@ class DishFragment : BaseFragment<DishViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.addReview.observe(viewLifecycleOwner, {
-            if (it)
-                showCreateReviewDialog()
-            else
-                openLogInPage()
-        })
         viewModel.getDish(args.dishId)
 
         findNavController().currentBackStackEntry?.savedStateHandle?.
@@ -59,24 +52,6 @@ class DishFragment : BaseFragment<DishViewModel>() {
     override fun setupViews() {
         binding?.tvStrikePrice?.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
         binding?.tvEmptyReviewsTitle?.visibility = VISIBLE
-
-//        viewModel.addToCart2.observe(viewLifecycleOwner, {
-//            openBasketPage(it)
-//        })
-    }
-
-    private fun showCreateReviewDialog(){
-        val action = DishFragmentDirections.addReviewPage(args.dishId)
-        viewModel.navigate(NavigationCommand.To(action.actionId, action.arguments))
-    }
-
-    private fun openLogInPage(){
-        viewModel.navigate(NavigationCommand.To(DishFragmentDirections.signPage().actionId))
-    }
-
-    private fun openBasketPage(dishCount: Int){
-        val action = DishFragmentDirections.basketPage(args.dishId, dishCount)
-        viewModel.navigate(NavigationCommand.To(action.actionId, action.arguments))
     }
 
     override fun onDestroyView() {

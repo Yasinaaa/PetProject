@@ -7,10 +7,8 @@ import ru.skillbranch.sbdelivery.data.local.entity.DishEntity
 import ru.skillbranch.sbdelivery.data.remote.models.response.Dish
 import ru.skillbranch.sbdelivery.data.remote.models.response.Favorite
 import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
-import ru.skillbranch.sbdelivery.utils.removeZero
-import java.math.BigDecimal
+import ru.skillbranch.sbdelivery.utils.removeZeroAndReplaceComma
 import java.math.RoundingMode
-import java.text.DecimalFormat
 
 interface IDishesMapper {
     fun mapDtoToPersist(dishesDto: List<Dish>): List<DishEntity>
@@ -90,8 +88,8 @@ open class DishesMapper(
             dish.name ?: "",
             dish.description ?: "",
             dish.image ?: "",
-            String.format(context.getString(R.string.rub), dish.oldPrice.removeZero()),
-            String.format(context.getString(R.string.rub), dish.price.removeZero()),
+            String.format(context.getString(R.string.rub), dish.oldPrice.removeZeroAndReplaceComma()),
+            String.format(context.getString(R.string.rub), dish.price.removeZeroAndReplaceComma()),
             String.format(context.getString(R.string.rating),
                 dish.rating.toBigDecimal().setScale(2, RoundingMode.UP).toString()),
             dish.likes ?: 0,

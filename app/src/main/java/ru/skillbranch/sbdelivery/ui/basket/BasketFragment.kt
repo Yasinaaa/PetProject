@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import io.reactivex.rxjava3.core.Observable
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import ru.skillbranch.sbdelivery.data.dto.CartWithImageDto
 import ru.skillbranch.sbdelivery.databinding.FragmentBasketBinding
 import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.base.Binding
@@ -25,52 +27,30 @@ class BasketFragment : BaseFragment<BasketViewModel>() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentBasketBinding.inflate(inflater, container, false)
+        binding?.viewModel = viewModel
         return binding!!.root
     }
 
     override fun setupViews() {
         viewModel.getBasket()
 
-        viewModel.items.observe(viewLifecycleOwner, {
-            basketAdapter = BasketAdapter(it){ item, numChanger, size ->
-                if (item != null && numChanger != null)
-                    viewModel.updateItem(item, numChanger)
-                else if(size == 0){
+        viewModel.cart.observe(viewLifecycleOwner, {
+            basketAdapter = BasketAdapter(it.cart, it.items, object : BasketListener{
+                override fun updateCount(dto: CartWithImageDto, obs: Observable<Int>?) {
+                    viewModel.updateItem(dto, obs)
+                }
+
+                override fun updateTotalPrice(totalPrice: String) {
+                    binding?.tvTotalPrice?.text = totalPrice
+                }
+
+                override fun setEmptyList() {
                     baseBinding.isEmptyCart = true
                 }
-            }
+            })
             binding?.rvItems?.adapter = basketAdapter
         })
-
-        viewModel.cart.observe(viewLifecycleOwner, {
-
-        })
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-//        onBackPressedDispatcher.addCallback(
-//            this,
-//            object : OnBackPressedCallback(true) {
-//                override fun handleOnBackPressed() {
-//                    onBackPressed()
-//                }
-//            }
-//        )
-
-    }
-
-//    override fun renderLoading(loadingState: Loading) {
-//        super.renderLoading(loadingState)
-//        when(loadingState){
-//            Loading.SHOW_LOADING, Loading.SHOW_BLOCKING_LOADING -> {
-//
-//            }
-//            Loading.HIDE_LOADING -> {
-//
-//            }
-//        }
-//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -81,10 +61,25 @@ class BasketFragment : BaseFragment<BasketViewModel>() {
 
         var isEmptyCart: Boolean by RenderProp(false){
             if(it){
-                binding?.tvEmptyBasket?.visibility = VISIBLE
+                showItems(VISIBLE)
             }else{
-                binding?.tvEmptyBasket?.visibility = GONE
+                showItems(GONE)
             }
+        }
+
+        private fun showItems(v: Int){
+            binding?.tvEmptyBasket?.visibility = v
+
+            val newV = if (v == GONE){
+                VISIBLE
+            }else{
+                GONE
+            }
+            binding?.tvTotal?.visibility = newV
+            binding?.tvTotalPrice?.visibility = newV
+            binding?.etPromocode?.visibility = newV
+            binding?.mbApply?.visibility = newV
+            binding?.mbProceedToCheckout?.visibility = newV
         }
 
         override fun bind(data: IViewModelState) {

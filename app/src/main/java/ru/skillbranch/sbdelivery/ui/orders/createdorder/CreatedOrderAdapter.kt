@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ItemCreatedOrderBinding
-import ru.skillbranch.sbdelivery.utils.removeZero
+import ru.skillbranch.sbdelivery.utils.removeZeroAndReplaceComma
 
 
 open class CreatedOrderAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -45,7 +45,7 @@ open class CreatedOrderAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             holder.bindingItem?.tvTitle?.text = list[position].title
             holder.bindingItem?.tvCount?.text = list[position].count.toString()
             holder.bindingItem?.tvPrice?.text = String.format(context.getString(R.string.rub),
-                list[position].price.removeZero())
+                list[position].price.removeZeroAndReplaceComma())
 
             if (position == list.lastIndex){
                 holder.bindingItem?.viewLine?.visibility = GONE

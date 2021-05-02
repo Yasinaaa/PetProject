@@ -51,6 +51,9 @@
             android:name="count"
             app:argType="integer"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/sign_page"
+            app:destination="@id/nav_sign" />
     </fragment>
 
     <fragment

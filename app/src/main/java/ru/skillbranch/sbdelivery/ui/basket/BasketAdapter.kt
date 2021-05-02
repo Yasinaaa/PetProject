@@ -12,18 +12,24 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
-import com.google.android.material.button.MaterialButton
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.core.Observable
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.data.dto.CartWithImageDto
+import ru.skillbranch.sbdelivery.data.local.entity.CartEntity
 import ru.skillbranch.sbdelivery.databinding.ItemBasketBinding
-import ru.skillbranch.sbdelivery.utils.removeZero
+import ru.skillbranch.sbdelivery.utils.removeZeroAndReplaceComma
 
+interface BasketListener{
+    fun updateCount(dto: CartWithImageDto, obs: Observable<Int>?)
+    fun updateTotalPrice(totalPrice: String)
+    fun setEmptyList()
+}
 
 open class BasketAdapter(
-    var list: MutableList<CartWithImageDto> = mutableListOf(),
-    private val numChange: (CartWithImageDto?, Observable<Int>?, Int?) -> Unit
+    private val cart: CartEntity,
+    private var list: MutableList<CartWithImageDto> = mutableListOf(),
+    private val listener: BasketListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var context: Context
@@ -49,8 +55,7 @@ open class BasketAdapter(
         if (holder is ItemViewHolder) {
             holder.bindingItem?.tvTitle?.text = list[position].name
             holder.bindingItem?.tvNum?.text = list[position].amount.toString()
-            holder.bindingItem?.tvPrice?.text = String.format(context.getString(R.string.rub),
-                list[position].price?.removeZero())
+            setPrice(holder.bindingItem?.tvPrice, list[position])
 
             val requestBuild = ImageRequest.Builder(context)
                 .data(list[position].image)
@@ -62,19 +67,29 @@ open class BasketAdapter(
             map {
                 it.toString().toInt()
             }
-            numChange.invoke(list[position], observable, list.size)
 
             holder.bindingItem?.mbMinus?.setOnClickListener {
                 if(list[position].amount!! > 0)
-                    changeNum(list[position], -1, holder.bindingItem.tvNum)
+                    changeNum(
+                        list[position], -1,
+                        holder.bindingItem.tvNum,
+                        holder.bindingItem.tvPrice,
+                        observable
+                    )
             }
 
             holder.bindingItem?.mbPlus?.setOnClickListener {
-                changeNum(list[position], 1, holder.bindingItem.tvNum)
+                changeNum(
+                    list[position], 1,
+                    holder.bindingItem.tvNum,
+                    holder.bindingItem.tvPrice,
+                    observable
+                )
             }
 
             if (position == list.lastIndex){
                 holder.bindingItem?.viewLine?.visibility = GONE
+                listener.updateTotalPrice(getTotalPrice())
             }
         }
     }
@@ -85,15 +100,38 @@ open class BasketAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     private fun changeNum(
-        item: CartWithImageDto, count: Int, tv: TextView
+        item: CartWithImageDto, count: Int,
+        tvCount: TextView?, tvPrice: TextView?,
+        obs: Observable<Int>?
     ){
         item.amount = item.amount!! + count
-        tv.text = item.amount.toString()
+        tvCount?.text = item.amount.toString()
+        setPrice(tvPrice, item)
 
         if (item.amount == 0) {
             list.remove(item)
-            numChange.invoke(null, null, list.size)
+            if (list.size == 0)
+                listener.setEmptyList()
             notifyDataSetChanged()
         }
+        listener.updateTotalPrice(getTotalPrice())
+        listener.updateCount(item, obs)
+    }
+
+    private fun setPrice(tvPrice: TextView?, item: CartWithImageDto){
+        tvPrice?.text = String.format(context.getString(R.string.rub),
+            (item.price!! * item.amount!!).removeZeroAndReplaceComma())
+    }
+
+    private fun getTotalPrice(): String{
+        val cart = cart.total ?: 0f
+        return String.format(
+            context.getString(R.string.rub),
+            list.map {
+                it.price!! * it.amount!!
+            }
+            .sum()
+            .plus(if(cart == 0f) 0f else cart)
+            .removeZeroAndReplaceComma())
     }
 }

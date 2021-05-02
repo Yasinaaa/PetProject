@@ -5,15 +5,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.skillbranch.sbdelivery.R
-import ru.skillbranch.sbdelivery.databinding.ItemNotificationBinding
 import ru.skillbranch.sbdelivery.databinding.ItemOrderBinding
-import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter
-import ru.skillbranch.sbdelivery.utils.removeZero
-import ru.skillbranch.sbdelivery.utils.toDp
+import ru.skillbranch.sbdelivery.utils.removeZeroAndReplaceComma
 
 
 open class OrderItemsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -49,7 +45,7 @@ open class OrderItemsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             holder.bindingItem?.tvAddress?.text = list[position].address
             holder.bindingItem?.tvPrice?.text = String.format(
                 context.getString(R.string.rub),
-                list[position].price.removeZero()
+                list[position].price.removeZeroAndReplaceComma()
             )
         }
     }

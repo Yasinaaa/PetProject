@@ -5,41 +5,46 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import ru.skillbranch.sbdelivery.data.dto.CartDto
 import ru.skillbranch.sbdelivery.data.dto.CartWithImageDto
-import ru.skillbranch.sbdelivery.data.local.entity.CartEntity
-import ru.skillbranch.sbdelivery.data.local.entity.DishEntity
 import ru.skillbranch.sbdelivery.data.mapper.ICartMapper
 import ru.skillbranch.sbdelivery.data.repository.ICartRepository
+import ru.skillbranch.sbdelivery.data.repository.IProfileRepository
 import ru.skillbranch.sbdelivery.ui.base.BaseViewModel
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
+import ru.skillbranch.sbdelivery.ui.base.NavigationCommand
+import ru.skillbranch.sbdelivery.ui.basket.BasketFragmentDirections
 import java.util.concurrent.TimeUnit
 
 class BasketViewModel(
     handle: SavedStateHandle,
+    profRep: IProfileRepository,
     private val cartRep: ICartRepository,
     private val mapper: ICartMapper
 ): BaseViewModel<BasketState>(handle, BasketState()) {
 
-    val items = MutableLiveData<MutableList<CartWithImageDto>>()
-    val cart = MutableLiveData<CartEntity>()
+    val cart = MutableLiveData<CartDto>()
+
+    init {
+        subscribeOnDataSource(profRep.isAuth()) { isAuth, state ->
+            state.copy(isAuth = isAuth)
+        }
+    }
 
     fun getBasket(){
         cartRep.getLocalCart()
             .observeOn(AndroidSchedulers.mainThread())
-//            .doFinally {
-//                hideLoading()
-//            }
             .subscribe({
                 if (it == null)
                     updateState { state -> state.copy(isEmptyCart = true) }
                 else {
-                    cart.value = it.cart
-                    items.value = mapper.mapEntityToDtoList(it.items)
-                    hideLoading()
+                    cart.value = CartDto(it.cart, mapper.mapEntityToDtoList(it.items))
                 }
+                hideLoading()
             }, {
                 Log.d("MainViewModel", "it.error=" + it.message)
                 updateState { state -> state.copy(isEmptyCart = true) }
+                hideLoading()
             })
     }
 
@@ -49,12 +54,10 @@ class BasketViewModel(
             ?.debounce(200L, TimeUnit.MILLISECONDS)
             ?.distinctUntilChanged()
             ?.flatMap {
-                //5ed8da011f071c00465b2027
                 if (it <= 0){
                     cartRep.removeCartItem(dishId)
                 }else{
                     cartRep.updateCartItem(dishId, it)
-                    //cartRep.updateCartItem(dishId, it)
                 }
             }
             ?.observeOn(AndroidSchedulers.mainThread())
@@ -65,10 +68,17 @@ class BasketViewModel(
             })
     }
 
-    fun addToBasket(dishId: String, count: Int){
-        //cartRep.updateCart()
+    fun createOrder(){
+        if (currentState.isAuth){
+
+        }else{
+            openLogInPage()
+        }
     }
 
+    private fun openLogInPage(){
+        navigate(NavigationCommand.To(BasketFragmentDirections.signPage().actionId))
+    }
 }
 
 data class BasketState(

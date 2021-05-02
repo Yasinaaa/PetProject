@@ -33,8 +33,6 @@ class DishViewModel(
     val currentDish = MutableLiveData<DishDto>()
     val dishCount = MutableLiveData<Int>()
     val addReview = MutableLiveData<Boolean>()
-    val addToCart = MutableLiveData<Int>()
-    val addToCart2 = MutableLiveData<Int>()
 
     init {
         dishCount.value = 1
@@ -111,7 +109,20 @@ class DishViewModel(
     }
 
     fun onAddReviewClick(){
-        addReview.value = currentState.isAuth
+        if(currentState.isAuth){
+            showCreateReviewDialog()
+        }else{
+            openLogInPage()
+        }
+    }
+
+    private fun showCreateReviewDialog(){
+        val action = DishFragmentDirections.addReviewPage(currentDishEntity!!.id)
+        navigate(NavigationCommand.To(action.actionId, action.arguments))
+    }
+
+    private fun openLogInPage(){
+        navigate(NavigationCommand.To(DishFragmentDirections.signPage().actionId))
     }
 }
 

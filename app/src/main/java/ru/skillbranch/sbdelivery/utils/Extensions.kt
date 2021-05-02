@@ -12,10 +12,14 @@ fun Int.toDp(context: Context): Int = TypedValue.applyDimension(
     TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), context.resources.displayMetrics
 ).toInt()
 
-fun Float.removeZero(): String{
+fun Float.removeZeroAndReplaceComma(): String{
     val format = DecimalFormat()
     format.isDecimalSeparatorAlwaysShown = false
-    return format.format(this)
+    val priceWithComma = format.format(this)
+    return if(priceWithComma.contains(",")){
+        priceWithComma.replace(",", " ")
+    }else
+        priceWithComma
 }
 
 fun String.parseDate(): String {
