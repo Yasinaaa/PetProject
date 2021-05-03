@@ -46,7 +46,7 @@ class App : Application(){//, ImageLoaderFactory {
 
     private fun initKoin() {
         startKoin {
-            androidLogger()
+            //androidLogger()
             androidContext(this@App)
             modules(
                 listOf(

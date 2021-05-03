@@ -34,6 +34,4 @@ data class DishDto(
         }
     }
 
-
-
 }

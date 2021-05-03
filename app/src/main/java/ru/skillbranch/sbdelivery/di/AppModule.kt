@@ -30,6 +30,7 @@ import ru.skillbranch.sbdelivery.ui.root.RootViewModel
 import ru.skillbranch.sbdelivery.ui.main.MainViewModel
 import ru.skillbranch.sbdelivery.ui.menu.MenuViewModel
 import ru.skillbranch.sbdelivery.ui.search.SearchViewModel
+import ru.skillbranch.sbdelivery.ui.sign.SignViewModel
 import java.util.concurrent.TimeUnit
 
 object AppModule {
@@ -104,6 +105,10 @@ object AppModule {
         single<ICartRepository> {
             CartRepository(prefs = get(), api = get(), mapper = get(), cartDao = get())
         }
+
+        single<ISignUpRepository> {
+            SignUpRepository(prefs = get(), api = get())
+        }
     }
 
     fun databaseModule() = module {
@@ -135,6 +140,9 @@ object AppModule {
         }
         viewModel {
             BasketViewModel(profRep = get(), handle = get(), cartRep = get(), mapper = get())
+        }
+        viewModel {
+            SignViewModel(handle = get(), rep = get())
         }
 //        scope<RootActivity> {
 //            scoped { Session() }

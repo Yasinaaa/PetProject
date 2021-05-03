@@ -11,6 +11,8 @@
     <string name="surname">Фамилия</string>
     <string name="email">E-mail</string>
     <string name="wrong_email">Некорректный e-mail</string>
+    <string name="wrong_name">Можно вводить только буквы</string>
+    <string name="wrong_password">Пароль не может быть пустым</string>
     <string name="password">Пароль</string>
     <string name="to_enter">Войти</string>
     <string name="sign_up">Регистрация</string>

@@ -11,7 +11,6 @@
     </style>
 
     <style name="TextViewSign">
-        <item name="android:textColor">@color/grey</item>
         <item name="android:textSize">12sp</item>
         <item name="android:layout_marginStart">29dp</item>
     </style>
@@ -61,5 +60,10 @@
         <item name="hintTextColor">@color/grey</item>
         <item name="android:textColorHint">@color/grey</item>
         <item name="helperTextTextColor">@color/grey</item>
+    </style>
+
+    <style name="SignOutlinedBox" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/grey</item>
+        <item name="boxStrokeWidth">1dp</item>
     </style>
 </resources>

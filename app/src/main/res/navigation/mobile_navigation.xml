@@ -9,10 +9,21 @@
         android:id="@+id/nav_sign"
         android:name="ru.skillbranch.sbdelivery.ui.sign.SignFragment"
         android:label="@string/enter"
-        tools:layout="@layout/fragment_sign" />
+        tools:layout="@layout/fragment_sign">
+        <argument
+            android:name="type"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/sign_up"
+            app:destination="@id/nav_sign" />
+        <action
+            android:id="@+id/forget_password"
+            app:destination="@id/nav_forget_password" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_forget_passwords"
+        android:id="@+id/nav_forget_password"
         android:name="ru.skillbranch.sbdelivery.ui.sign.forgetpassword.ForgetPasswordFragment"
         android:label="@string/forget_password"
         tools:layout="@layout/fragment_forget_password" />

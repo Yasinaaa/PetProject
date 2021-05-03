@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View.*
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -19,6 +20,7 @@ import ru.skillbranch.sbdelivery.databinding.NavHeaderMainBinding
 import ru.skillbranch.sbdelivery.ui.base.BaseActivity
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 import ru.skillbranch.sbdelivery.ui.base.Notify
+import ru.skillbranch.sbdelivery.ui.sign.SignFragment.Companion.SIGN_UP
 import ru.skillbranch.sbdelivery.utils.toDp
 
 class RootActivity : BaseActivity<RootViewModel>(){
@@ -45,7 +47,7 @@ class RootActivity : BaseActivity<RootViewModel>(){
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
+        navController.addOnDestinationChangedListener { _, destination, bundle ->
             if (destination.id == R.id.nav_search){
                 binding.appBarMain.toolbar.visibility = GONE
             }else{
@@ -53,10 +55,18 @@ class RootActivity : BaseActivity<RootViewModel>(){
             }
 
             if (destination.id == R.id.nav_sign){
-                binding.appBarMain.toolbar.navigationIcon = null
+                if (bundle != null) {
+                    if (bundle.containsKey("type")) {
+                        if (bundle.getInt("type") == SIGN_UP){
+                            binding.appBarMain.toolbar.title = getString(R.string.sign_up)
+                        }
+                    }
+                }else{
+                    binding.appBarMain.toolbar.title = getString(R.string.sign_in)
+                }
+                binding.appBarMain.toolbar.navigationIcon =
+                    ContextCompat.getDrawable(baseContext, R.drawable.ic_back)
                 binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-            }else{
-                //binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
             }
         }
 
