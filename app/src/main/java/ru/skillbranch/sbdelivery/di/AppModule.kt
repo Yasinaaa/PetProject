@@ -31,6 +31,7 @@ import ru.skillbranch.sbdelivery.ui.main.MainViewModel
 import ru.skillbranch.sbdelivery.ui.menu.MenuViewModel
 import ru.skillbranch.sbdelivery.ui.search.SearchViewModel
 import ru.skillbranch.sbdelivery.ui.sign.SignViewModel
+import ru.skillbranch.sbdelivery.ui.sign.forgetpassword.ForgetPasswordViewModel
 import java.util.concurrent.TimeUnit
 
 object AppModule {
@@ -141,9 +142,8 @@ object AppModule {
         viewModel {
             BasketViewModel(profRep = get(), handle = get(), cartRep = get(), mapper = get())
         }
-        viewModel {
-            SignViewModel(handle = get(), rep = get())
-        }
+        viewModel { SignViewModel(handle = get(), rep = get()) }
+        viewModel { ForgetPasswordViewModel(handle = get(), rep = get()) }
 //        scope<RootActivity> {
 //            scoped { Session() }
 //            viewModel<RootViewModel>(named("vm3"))

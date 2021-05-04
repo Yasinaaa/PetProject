@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/tv_name"
         android:text="@string/name"
+        android:textColor="@color/grey"
         android:fontFamily="sans-serif"
         android:textAppearance="@style/TextViewSign"
         android:layout_marginTop="38dp"
@@ -72,6 +73,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/tv_surname"
         android:text="@string/surname"
+        android:textColor="@color/grey"
         android:fontFamily="sans-serif"
         android:textAppearance="@style/TextViewSign"
         android:layout_marginTop="16dp"
@@ -132,6 +134,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/tv_email"
         android:text="@string/email"
+        android:textColor="@color/grey"
         android:fontFamily="sans-serif"
         android:textAppearance="@style/TextViewSign"
         android:layout_marginTop="16dp"
@@ -158,7 +161,7 @@
         app:layout_constraintStart_toEndOf="@+id/tv_email" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tif_email"
+        android:id="@+id/til_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:hintEnabled="false"
@@ -204,9 +207,9 @@
         android:textAlignment="center"
         android:layout_marginTop="53dp"
         android:enabled="false"
-        app:layout_constraintEnd_toEndOf="@+id/tif_email"
-        app:layout_constraintTop_toBottomOf="@+id/tif_email"
-        app:layout_constraintStart_toStartOf="@+id/tif_email"/>
+        app:layout_constraintEnd_toEndOf="@+id/til_email"
+        app:layout_constraintTop_toBottomOf="@+id/til_email"
+        app:layout_constraintStart_toStartOf="@+id/til_email"/>
 
     <com.google.android.material.button.MaterialButton
         android:layout_width="0dp"

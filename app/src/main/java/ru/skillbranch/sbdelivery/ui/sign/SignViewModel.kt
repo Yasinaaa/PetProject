@@ -12,6 +12,8 @@ import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 import ru.skillbranch.sbdelivery.ui.base.NavigationCommand
 import ru.skillbranch.sbdelivery.ui.sign.SignFragment.Companion.SIGN_IN
 import ru.skillbranch.sbdelivery.ui.sign.SignFragment.Companion.SIGN_UP
+import ru.skillbranch.sbdelivery.ui.sign.forgetpassword.ForgetPasswordFragment
+import ru.skillbranch.sbdelivery.ui.sign.forgetpassword.ForgetPasswordFragmentDirections
 import java.util.regex.Pattern
 
 class SignViewModel(

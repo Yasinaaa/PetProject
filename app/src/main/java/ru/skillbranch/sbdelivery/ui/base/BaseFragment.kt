@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.*
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.Fragment
-import org.koin.android.ext.android.inject
+import com.google.android.material.textfield.TextInputEditText
+import com.jakewharton.rxbinding4.widget.textChanges
+import io.reactivex.rxjava3.core.Observable
 import ru.skillbranch.sbdelivery.ui.root.RootActivity
+import java.util.*
 
 
 abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment() {
@@ -88,4 +91,7 @@ abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment()
     open fun renderLoading(loadingState: Loading) {
         root.renderLoading(loadingState)
     }
+
+    fun TextInputEditText?.obs(): Observable<String>? =
+        this?.textChanges()?.skipInitialValue()?.map { it.toString() }
 }

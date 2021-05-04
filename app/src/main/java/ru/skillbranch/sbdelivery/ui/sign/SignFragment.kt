@@ -50,25 +50,16 @@ class SignFragment : BaseFragment<SignViewModel>() {
     }
 
     override fun setupViews() {
-        viewModel.observeEmailField(
-            binding?.tietEmail?.textChanges()?.skipInitialValue()?.map { it.toString() },
-            currentType
-        )
-        viewModel.observePasswordField(
-            binding?.tietPassword?.textChanges()?.skipInitialValue()?.map { it.toString() }
-        )
+        viewModel.observeEmailField(binding?.tietEmail?.obs(), currentType)
+        viewModel.observePasswordField(binding?.tietPassword?.obs())
 
         if (currentType == SIGN_IN){
             viewModel.init()
+
         }else if (currentType == SIGN_UP){
-            viewModel.observeNameField(
-                binding?.tietName?.textChanges()?.skipInitialValue()?.map { it.toString() },
-                SignViewModel.NAME_TYPE
-            )
-            viewModel.observeNameField(
-                binding?.tietSurname?.textChanges()?.skipInitialValue()?.map { it.toString() },
-                SignViewModel.SURNAME_NAME_TYPE
-            )
+            viewModel.observeNameField(binding?.tietName?.obs(), SignViewModel.NAME_TYPE)
+            viewModel.observeNameField(binding?.tietSurname?.obs(), SignViewModel.SURNAME_NAME_TYPE)
+
             binding?.tilName?.visibility = VISIBLE
             binding?.tvName?.visibility = VISIBLE
             binding?.tilSurname?.visibility = VISIBLE
@@ -77,23 +68,22 @@ class SignFragment : BaseFragment<SignViewModel>() {
             binding?.mbEnter?.text = getString(R.string.to_sign_up)
             binding?.mbCreateAccount?.text = getString(R.string.sign_in)
 
-            val params = binding?.tvEmail?.layoutParams as ConstraintLayout.LayoutParams
-            params.topToTop = ConstraintLayout.LayoutParams.UNSET
-            params.topToBottom = binding?.tilSurname?.id!!
-            params.topMargin = 16.toDp(requireContext())
-            binding?.tvEmail?.requestLayout()
-
-            val paramsE = binding?.tvEmailError?.layoutParams as ConstraintLayout.LayoutParams
-            paramsE.topToTop = ConstraintLayout.LayoutParams.UNSET
-            paramsE.topToBottom = binding?.tilSurname?.id!!
-            paramsE.topMargin = 16.toDp(requireContext())
-            binding?.tvEmailError?.requestLayout()
+            changeTopConnection(binding?.tvEmail)
+            changeTopConnection(binding?.tvEmailError)
         }
         findNavController().currentBackStackEntry?.savedStateHandle?.
         getLiveData<Boolean>("backb")?.observe(
             viewLifecycleOwner) {
             findNavController().popBackStack()
         }
+    }
+
+    private fun changeTopConnection(tv: TextView?){
+        val params = tv?.layoutParams as ConstraintLayout.LayoutParams
+        params.topToTop = ConstraintLayout.LayoutParams.UNSET
+        params.topToBottom = binding?.tilSurname?.id!!
+        params.topMargin = 16.toDp(requireContext())
+        tv.requestLayout()
     }
 
     override fun onDestroyView() {
@@ -150,7 +140,7 @@ class SignFragment : BaseFragment<SignViewModel>() {
                 til?.setBoxStrokeColorStateList(
                     AppCompatResources.getColorStateList(requireContext(), R.color.white))
             }else{
-                if (currentType == SIGN_UP) { // && !isInit
+                if (currentType == SIGN_UP) {
                     errorTv?.visibility = VISIBLE
                     tv?.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
                     til?.setBoxStrokeColorStateList(

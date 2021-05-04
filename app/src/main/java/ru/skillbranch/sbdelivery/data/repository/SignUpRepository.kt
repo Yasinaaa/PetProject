@@ -5,10 +5,7 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.skillbranch.sbdelivery.data.local.pref.PrefManager
 import ru.skillbranch.sbdelivery.data.remote.RestService
-import ru.skillbranch.sbdelivery.data.remote.models.request.RecoveryCodeRequest
-import ru.skillbranch.sbdelivery.data.remote.models.request.RecoveryPasswordRequest
-import ru.skillbranch.sbdelivery.data.remote.models.request.UserLoginRequest
-import ru.skillbranch.sbdelivery.data.remote.models.request.UserRegisterRequest
+import ru.skillbranch.sbdelivery.data.remote.models.request.*
 import ru.skillbranch.sbdelivery.data.remote.models.response.User
 import ru.skillbranch.sbdelivery.data.remote.models.response.UserWithTokens
 
@@ -41,7 +38,7 @@ class SignUpRepository(
     }
 
     override fun recoveryEmail(email: String): Single<Boolean> {
-        return api.recoveryEmail(email).saveResponseAsBool()
+        return api.recoveryEmail(UserEmailRequest(email)).saveResponseAsBool()
     }
 
     override fun recoveryCode(email: String, code: String): Single<Boolean> {

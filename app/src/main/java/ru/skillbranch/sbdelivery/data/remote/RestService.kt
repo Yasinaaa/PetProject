@@ -19,7 +19,7 @@ interface RestService {
 
     @POST("auth/recovery/email")
     @Headers("Content-Type:application/json")
-    fun recoveryEmail(@Query("email") email: String): Single<ResponseBody>
+    fun recoveryEmail(@Body email: UserEmailRequest): Single<ResponseBody>
 
     @POST("auth/recovery/code")
     @Headers("Content-Type:application/json")

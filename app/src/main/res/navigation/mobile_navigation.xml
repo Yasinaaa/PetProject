@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_main">
+    app:startDestination="@+id/nav_sign">
 
     <fragment
         android:id="@+id/nav_sign"
@@ -26,7 +26,23 @@
         android:id="@+id/nav_forget_password"
         android:name="ru.skillbranch.sbdelivery.ui.sign.forgetpassword.ForgetPasswordFragment"
         android:label="@string/forget_password"
-        tools:layout="@layout/fragment_forget_password" />
+        tools:layout="@layout/fragment_forget_password">
+        <argument
+            android:name="type"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="email"
+            app:argType="string"
+            android:defaultValue=""/>
+        <argument
+            android:name="code"
+            app:argType="string"
+            android:defaultValue=""/>
+        <action
+            android:id="@+id/update_view"
+            app:destination="@id/nav_forget_password" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_main"

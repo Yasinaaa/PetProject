@@ -67,6 +67,10 @@ class RootActivity : BaseActivity<RootViewModel>(){
                 binding.appBarMain.toolbar.navigationIcon =
                     ContextCompat.getDrawable(baseContext, R.drawable.ic_back)
                 binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+            }else if(destination.id == R.id.nav_forget_password){
+//                binding.appBarMain.toolbar.navigationIcon =
+//                    ContextCompat.getDrawable(baseContext, R.drawable.ic_back)
             }
         }
 
