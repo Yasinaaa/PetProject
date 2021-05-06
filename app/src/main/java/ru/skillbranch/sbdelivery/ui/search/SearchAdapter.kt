@@ -1,4 +1,4 @@
-package ru.skillbranch.sbdelivery.ui.adapters
+package ru.skillbranch.sbdelivery.ui.search
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,15 +11,9 @@ import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ItemCacheSearchBinding
 
 
-open class TextLineAdapter(
-    val type: Int,
+open class SearchAdapter(
     var list: MutableSet<String> = mutableSetOf()
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    companion object{
-        const val CACHE = 1
-        const val ADDRESS = 2
-    }
 
     private lateinit var context: Context
 
@@ -38,10 +32,6 @@ open class TextLineAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
             holder.bindingItem?.tvTitle?.text = list.elementAt(position)
-
-            if(type == ADDRESS){
-                holder.bindingItem?.ivClose?.visibility = GONE
-            }
         }
     }
 

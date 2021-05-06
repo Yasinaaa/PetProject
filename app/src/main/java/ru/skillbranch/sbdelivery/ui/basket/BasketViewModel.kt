@@ -70,7 +70,14 @@ class BasketViewModel(
 
     fun createOrder(){
         if (currentState.isAuth){
-
+            cartRep.updateCart(null, cart.value!!.items)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    Log.d("MainViewModel", "it=")
+                },{
+                    Log.d("MainViewModel", "it.error=" + it.message)
+                })
+            //openOrderDetailsPage()
         }else{
             openLogInPage()
         }
@@ -78,6 +85,11 @@ class BasketViewModel(
 
     private fun openLogInPage(){
         navigate(NavigationCommand.To(BasketFragmentDirections.signPage().actionId))
+    }
+
+    private fun openOrderDetailsPage(){
+        val action = BasketFragmentDirections.orderDetailsPage()
+        navigate(NavigationCommand.To(action.actionId, action.arguments))
     }
 }
 

@@ -14,6 +14,6 @@ interface OrderDao : BaseDao<OrderEntity> {
     fun insertOrderItems(obj:List<OrderItemEntity>)
 
     @Query("UPDATE order_table SET statusId=:statusId WHERE id=:orderId")
-    fun cancelOrder(statusId: Int, orderId: String)
+    fun cancelOrder(statusId: String, orderId: String)
 
 }

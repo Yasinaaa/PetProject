@@ -103,6 +103,7 @@
     <string name="intercom">Домофон:</string>
     <string name="comment">Комментарий:</string>
     <string name="choose_address">Выбрать адрес</string>
+    <string name="address_input">г. %s, ул. %s, д. %s</string>
 
     <!-- profile -->
     <string name="change">Изменить</string>

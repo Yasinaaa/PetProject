@@ -18,11 +18,12 @@ import ru.skillbranch.sbdelivery.data.local.entity.DishEntity
 import ru.skillbranch.sbdelivery.data.local.pref.PrefManager
 import ru.skillbranch.sbdelivery.data.mapper.ICartMapper
 import ru.skillbranch.sbdelivery.data.remote.RestService
+import ru.skillbranch.sbdelivery.data.remote.models.request.CartRequest
 import ru.skillbranch.sbdelivery.data.remote.models.response.*
 
 interface ICartRepository {
-//    fun getCart(): Single<CartWithItems>
-//    fun updateCart(promoCode: String?, items: List<CartItemEntity>): Single<CartWithItems>
+    //fun getCart(): Observable<CartWithItems?>
+    fun updateCart(promoCode: String?, items: List<CartWithImageDto>): Observable<CartWithItems?>
     fun getLocalCart(): Observable<CartWithItems?>
     fun saveLocally(dish: DishEntity, count: Int): Observable<Long>
     fun getCurrentCount(dish: DishEntity): Single<Int>
@@ -45,40 +46,31 @@ class CartRepository(
                 null
             }
             .subscribeOn(Schedulers.io())
-
-
     }
 
-    //    override fun getCart(): Single<CartWithItems> =
+//    override fun getCart(): Observable<CartWithItems?> =
 //        api.getCart("${PrefManager.BEARER} ${prefs.accessToken}")
-//            .saveCart()
-//
-//    override fun updateCart(promoCode: String?, items: List<CartItemEntity>): Single<CartWithItems> =
-//        api.updateCart(promoCode, mapper.mapItemEntityToItemRequestList(items),
-//            "${PrefManager.BEARER} ${prefs.accessToken}")
-//            .saveCart()
-//
-//    private fun Single<Cart>.saveCart(): Single<CartWithItems> {
-//        flatMap {
-//            val cartEntity = mapper.mapCartToEntity(it)
-//            cartDao.insert(cartEntity)
-//        }.map {
-//            cartDao.insertCartItems()
-//        }
-//
-//        return doOnSuccess {
-//            mapper.mapCartToEntity(it)
-//
-////                val cartWithItems = mapper.mapCartToEntity(it)
-////                cartDao.insert(cartWithItems.cart)
-////                cartDao.insertCartItems(cartWithItems.items)
-//            }
 //            .map {
-//                mapper.mapCartToEntity(it)
+//                cartDao.updateCartItem()
+//            }
+//            .flatMap {
+//                getLocalCart()
 //            }
 //            .subscribeOn(Schedulers.io())
 //            .observeOn(AndroidSchedulers.mainThread())
-//    }
+
+    override fun updateCart(promoCode: String?, items: List<CartWithImageDto>): Observable<CartWithItems?> {
+        val ite = mapper.mapToItemRequestList(items)
+        return api.updateCart(
+            CartRequest(promoCode, ite),
+            "${PrefManager.BEARER} ${prefs.accessToken}"
+        )
+            .flatMap {
+                getLocalCart()
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 
     override fun saveLocally(dish: DishEntity, count: Int): Observable<Long> =
        cartDao.insertCart(CartEntity())
@@ -97,28 +89,15 @@ class CartRepository(
 
     override fun getCurrentCount(dish: DishEntity): Single<Int> =
         cartDao.getCartItemCountById(dishId = dish.id)
-            .map {
-                it.amount ?: 0
-            }
+            .map { it.amount ?: 0 }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
     override fun updateCartItem(dish: CartWithImageDto, count: Int): Observable<Long> {
-        val car = CartItemEntity(
-            dishId = dish.dishId,
-            remoteId = null,
-            amount = count,
-            price = dish.price,
-            cartId = dish.cartId
-        )
         return cartDao.updateCartItem(dish.dishId, count)
             .toObservable()
-            .map {
-                it.toLong()
-            }
-            .onErrorReturn {
-                1
-            }
+            .map { it.toLong() }
+            .onErrorReturn { 1 }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -133,9 +112,7 @@ class CartRepository(
         )
         return cartDao.deleteItem(car)
             .toObservable()
-            .map {
-                it.toLong()
-            }
+            .map { it.toLong() }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

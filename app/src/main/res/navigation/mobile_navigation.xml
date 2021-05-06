@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_sign">
+    app:startDestination="@+id/nav_main">
 
     <fragment
         android:id="@+id/nav_sign"
@@ -81,6 +81,9 @@
         <action
             android:id="@+id/sign_page"
             app:destination="@id/nav_sign" />
+        <action
+            android:id="@+id/order_details_page"
+            app:destination="@id/nav_proceed_to_checkout" />
     </fragment>
 
     <fragment
@@ -155,7 +158,14 @@
         android:id="@+id/nav_proceed_to_checkout"
         android:name="ru.skillbranch.sbdelivery.ui.orderdetails.OrderDetailsFragment"
         android:label="@string/proceed_to_checkout"
-        tools:layout="@layout/fragment_order_details" />
+        tools:layout="@layout/fragment_order_details">
+        <action
+            android:id="@+id/input_address_page"
+            app:destination="@id/nav_input_address" />
+        <action
+            android:id="@+id/map_page"
+            app:destination="@id/nav_map_address" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_input_address"

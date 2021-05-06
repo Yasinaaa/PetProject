@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.navigation.fragment.findNavController
 import com.jakewharton.rxbinding4.appcompat.queryTextChanges
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
-import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.data.local.entity.CategoryEntity
 import ru.skillbranch.sbdelivery.databinding.FragmentSearchBinding
 import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter
-import ru.skillbranch.sbdelivery.ui.adapters.TextLineAdapter
 import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
@@ -76,7 +73,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
         }
 
         private var searchHistory: MutableSet<String> by RenderProp(mutableSetOf()) {
-            binding?.rvCache?.adapter = TextLineAdapter(type=TextLineAdapter.CACHE, it)
+            binding?.rvCache?.adapter = SearchAdapter(it)
             binding?.rvCache?.visibility = VISIBLE
         }
 

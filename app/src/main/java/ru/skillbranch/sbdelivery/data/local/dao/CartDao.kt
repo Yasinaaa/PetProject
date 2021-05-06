@@ -43,6 +43,9 @@ interface CartDao : BaseDao<CartEntity> {
     @Query("UPDATE cart_item_table SET amount=:count WHERE dish_id=:dishId")
     fun updateCartItem(dishId: String, count: Int): Single<Int>
 
+//    @Query("UPDATE cart_item_table SET remote_id_cart=:remoteId WHERE dish_id=:dishId")
+//    fun updateCartItemFromRemote(remoteId: String, amount: Int, price: ): Single<Int>
+
     @Query("DELETE FROM cart_item_table WHERE dish_id = :dishId")
     fun removeCartItemByDishId(dishId: String): Single<Int>
 

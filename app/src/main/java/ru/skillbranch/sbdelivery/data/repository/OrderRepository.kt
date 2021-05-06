@@ -41,7 +41,7 @@ class OrderRepository(
                 "${PrefManager.BEARER} ${prefs.accessToken}"
             )
         val status = order.flatMap {
-            orderStatusDao.getStatusById(it.statusId)
+            orderStatusDao.getStatusById(it.statusId!!)
         }
 
         return Single.zip(order, status, { ord, sta ->
@@ -79,10 +79,10 @@ class OrderRepository(
         val order =
             api.cancelOrder(orderId, "${PrefManager.BEARER} ${prefs.accessToken}")
                 .doOnSuccess {
-                    orderDao.cancelOrder(orderId = orderId, statusId = it.statusId)
+                    orderDao.cancelOrder(orderId = orderId, statusId = it.statusId!!)
                 }
         val status = order.flatMap {
-            orderStatusDao.getStatusById(it.statusId)
+            orderStatusDao.getStatusById(it.statusId!!)
         }
         return Single.zip(order, status, { ord, sta ->
                 mapper.mapOrderToEntity(ord, sta)

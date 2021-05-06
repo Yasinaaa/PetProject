@@ -7,8 +7,9 @@ import ru.skillbranch.sbdelivery.data.remote.models.request.CartItemRequest
 import ru.skillbranch.sbdelivery.data.remote.models.response.Cart
 
 interface ICartMapper {
-    fun mapCartToEntity(cart: Cart): CartEntity
+    //fun mapCartToEntity(cart: Cart): CartWithItems
     fun mapItemEntityToItemRequestList(items: List<CartItemEntity>): List<CartItemRequest>
+    fun mapToItemRequestList(items: List<CartWithImageDto>): List<CartItemRequest>
     fun dishDtoToCartItemEntity(cartId: Long, dish: DishEntity, count: Int): CartItemEntity
     fun mapCartToEntity(
         dish: DishEntity, count: Int,
@@ -19,12 +20,35 @@ interface ICartMapper {
 
 open class CartMapper : ICartMapper {
 
-    override fun mapCartToEntity(cart: Cart): CartEntity =
-        CartEntity(
-            promoCode = cart.promoCode,
-            promoText = cart.promoText,
-            total = cart.total
-        )
+//    override fun mapCartToEntity(cart: Cart): CartWithItems{
+//        val cartItemEntity = CartWithItems(
+//            cart = CartEntity(
+//
+//            ),
+//            items = cart.items?.map {
+//                CartWithImage(
+//                    dishId = it.id,
+//                    amount = it.amount,
+//                    price = it.price,
+//                    cartId = 1,
+//                    image = it.,
+//                    name = it.name
+//                )
+//            }  ?: listOf()
+//        )
+//        return cartItemEntity
+//    }
+//        CartItemEntity(
+//            dishId = "",
+//            amount = cart.,
+//            price = dish.price,
+//            cartId = cartId
+//        )
+//        CartEntity(
+//            promoCode = cart.promoCode,
+//            promoText = cart.promoText,
+//            total = cart.total
+//        )
 
 //    override fun mapCartToEntity(cart: Cart, cartEntityId: Int): CartWithItems = CartWithItems(
 //        cart = CartEntity(
@@ -67,6 +91,14 @@ open class CartMapper : ICartMapper {
         items.map {
             CartItemRequest(
                 it.remoteId,
+                it.amount
+            )
+        }
+
+    override fun mapToItemRequestList(items: List<CartWithImageDto>): List<CartItemRequest> =
+        items.map {
+            CartItemRequest(
+                it.dishId,
                 it.amount
             )
         }

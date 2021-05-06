@@ -74,6 +74,7 @@ class SignFragment : BaseFragment<SignViewModel>() {
         findNavController().currentBackStackEntry?.savedStateHandle?.
         getLiveData<Boolean>("backb")?.observe(
             viewLifecycleOwner) {
+            hideKeyboard()
             findNavController().popBackStack()
         }
     }

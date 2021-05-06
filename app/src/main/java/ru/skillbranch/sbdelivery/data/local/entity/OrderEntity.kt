@@ -7,7 +7,7 @@ data class OrderEntity(
     @PrimaryKey @ColumnInfo(name = "id") val id: String,
     @ColumnInfo(name = "total") val total: Float?,
     @ColumnInfo(name = "address") val address: String?,
-    @ColumnInfo(name = "statusId") val statusId: Int?,
+    @ColumnInfo(name = "statusId") val statusId: String?,
     @ColumnInfo(name = "active") val active: Boolean?,
     @ColumnInfo(name = "completed") val completed: Boolean?,
     @ColumnInfo(name = "createdAt") val createdAt: String?,

@@ -94,6 +94,9 @@ class RootActivity : BaseActivity<RootViewModel>(){
                 15.toDp(baseContext)
             )
             navHeaderMainBinding.tvUsername.text = getString(R.string.enter_to_the_profile)
+            navHeaderMainBinding.tvUsername.setOnClickListener {
+                navController.navigate(R.id.nav_sign)
+            }
         }else{
             //TODO
             navHeaderMainBinding.ibLogout.visibility = VISIBLE

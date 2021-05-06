@@ -1,14 +1,21 @@
 package ru.skillbranch.sbdelivery.ui.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.VisibleForTesting
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.core.Observable
 import ru.skillbranch.sbdelivery.ui.root.RootActivity
 import java.util.*
+import androidx.core.content.ContextCompat.getSystemService
+
+
+
 
 
 abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment() {
@@ -94,4 +101,14 @@ abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment()
 
     fun TextInputEditText?.obs(): Observable<String>? =
         this?.textChanges()?.skipInitialValue()?.map { it.toString() }
+
+    fun hideKeyboard() {
+        val manager: InputMethodManager? =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE)
+                    as InputMethodManager?
+        manager
+            ?.hideSoftInputFromWindow(
+                requireView().windowToken, 0
+            )
+    }
 }

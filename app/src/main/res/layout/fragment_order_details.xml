@@ -4,6 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="ru.skillbranch.sbdelivery.ui.orderdetails.OrderDetailsViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,16 +30,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <EditText
-            android:id="@+id/et_address"
+        <TextView
+            android:id="@+id/tv_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="г. Москва, ул. Тверская, д. 5"
+            android:text="@={viewModel.address}"
             android:fontFamily="sans-serif"
             android:textSize="16sp"
             android:textColor="@color/grey"
-            android:textCursorDrawable="@drawable/text_cursor"
-            android:background="@null"
             android:layout_marginStart="14dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
@@ -59,7 +65,8 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toStartOf="@+id/mb_show_on_map"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_address_title"/>
+            app:layout_constraintTop_toBottomOf="@+id/tv_address_title"
+            android:onClick="@{(view) -> viewModel.onWriteOrEditBtnClick()}"/>
 
         <com.google.android.material.button.MaterialButton
             style="@style/Widget.MaterialComponents.Button.Icon"
@@ -78,7 +85,8 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/mb_write"
-            app:layout_constraintTop_toBottomOf="@+id/tv_address_title"/>
+            app:layout_constraintTop_toBottomOf="@+id/tv_address_title"
+            android:onClick="@{(view) -> viewModel.onShowOnMapBtnClick()}"/>
 
         <TextView
             android:id="@+id/tv_porch_title"
@@ -103,6 +111,8 @@
             android:textColor="@color/grey"
             android:textCursorDrawable="@drawable/text_cursor"
             android:background="@null"
+            android:inputType="numberDecimal"
+            android:text="@={viewModel.entrance}"
             android:layout_marginStart="14dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
@@ -147,6 +157,8 @@
             android:textColor="@color/grey"
             android:textCursorDrawable="@drawable/text_cursor"
             android:background="@null"
+            android:inputType="numberDecimal"
+            android:text="@={viewModel.floor}"
             android:layout_marginStart="14dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
@@ -191,6 +203,7 @@
             android:textColor="@color/grey"
             android:textCursorDrawable="@drawable/text_cursor"
             android:background="@null"
+            android:text="@={viewModel.apartment}"
             android:layout_marginStart="14dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
@@ -235,6 +248,7 @@
             android:textColor="@color/grey"
             android:textCursorDrawable="@drawable/text_cursor"
             android:background="@null"
+            android:text="@={viewModel.intercom}"
             android:layout_marginStart="14dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
@@ -279,6 +293,7 @@
             android:textColor="@color/grey"
             android:textCursorDrawable="@drawable/text_cursor"
             android:background="@null"
+            android:text="@={viewModel.comment}"
             android:layout_marginStart="14dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
@@ -321,7 +336,8 @@
             android:layout_marginBottom="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            android:onClick="@{(view) -> viewModel.onCreateOrderBtnClick()}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -6,7 +6,7 @@ data class Order(
     @SerializedName("id") val id: String,
     @SerializedName("total") val total: Float?,
     @SerializedName("address") val address: String?,
-    @SerializedName("statusId") val statusId: Int,
+    @SerializedName("statusId") val statusId: String?,
     @SerializedName("active") val active: Boolean?,
     @SerializedName("completed") val completed: Boolean?,
     @SerializedName("createdAt") val createdAt: String?,

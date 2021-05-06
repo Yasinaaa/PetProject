@@ -9,6 +9,6 @@ import ru.skillbranch.sbdelivery.data.local.entity.*
 interface OrderStatusDao : BaseDao<OrderStatusEntity>{
 
     @Query("SELECT * FROM order_status_table WHERE id=:statusId")
-    fun getStatusById(statusId: Int): Single<OrderStatusEntity>
+    fun getStatusById(statusId: String): Single<OrderStatusEntity>
 
 }

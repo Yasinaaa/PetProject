@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "order_status_table")
 data class OrderStatusEntity(
-    @PrimaryKey @ColumnInfo(name = "id") val id: Int,
+    @PrimaryKey @ColumnInfo(name = "id") val id: String,
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "cancelable") val cancelable: Boolean?,
     @ColumnInfo(name = "active") val active: Boolean?,

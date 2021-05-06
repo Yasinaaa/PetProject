@@ -1,9 +1,11 @@
 package ru.skillbranch.sbdelivery.data.remote
 
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Call
 import okhttp3.ResponseBody
 import retrofit2.http.*
+import ru.skillbranch.sbdelivery.data.local.entity.CartWithItems
 import ru.skillbranch.sbdelivery.data.remote.models.request.*
 import ru.skillbranch.sbdelivery.data.remote.models.response.*
 
@@ -109,27 +111,26 @@ interface RestService {
 
     @GET("cart")
     @Headers("If-Modified-Since: Mon, 1 Jun 2020 08:00:00 GMT")
-    fun getCart(@Header("Authorization") token: String): Single<Cart>
+    fun getCart(@Header("Authorization") token: String): Observable<Cart>
 
     @PUT("cart")
     @Headers("Content-Type:application/json",
         "If-Modified-Since: Mon, 1 Jun 2020 08:00:00 GMT")
-    fun updateCart(@Query("promocode") promoCode: String?,
-                   @Query("items") items: List<CartItemRequest>,
-                   @Header("Authorization") token: String): Single<Cart>
+    fun updateCart(@Body cartRequest: CartRequest,
+                   @Header("Authorization") token: String): Observable<Cart>
 
     @POST("address/input")
     @Headers("If-Modified-Since: Mon, 1 Jun 2020 08:00:00 GMT")
     fun checkAddressInput(
-        @Query("address") address: String
-    ): Single<List<Address>>
+        @Body address: AddressRequest
+    ): Observable<Address>
 
     @POST("address/coordinates")
     @Headers("If-Modified-Since: Mon, 1 Jun 2020 08:00:00 GMT")
     fun checkAddressCoordinates(
-        @Query("lat") lat: Float,
-        @Query("lon") lon: Float
-    ): Single<Address>
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double
+    ): Observable<Address>
 
     @POST("orders/new")
     @Headers("Content-Type:application/json",

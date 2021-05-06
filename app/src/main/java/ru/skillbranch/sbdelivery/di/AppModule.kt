@@ -29,6 +29,9 @@ import ru.skillbranch.sbdelivery.ui.dish.review.ReviewDialogViewModel
 import ru.skillbranch.sbdelivery.ui.root.RootViewModel
 import ru.skillbranch.sbdelivery.ui.main.MainViewModel
 import ru.skillbranch.sbdelivery.ui.menu.MenuViewModel
+import ru.skillbranch.sbdelivery.ui.orderdetails.OrderDetailsViewModel
+import ru.skillbranch.sbdelivery.ui.orderdetails.inputaddress.InputAddressViewModel
+import ru.skillbranch.sbdelivery.ui.orderdetails.map.MapAddressViewModel
 import ru.skillbranch.sbdelivery.ui.search.SearchViewModel
 import ru.skillbranch.sbdelivery.ui.sign.SignViewModel
 import ru.skillbranch.sbdelivery.ui.sign.forgetpassword.ForgetPasswordViewModel
@@ -110,6 +113,16 @@ object AppModule {
         single<ISignUpRepository> {
             SignUpRepository(prefs = get(), api = get())
         }
+
+        single<IOrderMapper> { OrderMapper() }
+        single<IOrderRepository>{
+            OrderRepository(prefs = get(), api = get(), mapper = get(),
+                orderDao = get(), orderStatusDao = get())
+        }
+
+        single<IAddressRepository>{
+            AddressRepository(api = get())
+        }
     }
 
     fun databaseModule() = module {
@@ -144,6 +157,9 @@ object AppModule {
         }
         viewModel { SignViewModel(handle = get(), rep = get()) }
         viewModel { ForgetPasswordViewModel(handle = get(), rep = get()) }
+        viewModel { OrderDetailsViewModel(handle = get(), rep = get()) }
+        viewModel { InputAddressViewModel(handle = get(), rep = get()) }
+        viewModel { MapAddressViewModel(handle = get(), rep = get()) }
 //        scope<RootActivity> {
 //            scoped { Session() }
 //            viewModel<RootViewModel>(named("vm3"))
