@@ -16,11 +16,8 @@ class AboutAppFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentAboutAppBinding.inflate(inflater, container, false)
-        val root: View = binding!!.root
-
-        return root
+        return binding!!.root
     }
 
     override fun onDestroyView() {

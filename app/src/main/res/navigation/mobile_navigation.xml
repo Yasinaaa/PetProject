@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_main">
+    app:startDestination="@+id/nav_profile">
 
     <fragment
         android:id="@+id/nav_sign"
@@ -90,13 +90,27 @@
         android:id="@+id/nav_profile"
         android:name="ru.skillbranch.sbdelivery.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/change_password_dialog"
+            app:destination="@id/nav_change_password" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/nav_change_password"
+        android:name="ru.skillbranch.sbdelivery.ui.profile.password.PasswordDialogFragment"
+        tools:layout="@layout/dialog_change_password">
+    </dialog>
 
     <fragment
         android:id="@+id/nav_orders"
         android:name="ru.skillbranch.sbdelivery.ui.orders.OrdersFragment"
         android:label="@string/menu_orders"
-        tools:layout="@layout/fragment_created_order" />
+        tools:layout="@layout/fragment_created_order">
+        <action
+            android:id="@+id/order_page"
+            app:destination="@id/nav_created_order" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_notifications"
@@ -165,6 +179,9 @@
         <action
             android:id="@+id/map_page"
             app:destination="@id/nav_map_address" />
+        <action
+            android:id="@+id/order_page"
+            app:destination="@id/nav_created_order" />
     </fragment>
 
     <fragment
@@ -183,6 +200,11 @@
         android:id="@+id/nav_created_order"
         android:name="ru.skillbranch.sbdelivery.ui.orders.createdorder.CreatedOrderFragment"
         android:label="@string/created_order"
-        tools:layout="@layout/fragment_created_order" />
+        tools:layout="@layout/fragment_created_order">
+        <argument
+            android:name="order_id"
+            app:argType="string"
+            android:defaultValue=""/>
+    </fragment>
 
 </navigation>

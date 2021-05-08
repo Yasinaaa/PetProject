@@ -22,6 +22,7 @@ class ErrorStatusInterceptor(val moshi: Moshi): Interceptor {
 
         when(res.code){
             400 -> throw ApiError.BadRequest(errMessage)
+            402 -> throw ApiError.Unauthorized(errMessage)
             401 -> throw ApiError.Unauthorized(errMessage)
             403 -> throw ApiError.Forbidden(errMessage)
             404 -> throw ApiError.NotFound(errMessage)

@@ -16,9 +16,11 @@ import ru.skillbranch.sbdelivery.data.local.entity.CartItemEntity
 import ru.skillbranch.sbdelivery.data.local.entity.CartWithItems
 import ru.skillbranch.sbdelivery.data.local.entity.DishEntity
 import ru.skillbranch.sbdelivery.data.local.pref.PrefManager
+import ru.skillbranch.sbdelivery.data.local.pref.PrefManager.Companion.REFRESH_TOKEN
 import ru.skillbranch.sbdelivery.data.mapper.ICartMapper
 import ru.skillbranch.sbdelivery.data.remote.RestService
 import ru.skillbranch.sbdelivery.data.remote.models.request.CartRequest
+import ru.skillbranch.sbdelivery.data.remote.models.request.RefreshToken
 import ru.skillbranch.sbdelivery.data.remote.models.response.*
 
 interface ICartRepository {
@@ -61,10 +63,15 @@ class CartRepository(
 
     override fun updateCart(promoCode: String?, items: List<CartWithImageDto>): Observable<CartWithItems?> {
         val ite = mapper.mapToItemRequestList(items)
-        return api.updateCart(
-            CartRequest(promoCode, ite),
-            "${PrefManager.BEARER} ${prefs.accessToken}"
-        )
+        return api.refreshToken(RefreshToken(REFRESH_TOKEN))
+            .toObservable()
+            .flatMap {
+                prefs.accessToken = it.accessToken
+                api.updateCart(
+                    CartRequest(promoCode, ite),
+                    "${PrefManager.BEARER} ${prefs.accessToken}"
+                )
+            }
             .flatMap {
                 getLocalCart()
             }

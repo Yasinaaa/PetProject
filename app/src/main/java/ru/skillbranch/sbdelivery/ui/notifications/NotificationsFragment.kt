@@ -6,10 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.skillbranch.sbdelivery.databinding.FragmentNotificationsBinding
-class NotificationsFragment : Fragment() {
+import ru.skillbranch.sbdelivery.ui.base.BaseFragment
+import ru.skillbranch.sbdelivery.ui.base.Binding
+import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 
-    private lateinit var menuViewModel: NotificationsViewModel
+class NotificationsFragment : BaseFragment<NotificationsViewModel>() {
+
+    override val viewModel: NotificationsViewModel by stateViewModel()
+    override val baseBinding: Binding? by lazy { NotificationBinding() }
     private var binding: FragmentNotificationsBinding? = null
 
     override fun onCreateView(
@@ -17,18 +23,22 @@ class NotificationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        menuViewModel = ViewModelProvider(this).get(NotificationsViewModel::class.java)
-
         binding = FragmentNotificationsBinding.inflate(inflater, container, false)
-        val root: View = binding!!.root
+        return binding!!.root
+    }
 
+    override fun setupViews() {
         binding?.rvItems?.adapter = NotificationsAdapter()
-
-        return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    inner class NotificationBinding : Binding() {
+        override fun bind(data: IViewModelState) {
+
+        }
     }
 }

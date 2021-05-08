@@ -5,13 +5,18 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.FragmentCategoryBinding
+import ru.skillbranch.sbdelivery.ui.base.BaseFragment
+import ru.skillbranch.sbdelivery.ui.base.Binding
+import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 import ru.skillbranch.sbdelivery.ui.category.viewpager.CategoriesAdapter
 
-class CategoryFragment : Fragment() {
+class CategoryFragment : BaseFragment<CategoryViewModel>() {
 
-    private lateinit var viewModel: CategoryViewModel
+    override val viewModel: CategoryViewModel by stateViewModel()
+    override val baseBinding: Binding? by lazy { CategoryBinding() }
     private var binding: FragmentCategoryBinding? = null
     private var categoriesAdapter: CategoriesAdapter? = null
 
@@ -25,15 +30,13 @@ class CategoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this).get(CategoryViewModel::class.java)
-
         binding = FragmentCategoryBinding.inflate(inflater, container, false)
-        val root: View = binding!!.root
+        return binding!!.root
+    }
 
+    override fun setupViews() {
         categoriesAdapter = CategoriesAdapter(this)
         binding?.viewPager?.adapter = categoriesAdapter
-
-        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,5 +64,11 @@ class CategoryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    inner class CategoryBinding : Binding() {
+        override fun bind(data: IViewModelState) {
+
+        }
     }
 }

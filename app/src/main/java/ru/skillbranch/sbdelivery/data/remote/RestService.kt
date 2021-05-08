@@ -33,7 +33,12 @@ interface RestService {
 
     @POST("auth/refresh")
     @Headers("Content-Type:application/json")
-    fun refreshToken(@Body refreshToken: RefreshToken): Call<Token>
+    fun refreshToken(@Body refreshToken: RefreshToken): Single<Token>
+
+    @POST("auth/refresh")
+    @Headers("Content-Type:application/json")
+    fun refreshTokenCall(@Body refreshToken: RefreshToken): Call<Token>
+
 
     @GET("profile")
     @Headers("Content-Type:application/json")
@@ -153,7 +158,7 @@ interface RestService {
     @PUT("orders/cancel")
     @Headers("Content-Type:application/json",
         "If-Modified-Since: Mon, 1 Jun 2020 08:00:00 GMT")
-    fun cancelOrder(@Query("orderId") orderId: String,
-                  @Header("Authorization") token: String): Single<Order>
+    fun cancelOrder(@Body order: OrderCancelRequest,
+                    @Header("Authorization") token: String): Single<Order>
 
 }

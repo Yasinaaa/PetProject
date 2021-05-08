@@ -19,7 +19,7 @@ class TokenAuthenticator(
     //val lazyApi by lazy { GlobalContext.get().get<RestService>() }
 
     override fun authenticate(route: Route?, response: Response): Request? {
-        return if (response.code == 401) {
+        return if (response.code == 401 || response.code == 402) {
 
             //TODO
             val client = OkHttpClient.Builder()
@@ -35,7 +35,7 @@ class TokenAuthenticator(
                 .build()
                 .create(RestService::class.java)
 
-            val res = api.refreshToken(RefreshToken(REFRESH_TOKEN)).execute()
+            val res = api.refreshTokenCall(RefreshToken(REFRESH_TOKEN)).execute()
             return if (res.isSuccessful) {
                 val bearer = "Bearer ${res.body()!!.accessToken}"
                 prefManager.accessToken = bearer

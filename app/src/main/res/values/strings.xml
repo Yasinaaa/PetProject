@@ -4,6 +4,7 @@
     <string name="empty_list">Данные не найдены</string>
     <string name="try_again">Повторить запрос</string>
     <string name="rub">%s ₽</string>
+    <string name="number">№ %s</string>
 
     <!-- sign -->
     <string name="sign_in">Вход</string>
@@ -126,5 +127,6 @@
     <string name="date">Дата:</string>
     <string name="cancel_the_order">Отменить заказ</string>
     <string name="order_list">Состав заказа:</string>
+    <string name="count">%s шт.</string>
 
 </resources>

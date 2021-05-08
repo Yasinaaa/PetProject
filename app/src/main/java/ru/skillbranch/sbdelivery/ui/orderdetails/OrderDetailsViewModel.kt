@@ -10,6 +10,7 @@ import ru.skillbranch.sbdelivery.data.repository.IOrderRepository
 import ru.skillbranch.sbdelivery.ui.base.BaseViewModel
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 import ru.skillbranch.sbdelivery.ui.base.NavigationCommand
+import ru.skillbranch.sbdelivery.ui.basket.BasketFragmentDirections
 
 class OrderDetailsViewModel(
     handle: SavedStateHandle,
@@ -22,6 +23,7 @@ class OrderDetailsViewModel(
     val apartment = MutableLiveData<String?>()
     val intercom = MutableLiveData<String?>()
     val comment = MutableLiveData<String?>()
+
 
     fun onWriteOrEditBtnClick(){
         navigate(NavigationCommand.To(OrderDetailsFragmentDirections.inputAddressPage().actionId))
@@ -41,7 +43,7 @@ class OrderDetailsViewModel(
             )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-
+                    openOrderPage(orderId = it.id)
                     hideLoading()
                 }, {
                     Log.d("MainViewModel", "it.error=" + it.message)
@@ -50,6 +52,13 @@ class OrderDetailsViewModel(
                 })
         }
     }
+
+    private fun openOrderPage(orderId: String){
+        val action = OrderDetailsFragmentDirections.orderPage(orderId)
+        navigate(NavigationCommand.To(action.actionId, action.arguments))
+    }
 }
 
-class OrderDetailsState(): IViewModelState
+data class OrderDetailsState(
+    val isAddressEmpty: Boolean = false,
+): IViewModelState

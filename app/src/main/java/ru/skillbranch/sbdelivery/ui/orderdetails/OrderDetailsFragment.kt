@@ -14,11 +14,11 @@ import ru.skillbranch.sbdelivery.databinding.FragmentOrderDetailsBinding
 import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
+import ru.skillbranch.sbdelivery.utils.RenderProp
 
 class OrderDetailsFragment : BaseFragment<OrderDetailsViewModel>() {
 
     override val baseBinding: Binding? by lazy { OrderDetailsBinding() }
-    //private val args: OrderDetailsFragmentArgs by navArgs()
     override val viewModel: OrderDetailsViewModel by stateViewModel()
     private var binding: FragmentOrderDetailsBinding? = null
 
@@ -35,6 +35,7 @@ class OrderDetailsFragment : BaseFragment<OrderDetailsViewModel>() {
         binding?.viewModel = viewModel
         findNavController().currentBackStackEntry?.savedStateHandle?.
         getLiveData<String>(DELIVERY_ADDRESS)?.observe(viewLifecycleOwner) {
+            binding?.mbProceedToCheckout?.isEnabled = true
             viewModel.address.value = it
         }
         return binding!!.root
@@ -50,8 +51,14 @@ class OrderDetailsFragment : BaseFragment<OrderDetailsViewModel>() {
     }
 
     inner class OrderDetailsBinding : Binding() {
-        override fun bind(data: IViewModelState) {
 
+        var isAddressEmpty: Boolean by RenderProp(false){
+            binding?.mbProceedToCheckout?.isEnabled = it
+        }
+
+        override fun bind(data: IViewModelState) {
+            data as OrderDetailsState
+            isAddressEmpty = data.isAddressEmpty
         }
     }
 }

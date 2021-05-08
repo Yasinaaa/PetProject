@@ -24,14 +24,23 @@ import ru.skillbranch.sbdelivery.data.remote.interceptors.NetworkStatusIntercept
 import ru.skillbranch.sbdelivery.data.remote.interceptors.TokenAuthenticator
 import ru.skillbranch.sbdelivery.data.repository.*
 import ru.skillbranch.sbdelivery.ui.basket.BasketViewModel
+import ru.skillbranch.sbdelivery.ui.category.CategoryViewModel
+import ru.skillbranch.sbdelivery.ui.category.viewpager.SingleCategoryViewModel
 import ru.skillbranch.sbdelivery.ui.dish.DishViewModel
 import ru.skillbranch.sbdelivery.ui.dish.review.ReviewDialogViewModel
+import ru.skillbranch.sbdelivery.ui.favorite.FavoriteViewModel
 import ru.skillbranch.sbdelivery.ui.root.RootViewModel
 import ru.skillbranch.sbdelivery.ui.main.MainViewModel
 import ru.skillbranch.sbdelivery.ui.menu.MenuViewModel
+import ru.skillbranch.sbdelivery.ui.notifications.NotificationsViewModel
 import ru.skillbranch.sbdelivery.ui.orderdetails.OrderDetailsViewModel
 import ru.skillbranch.sbdelivery.ui.orderdetails.inputaddress.InputAddressViewModel
 import ru.skillbranch.sbdelivery.ui.orderdetails.map.MapAddressViewModel
+import ru.skillbranch.sbdelivery.ui.orders.OrdersViewModel
+import ru.skillbranch.sbdelivery.ui.orders.createdorder.CreatedOrderViewModel
+import ru.skillbranch.sbdelivery.ui.orders.viewpager.OrderTypeViewModel
+import ru.skillbranch.sbdelivery.ui.profile.ProfileViewModel
+import ru.skillbranch.sbdelivery.ui.profile.password.PasswordDialogViewModel
 import ru.skillbranch.sbdelivery.ui.search.SearchViewModel
 import ru.skillbranch.sbdelivery.ui.sign.SignViewModel
 import ru.skillbranch.sbdelivery.ui.sign.forgetpassword.ForgetPasswordViewModel
@@ -160,6 +169,16 @@ object AppModule {
         viewModel { OrderDetailsViewModel(handle = get(), rep = get()) }
         viewModel { InputAddressViewModel(handle = get(), rep = get()) }
         viewModel { MapAddressViewModel(handle = get(), rep = get()) }
+
+        viewModel { SingleCategoryViewModel(handle = get()) }
+        viewModel { CategoryViewModel(handle = get()) }
+        viewModel { FavoriteViewModel(handle = get()) }
+        viewModel { NotificationsViewModel(handle = get()) }
+        viewModel { CreatedOrderViewModel(handle = get(), rep = get()) }
+        viewModel { OrderTypeViewModel(handle = get()) }
+        viewModel { OrdersViewModel(handle = get(), rep = get()) }
+        viewModel { PasswordDialogViewModel(handle = get(), rep = get()) }
+        viewModel { ProfileViewModel(handle = get(), rep = get()) }
 //        scope<RootActivity> {
 //            scoped { Session() }
 //            viewModel<RootViewModel>(named("vm3"))

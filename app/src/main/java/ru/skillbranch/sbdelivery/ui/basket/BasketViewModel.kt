@@ -74,10 +74,10 @@ class BasketViewModel(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     Log.d("MainViewModel", "it=")
+                    openOrderDetailsPage()
                 },{
                     Log.d("MainViewModel", "it.error=" + it.message)
                 })
-            //openOrderDetailsPage()
         }else{
             openLogInPage()
         }

@@ -4,15 +4,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import ru.skillbranch.sbdelivery.databinding.FragmentFavoriteBinding
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import ru.skillbranch.sbdelivery.data.dto.OrderDto
 import ru.skillbranch.sbdelivery.databinding.FragmentNotificationsBinding
-import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter
+
+import ru.skillbranch.sbdelivery.ui.base.BaseFragment
+import ru.skillbranch.sbdelivery.ui.base.Binding
+import ru.skillbranch.sbdelivery.ui.base.IViewModelState
+import ru.skillbranch.sbdelivery.ui.base.NavigationCommand
+import ru.skillbranch.sbdelivery.ui.orderdetails.OrderDetailsFragmentDirections
 import ru.skillbranch.sbdelivery.utils.toDp
+import java.util.ArrayList
 
-class OrderTypeFragment : Fragment() {
+class OrderTypeFragment : BaseFragment<OrderTypeViewModel>() {
 
+    override val viewModel: OrderTypeViewModel by stateViewModel()
+    override val baseBinding: Binding? by lazy { OrderTypeBinding() }
     private var binding: FragmentNotificationsBinding? = null
+    private var adapter: OrderItemsAdapter = OrderItemsAdapter{
+//        requireParentFragment().arguments?.apply {
+//            putString(ORDER_ID, it.id)
+//        }
+        viewModel.openOrderPage(it.id)
+    }
+
+    companion object{
+        const val ORDERS_LIST = "ORDERS_LIST"
+        const val ORDER_ID = "ORDER_ID"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,13 +42,17 @@ class OrderTypeFragment : Fragment() {
         return binding!!.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        arguments?.takeIf { it.containsKey(ARG_OBJECT) }?.apply {
-//            val textView: TextView = view.findViewById(android.R.id.text1)
-//            textView.text = getInt(ARG_OBJECT).toString()
-//        }
-        binding?.rvItems?.setPadding(0, 6.toDp(requireContext()), 0,
-            16.toDp(requireContext()))
-        binding?.rvItems?.adapter = OrderItemsAdapter()
+    override fun setupViews() {
+        binding?.rvItems?.setPadding(0, 6.toDp(requireContext()), 0, 16.toDp(requireContext()))
+        binding?.rvItems?.adapter = adapter
+        arguments?.takeIf { it.containsKey(ORDERS_LIST) }?.apply {
+            adapter.updateList(getParcelableArrayList(ORDERS_LIST))
+        }
+    }
+
+    inner class OrderTypeBinding : Binding() {
+        override fun bind(data: IViewModelState) {
+
+        }
     }
 }

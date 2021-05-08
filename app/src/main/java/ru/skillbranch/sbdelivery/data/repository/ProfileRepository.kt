@@ -27,29 +27,25 @@ class ProfileRepository(
 
     override fun isAuth(): LiveData<Boolean> = prefs.isAuthLive
 
-    override fun getProfile(): Single<User> {
-        return api.getProfile("${PrefManager.BEARER} ${prefs.accessToken}")
+    override fun getProfile(): Single<User> =
+        api.getProfile("${PrefManager.BEARER} ${prefs.accessToken}")
             .doOnSuccess {
                 prefs.profile = User(it.id, it.firstName, it.lastName, it.email)
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-    }
 
     override fun putProfile(
         firstName: String,
         lastName: String,
         email: String
-    ): Single<Boolean> {
-        return api.putProfile(firstName, lastName, email,
+    ): Single<Boolean> = api.putProfile(firstName, lastName, email,
             "${PrefManager.BEARER} ${prefs.accessToken}").saveResponseAsBool()
-    }
 
     override fun changePassword(
         oldPassword: String,
         newPassword: String
-    ): Single<Boolean> {
-        return api.changePassword(ChangePasswordRequest(oldPassword, newPassword),
+    ): Single<Boolean> =
+        api.changePassword(ChangePasswordRequest(oldPassword, newPassword),
             "${PrefManager.BEARER} ${prefs.accessToken}").saveResponseAsBool()
-    }
 }
