@@ -29,6 +29,8 @@ import ru.skillbranch.sbdelivery.ui.category.viewpager.SingleCategoryViewModel
 import ru.skillbranch.sbdelivery.ui.dish.DishViewModel
 import ru.skillbranch.sbdelivery.ui.dish.review.ReviewDialogViewModel
 import ru.skillbranch.sbdelivery.ui.favorite.FavoriteViewModel
+import ru.skillbranch.sbdelivery.ui.main.IMainUseCase
+import ru.skillbranch.sbdelivery.ui.main.MainUseCase
 import ru.skillbranch.sbdelivery.ui.root.RootViewModel
 import ru.skillbranch.sbdelivery.ui.main.MainViewModel
 import ru.skillbranch.sbdelivery.ui.menu.MenuViewModel
@@ -76,12 +78,14 @@ object AppModule {
 
         single {
             OkHttpClient().newBuilder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .callTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(2, TimeUnit.SECONDS)
                 .writeTimeout(5, TimeUnit.SECONDS)
-                .authenticator(get<TokenAuthenticator>())
-                .addInterceptor(get<ErrorStatusInterceptor>())
                 .addInterceptor(get<HttpLoggingInterceptor>())
-                .addInterceptor(get<NetworkStatusInterceptor>())
+//                .authenticator(get<TokenAuthenticator>())
+//                .addInterceptor(get<ErrorStatusInterceptor>())
+//                .addInterceptor(get<NetworkStatusInterceptor>())
                 .build()
 
         }
@@ -150,9 +154,13 @@ object AppModule {
         single { get<AppDb>().cartDao() }
     }
 
+    fun useCaseModule() = module {
+        single<IMainUseCase> { MainUseCase(repository = get(), context = get()) }
+    }
+
     fun viewModelModule() = module {
-        viewModel{ RootViewModel(handle = get(), repository = get()) }
-        viewModel { MainViewModel(handle = get(), repository = get()) }
+        viewModel { RootViewModel(handle = get(), repository = get()) }
+        viewModel { MainViewModel(handle = get(), useCase = get()) } //
         viewModel { SearchViewModel(handle = get(), categoryRepo = get(), dishRepo = get()) }
         viewModel { MenuViewModel(handle = get(), repository = get()) }
         viewModel { DishViewModel(handle = get(),

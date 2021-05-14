@@ -11,12 +11,17 @@ import ru.skillbranch.sbdelivery.data.local.dao.CategoryDao
 import ru.skillbranch.sbdelivery.data.local.dao.DishesDao
 import ru.skillbranch.sbdelivery.data.local.entity.DishEntity
 import ru.skillbranch.sbdelivery.data.local.pref.PrefManager
+import ru.skillbranch.sbdelivery.data.local.pref.PrefManager.Companion.REFRESH_TOKEN
 import ru.skillbranch.sbdelivery.data.mapper.IDishesMapper
 import ru.skillbranch.sbdelivery.data.remote.RestService
+import ru.skillbranch.sbdelivery.data.remote.err.EmptyDishesError
+import ru.skillbranch.sbdelivery.data.remote.err.NoNetworkError
+import ru.skillbranch.sbdelivery.data.remote.models.request.RefreshToken
 import ru.skillbranch.sbdelivery.data.remote.models.response.Category
 import ru.skillbranch.sbdelivery.data.remote.models.response.Dish
 import ru.skillbranch.sbdelivery.data.remote.models.response.User
 import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
+import java.net.ConnectException
 import java.util.function.Function
 
 interface IDishRepository {
@@ -96,27 +101,23 @@ class DishesRepository(
             "${PrefManager.BEARER} ${prefs.accessToken}").saveResponseAsBool()
 
     override fun getRecommended(offset: Int, limit: Int): Single<MutableList<CardItem>> {
-        val allDishes =
-            api.getDishes(offset, limit, "${PrefManager.BEARER} ${prefs.accessToken}")
-                .doOnSuccess { dishes: List<Dish> ->
-                    val savePersistDishes: List<DishEntity> = mapper.mapDtoToPersist(dishes)
-                    dishesDao.insert(savePersistDishes)
-                }
-                .flatMap {
-                    dishesDao.getAllDishes()
-                }
-
-        val recommendedIds = api.getRecommend()
-
-        return Single.zip(allDishes, recommendedIds, { dish, recom ->
-            mapper.mapDishToCardItem(dish, recom)
-        })
+        return api.getDishes(offset, limit)
+            .doOnError {
+                throw ConnectException()
+            }
+            .doOnSuccess { dishes: List<Dish> ->
+                val savePersistDishes: List<DishEntity> = mapper.mapDtoToPersist(dishes)
+                dishesDao.insert(savePersistDishes)
+            }
+            .flatMap {
+                Single.zip(dishesDao.getAllDishes(), api.getRecommend(), { dish, recom ->
+                    mapper.mapDishToCardItem(dish, recom)
+                }).onErrorReturn {
+                    throw EmptyDishesError()
+                }.subscribeOn(Schedulers.io())
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-
-//            .flatMap {
-//                dishesDao.findDishesByIds(it)
-//            }
     }
 
     override fun getBestDishes(): Single<MutableList<CardItem>>{

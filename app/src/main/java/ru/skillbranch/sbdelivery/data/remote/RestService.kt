@@ -93,7 +93,7 @@ interface RestService {
     fun getDishes(
         @Query("offset") offset: Int,
         @Query("limit") limit: Int,
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String? = null
     ): Single<List<Dish>>
 
     @GET("reviews/{dishId}")

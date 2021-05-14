@@ -5,6 +5,8 @@
     <string name="try_again">Повторить запрос</string>
     <string name="rub">%s ₽</string>
     <string name="number">№ %s</string>
+    <string name="network_is_unavailable">Сеть недоступна</string>
+    <string name="main_empty_list">Данные не найдены.\nПодключитесь к Интернету, чтобы получить последние данные</string>
 
     <!-- sign -->
     <string name="sign_in">Вход</string>

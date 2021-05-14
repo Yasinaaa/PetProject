@@ -1,11 +1,14 @@
 package ru.skillbranch.sbdelivery.ui.notifications
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.skillbranch.sbdelivery.databinding.FragmentNotificationsBinding
 import ru.skillbranch.sbdelivery.ui.base.BaseFragment
@@ -28,6 +31,17 @@ class NotificationsFragment : BaseFragment<NotificationsViewModel>() {
     }
 
     override fun setupViews() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("TAG", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            Log.d("TAG", "token=$token")
+        })
         binding?.rvItems?.adapter = NotificationsAdapter()
     }
 

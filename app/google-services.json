@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "932463246522",
+    "project_id": "sbdelivery",
+    "storage_bucket": "sbdelivery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932463246522:android:19581cf5b1e5e686245683",
+        "android_client_info": {
+          "package_name": "ru.skillbranch.sbdelivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "932463246522-1el08vahjqvvmu7eiegkl9gs6okq38rq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.skillbranch.sbdelivery",
+            "certificate_hash": "01afb48fd041770eb8706fc83f9955505f9b6ee3"
+          }
+        },
+        {
+          "client_id": "932463246522-q0trv2otc0f1825pve8vvc4pcd6nn3m6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0jgK7e3PMG0un-RMByqiU1cZuOtDc-XM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "932463246522-q0trv2otc0f1825pve8vvc4pcd6nn3m6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

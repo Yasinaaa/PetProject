@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -38,8 +39,8 @@ open class RecyclersAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
             if(list[position].cards.isNullOrEmpty()) {
-                holder.bindingItem?.cl?.visibility = View.GONE
-                holder.bindingItem?.root?.visibility = View.GONE
+                holder.bindingItem?.cl?.visibility = GONE
+                holder.bindingItem?.root?.visibility = GONE
             }else{
                 holder.bindingItem?.cl?.visibility = VISIBLE
 
@@ -47,6 +48,8 @@ open class RecyclersAdapter(
                 val adapter = CardAdapter(type = MAIN, list[position].cards){
                     click.invoke(it)
                 }
+                if (list[position].cards.size < 10)
+                    holder.bindingItem?.tvSeeAll?.visibility = GONE
                 holder.bindingItem?.rvItems?.adapter = adapter
             }
         }

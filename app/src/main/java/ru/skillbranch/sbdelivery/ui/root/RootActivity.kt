@@ -13,6 +13,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ActivityRootBinding
@@ -120,7 +121,39 @@ class RootActivity : BaseActivity<RootViewModel>(){
     }
 
     override fun renderNotification(notify: Notify) {
+        val snackbar = Snackbar.make(
+            binding.appBarMain.container, notify.message,
+            Snackbar.LENGTH_LONG)
+        snackbar.behavior
 
+        when (notify) {
+            is Notify.ActionMessage -> {
+                val (_, label, handler) = notify
+
+
+                with(snackbar) {
+                    setActionTextColor(ContextCompat.getColor(context, R.color.grey_box))
+                    setAction(label) { handler.invoke() }
+                }
+            }
+
+            is Notify.ErrorMessage -> {
+                val (_, label, handler) = notify
+
+                with(snackbar) {
+                    setBackgroundTint(ContextCompat.getColor(context,
+                        R.color.design_default_color_error))
+                    setTextColor(ContextCompat.getColor(context, android.R.color.white))
+                    setActionTextColor(ContextCompat.getColor(context, android.R.color.white))
+                    handler ?: return@with
+                    setAction(label) { handler.invoke() }
+                }
+            }
+            else -> {
+
+            }
+        }
+        snackbar.show()
     }
 
 }

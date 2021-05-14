@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.load
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ItemProductCardBinding
 import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
@@ -52,21 +52,17 @@ open class CardAdapter(
             holder.bindingItem?.tvPrice?.text = String.format(context.getString(R.string.rub),
                 list[position].price.removeZeroAndReplaceComma())
 
-            Glide.with(context)
-                .load(list[position].img)
-                .placeholder(R.drawable.ic_bowl)
-                .into(holder.bindingItem?.ivProductPhoto!!)
-
-            setVisibility(list[position].isPromotion, holder.bindingItem.tvPromotion)
+            holder.bindingItem?.ivProductPhoto?.load(list[position].img)
+            setVisibility(list[position].isPromotion, holder.bindingItem?.tvPromotion)
 
             if (list[position].isFavorite)
-                holder.bindingItem.ibFavorite.backgroundTintList =
+                holder.bindingItem?.ibFavorite?.backgroundTintList =
                     ContextCompat.getColorStateList(context, R.color.yellow)
             else
-                holder.bindingItem.ibFavorite.backgroundTintList =
+                holder.bindingItem?.ibFavorite?.backgroundTintList =
                     ContextCompat.getColorStateList(context, android.R.color.white)
 
-            val lp: RecyclerView.LayoutParams = holder.bindingItem.cv.layoutParams
+            val lp: RecyclerView.LayoutParams = holder.bindingItem?.cv?.layoutParams
                     as RecyclerView.LayoutParams
 
             if (type == FAVORITE) {

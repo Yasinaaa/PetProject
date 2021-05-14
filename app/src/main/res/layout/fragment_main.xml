@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,6 +8,7 @@
     android:background="@color/black">
 
     <com.google.android.material.imageview.ShapeableImageView
+        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="162dp"
         android:id="@+id/siv_wallpaper"
@@ -21,6 +23,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
+        android:visibility="gone"
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:id="@+id/siv_sb"
@@ -32,6 +35,7 @@
         tools:ignore="ContentDescription" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
         android:id="@+id/rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -42,4 +46,60 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_main_rv" />
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:textSize="20sp"
+        android:layout_weight="3"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/main_empty_list"
+        android:textColor="@android:color/white"
+        android:fontFamily="sans-serif"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/siv_wallpaper"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/fl_shimmer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="match_parent"
+                android:layout_height="162dp"
+                android:id="@+id/siv_wallpaper_shimmer"
+                android:background="@color/grey"
+                app:shapeAppearanceOverlay="@style/roundedImageView"
+                app:srcCompat="@color/colorRipple"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"/>
+
+            <include
+                layout="@layout/item_shimmer_main_rv"/>
+
+            <include
+                layout="@layout/item_shimmer_main_rv"/>
+
+            <include
+                layout="@layout/item_shimmer_main_rv"/>
+
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

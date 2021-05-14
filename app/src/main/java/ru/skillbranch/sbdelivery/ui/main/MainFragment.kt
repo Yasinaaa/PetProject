@@ -20,7 +20,6 @@ class MainFragment : BaseFragment<MainViewModel>() {
 
     private var binding: FragmentMainBinding? = null
     private lateinit var recyclerViewsAdapter: RecyclersAdapter
-    //private val recyclerViewsAdapter by lazy { RecyclerViewsDelegate().createAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,15 +38,23 @@ class MainFragment : BaseFragment<MainViewModel>() {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         rootView = binding!!.root
         binding!!.rv.adapter = recyclerViewsAdapter
-        //findNavController().navigate(R.id.nav_menu)
         return rootView
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun setupViews() {
+        binding?.flShimmer?.startShimmer()
         viewModel.recommendDishesLists(viewLifecycleOwner){
-            recyclerViewsAdapter.list = it
-            recyclerViewsAdapter.notifyDataSetChanged()
+            if (it.isNotEmpty()) {
+                recyclerViewsAdapter.list = it
+                recyclerViewsAdapter.notifyDataSetChanged()
+                binding?.rv?.visibility = View.VISIBLE
+            }else{
+                binding?.tvError?.visibility = View.VISIBLE
+            }
+            binding?.sivSb?.visibility = View.VISIBLE
+            binding?.sivWallpaper?.visibility = View.VISIBLE
+            binding?.flShimmer?.visibility = View.GONE
         }
     }
 

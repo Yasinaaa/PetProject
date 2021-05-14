@@ -137,43 +137,6 @@ abstract class BaseViewModel<T : IViewModelState>(
         state.value = currentState.restore(handleState) as T
     }
 
-//    protected fun launchSafety(
-//        errHandler: ((Throwable) -> Unit)? = null,
-//        compHandler: ((Throwable?) -> Unit)? = null,
-//        block: suspend CoroutineScope.() -> Unit
-//    ) {
-//        //используется обработчик ошибок переданный в качестве аргумента или обработчик ошибок по умолчанию
-//        val errHand = CoroutineExceptionHandler { _, err ->
-//            errHandler?.invoke(err) ?: when (err) {
-//                is NoNetworkError -> notify(Notify.TextMessage("Network not available, check internet connection"))
-//
-//                is SocketTimeoutException -> notify(
-//                    Notify.ActionMessage(
-//                        "Network timeout exeption - please try again",
-//                        "Retry"
-//                    ) { launchSafety(errHandler, compHandler, block) })
-//
-//                is ApiError.InternalServerError -> notify(
-//                    Notify.ErrorMessage(
-//                        err.message,
-//                        "Retry",
-//                        { launchSafety(errHandler, compHandler, block) })
-//                )
-//
-//                is ApiError -> notify(Notify.ErrorMessage(err.message))
-//                else -> notify(Notify.ErrorMessage(err.message ?: "Something wrong"))
-//            }
-//        }
-//
-//        (viewModelScope + errHand).launch {
-//            showLoading()
-//            block()
-//        }.invokeOnCompletion {
-//            hideLoading()
-//            compHandler?.invoke(it)
-//        }
-//    }
-
     fun requestPermissions(requestedPermissions: List<String>) {
         permissions.value = Event(requestedPermissions)
     }

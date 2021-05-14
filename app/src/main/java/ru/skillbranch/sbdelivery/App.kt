@@ -13,35 +13,14 @@ import org.koin.core.context.startKoin
 import ru.skillbranch.sbdelivery.data.remote.NetworkMonitor
 import ru.skillbranch.sbdelivery.di.AppModule
 
-class App : Application(){//, ImageLoaderFactory {
+class App : Application(){
 
     private val monitor: NetworkMonitor by inject()
-
-//    override fun newImageLoader(): ImageLoader {
-//        return ImageLoader.Builder(applicationContext)
-//            .crossfade(true)
-//            .okHttpClient {
-//                OkHttpClient.Builder()
-//                    .cache(CoilUtils.createDefaultCache(applicationContext))
-//                    .build()
-//            }
-//            .build()
-//    }
 
     override fun onCreate() {
         super.onCreate()
         initKoin()
-
         monitor.registerNetworkMonitor()
-//        val imageLoader = ImageLoader.Builder(applicationContext)
-//            .crossfade(true)
-//            .okHttpClient {
-//                OkHttpClient.Builder()
-//                    .cache(CoilUtils.createDefaultCache(applicationContext))
-//                    .build()
-//            }
-//            .build()
-//        Coil.setImageLoader(imageLoader)
     }
 
     private fun initKoin() {
@@ -54,6 +33,7 @@ class App : Application(){//, ImageLoaderFactory {
                     AppModule.databaseModule(),
                     AppModule.networkModule(),
                     AppModule.dataModule(),
+                    AppModule.useCaseModule(),
                     AppModule.viewModelModule(),
                 )
             )

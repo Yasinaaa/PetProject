@@ -8,7 +8,7 @@ import ru.skillbranch.sbdelivery.data.remote.err.ApiError
 import ru.skillbranch.sbdelivery.data.remote.err.ErrorBody
 
 
-class ErrorStatusInterceptor(val moshi: Moshi): Interceptor {
+class ErrorStatusInterceptor(private val moshi: Moshi): Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val res = chain.proceed(chain.request())
 
