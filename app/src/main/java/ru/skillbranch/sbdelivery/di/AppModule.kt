@@ -15,8 +15,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import ru.skillbranch.sbdelivery.BuildConfig.BASE_URL
 import ru.skillbranch.sbdelivery.utils.ResourceManager
 import ru.skillbranch.sbdelivery.data.local.AppDb
+import ru.skillbranch.sbdelivery.data.local.dao.DishesDao
 import ru.skillbranch.sbdelivery.data.local.pref.PrefManager
 import ru.skillbranch.sbdelivery.data.mapper.*
+import ru.skillbranch.sbdelivery.data.paging.PostDataSource
 import ru.skillbranch.sbdelivery.data.remote.NetworkMonitor
 import ru.skillbranch.sbdelivery.data.remote.RestService
 import ru.skillbranch.sbdelivery.data.remote.interceptors.ErrorStatusInterceptor
@@ -104,8 +106,11 @@ object AppModule {
         single<IProfileRepository> { ProfileRepository(api = get(), prefs = get()) }
 
         single<IDishesMapper> { DishesMapper(context = get()) }
+        single<PostDataSource> {
+            PostDataSource(api = get(), mapper = get(), dishesDao = get())
+        }
         single<IDishRepository> {
-            DishesRepository(prefs = get(), api = get(), mapper = get(), dishesDao = get())
+            DishesRepository(prefs = get(), api = get(), mapper = get(), dishesDao = get(), postDataSource = get())
         }
 
         single<IReviewsMapper> { ReviewsMapper() }

@@ -9,6 +9,8 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import ru.skillbranch.sbdelivery.R
@@ -20,9 +22,9 @@ import ru.skillbranch.sbdelivery.utils.toDp
 
 open class CardAdapter(
     val type: Int,
-    var list: MutableList<CardItem> = mutableListOf(),
+    //var list: MutableList<CardItem> = mutableListOf(),
     private val addClick: (CardItem) -> Unit
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : PagingDataAdapter<CardItem, RecyclerView.ViewHolder>(CardDiffCallback()) {
 
     companion object{
         const val MAIN = 1
@@ -48,14 +50,14 @@ open class CardAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
 
-            holder.bindingItem?.tvTitle?.text = list[position].title
+            holder.bindingItem?.tvTitle?.text = getItem(position)?.title
             holder.bindingItem?.tvPrice?.text = String.format(context.getString(R.string.rub),
-                list[position].price.removeZeroAndReplaceComma())
+                getItem(position)?.price?.removeZeroAndReplaceComma())
 
-            holder.bindingItem?.ivProductPhoto?.load(list[position].img)
-            setVisibility(list[position].isPromotion, holder.bindingItem?.tvPromotion)
+            holder.bindingItem?.ivProductPhoto?.load(getItem(position)?.img)
+            setVisibility(getItem(position)?.isPromotion!!, holder.bindingItem?.tvPromotion)
 
-            if (list[position].isFavorite)
+            if (getItem(position)?.isFavorite!!)
                 holder.bindingItem?.ibFavorite?.backgroundTintList =
                     ContextCompat.getColorStateList(context, R.color.yellow)
             else
@@ -78,7 +80,7 @@ open class CardAdapter(
                 }
             }
 
-            holder.bindingItem.cv.setOnClickListener { addClick.invoke(list[position]) }
+            holder.bindingItem.cv.setOnClickListener { addClick.invoke(getItem(position)!!) }
         }
     }
 
@@ -89,8 +91,12 @@ open class CardAdapter(
             view?.visibility = GONE
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+}
 
+class CardDiffCallback : DiffUtil.ItemCallback<CardItem>() {
+    override fun areItemsTheSame(oldItem: CardItem, newItem: CardItem): Boolean =
+        oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: CardItem, newItem: CardItem): Boolean =
+        oldItem == newItem
 }

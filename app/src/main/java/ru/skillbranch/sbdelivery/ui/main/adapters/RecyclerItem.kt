@@ -1,8 +1,10 @@
 package ru.skillbranch.sbdelivery.ui.main.adapters
 
+import androidx.paging.PagingData
+
 data class RecyclerItem(
     val title: Int,
-    var cards: MutableList<CardItem> = mutableListOf()
+    var cards: PagingData<CardItem> = PagingData.empty()//MutableList<CardItem> = mutableListOf()
 )
 
 data class CardItem(

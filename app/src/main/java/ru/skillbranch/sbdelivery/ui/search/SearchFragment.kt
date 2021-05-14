@@ -64,11 +64,12 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
             if(it.isNotEmpty()) {
                 binding?.rvCache?.visibility = GONE
                 binding?.rvProducts?.visibility = VISIBLE
-                binding?.rvProducts?.adapter =
-                    CardAdapter(type = CardAdapter.FAVORITE, it) { item ->
-                    val action = SearchFragmentDirections.dishPage(item.id)
-                    viewModel.navigate(NavigationCommand.To(action.actionId, action.arguments))
-                }
+                //TODO
+//                binding?.rvProducts?.adapter =
+//                    CardAdapter(type = CardAdapter.FAVORITE, it) { item ->
+//                    val action = SearchFragmentDirections.dishPage(item.id)
+//                    viewModel.navigate(NavigationCommand.To(action.actionId, action.arguments))
+//                }
             }
         }
 

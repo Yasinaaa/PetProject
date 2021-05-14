@@ -24,7 +24,7 @@ class MainFragment : BaseFragment<MainViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        recyclerViewsAdapter = RecyclersAdapter{
+        recyclerViewsAdapter = RecyclersAdapter(lifecycle){
             val action = SearchFragmentDirections.dishPage(it.id)
             viewModel.navigate(NavigationCommand.To(action.actionId, action.arguments))
         }
@@ -56,6 +56,10 @@ class MainFragment : BaseFragment<MainViewModel>() {
             binding?.sivWallpaper?.visibility = View.VISIBLE
             binding?.flShimmer?.visibility = View.GONE
         }
+
+        viewModel.dish.observe(viewLifecycleOwner, {
+
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -116,7 +116,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
+    //shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    //paging
+    implementation "androidx.paging:paging-runtime-ktx:3.0.0"
+    implementation "androidx.paging:paging-rxjava3:3.0.0"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

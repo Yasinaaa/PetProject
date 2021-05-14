@@ -1,34 +1,31 @@
 package ru.skillbranch.sbdelivery.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.rxjava3.flowable
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
-import okhttp3.internal.notify
-import ru.skillbranch.sbdelivery.data.local.dao.CategoryDao
 import ru.skillbranch.sbdelivery.data.local.dao.DishesDao
 import ru.skillbranch.sbdelivery.data.local.entity.DishEntity
 import ru.skillbranch.sbdelivery.data.local.pref.PrefManager
-import ru.skillbranch.sbdelivery.data.local.pref.PrefManager.Companion.REFRESH_TOKEN
 import ru.skillbranch.sbdelivery.data.mapper.IDishesMapper
+import ru.skillbranch.sbdelivery.data.paging.PostDataSource
 import ru.skillbranch.sbdelivery.data.remote.RestService
 import ru.skillbranch.sbdelivery.data.remote.err.EmptyDishesError
-import ru.skillbranch.sbdelivery.data.remote.err.NoNetworkError
-import ru.skillbranch.sbdelivery.data.remote.models.request.RefreshToken
-import ru.skillbranch.sbdelivery.data.remote.models.response.Category
 import ru.skillbranch.sbdelivery.data.remote.models.response.Dish
-import ru.skillbranch.sbdelivery.data.remote.models.response.User
 import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
 import java.net.ConnectException
-import java.util.function.Function
 
 interface IDishRepository {
     fun getCachedSearchHistory(): LiveData<MutableSet<String>>
     fun getFavorite(offset: Int, limit: Int): Single<List<DishEntity>>
     fun changeFavorite(dishId: Int, favorite: Boolean): Single<Boolean>
-    fun getRecommended(offset: Int, limit: Int): Single<MutableList<CardItem>>
+    fun getRecommended(): Flowable<PagingData<CardItem>>//Single<MutableList<CardItem>>
     //fun getDishes(offset: Int, limit: Int): Single<List<DishEntity>>
     fun getCachedDishes(): Single<List<DishEntity>>
     fun getBestDishes(): Single<MutableList<CardItem>>
@@ -41,7 +38,9 @@ class DishesRepository(
     private val prefs: PrefManager,
     private val api: RestService,
     private val mapper: IDishesMapper,
-    private val dishesDao: DishesDao
+    private val dishesDao: DishesDao,
+
+    private val postDataSource: PostDataSource
 ) : IDishRepository {
 
     override fun getCachedSearchHistory(): LiveData<MutableSet<String>> = prefs.searchHistoryLive
@@ -100,27 +99,37 @@ class DishesRepository(
         api.changeFavorite(dishId, favorite,
             "${PrefManager.BEARER} ${prefs.accessToken}").saveResponseAsBool()
 
-    override fun getRecommended(offset: Int, limit: Int): Single<MutableList<CardItem>> {
-        return api.getDishes(offset, limit)
-            .doOnError {
-                throw ConnectException()
-            }
-            .doOnSuccess { dishes: List<Dish> ->
-                val savePersistDishes: List<DishEntity> = mapper.mapDtoToPersist(dishes)
-                dishesDao.insert(savePersistDishes)
-            }
-            .flatMap {
-                Single.zip(dishesDao.getAllDishes(), api.getRecommend(), { dish, recom ->
-                    mapper.mapDishToCardItem(dish, recom)
-                }).onErrorReturn {
-                    throw EmptyDishesError()
-                }.subscribeOn(Schedulers.io())
-            }
-            .doOnError {
-                throw ConnectException()
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    override fun getRecommended(): Flowable<PagingData<CardItem>> {
+
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false,
+                prefetchDistance = 1
+            ),
+            pagingSourceFactory = { postDataSource }
+        ).flowable
+
+//        return api.getDishes(0, 1000)
+//            .doOnError {
+//                throw ConnectException()
+//            }
+//            .doOnSuccess { dishes: List<Dish> ->
+//                val savePersistDishes: List<DishEntity> = mapper.mapDtoToPersist(dishes)
+//                dishesDao.insert(savePersistDishes)
+//            }
+//            .flatMap {
+//                Single.zip(dishesDao.getAllDishes(), api.getRecommend(), { dish, recom ->
+//                    mapper.mapDishToCardItem(dish, recom)
+//                }).onErrorReturn {
+//                    throw EmptyDishesError()
+//                }.subscribeOn(Schedulers.io())
+//            }
+//            .doOnError {
+//                throw ConnectException()
+//            }
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun getBestDishes(): Single<MutableList<CardItem>>{
@@ -143,6 +152,7 @@ class DishesRepository(
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
     }
 
     override fun getMostLikedDishes(): Single<MutableList<CardItem>>{
