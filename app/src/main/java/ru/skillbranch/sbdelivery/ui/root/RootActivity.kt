@@ -109,6 +109,13 @@ class RootActivity : BaseActivity<RootViewModel>(){
                 0
             )
         }
+
+        binding.appBarMain.content.swl.setOnRefreshListener {
+            val id = navController.currentDestination?.id
+            navController.popBackStack(id!!,true)
+            navController.navigate(id)
+            binding.appBarMain.content.swl.isRefreshing = false
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

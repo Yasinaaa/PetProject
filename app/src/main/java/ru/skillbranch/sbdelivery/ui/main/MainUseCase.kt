@@ -3,7 +3,6 @@ package ru.skillbranch.sbdelivery.ui.main
 import android.content.Context
 import android.util.Log
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.exceptions.CompositeException
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -22,7 +21,7 @@ interface IMainUseCase{
 
 class MainUseCase(
     private val repository: IDishRepository,
-    private val context: Context
+    private val context: Context,
 ): IMainUseCase{
 
     override fun getFields(

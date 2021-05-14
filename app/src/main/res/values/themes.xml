@@ -16,6 +16,7 @@
         <item name="android:textColorHint">@color/grey_text</item>
         <item name="android:editTextColor">@android:color/white</item>
         <item name="android:textColorSecondary">@color/grey_text</item>
+        <item name="android:navigationBarColor">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
 

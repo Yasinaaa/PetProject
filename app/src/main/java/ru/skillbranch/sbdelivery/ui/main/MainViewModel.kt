@@ -31,10 +31,9 @@ class MainViewModel(
         owner: LifecycleOwner,
         onChange: (list: MutableList<RecyclerItem>) -> Unit
     ) {
-        showLoading()
         dishes.observe(owner, { onChange(it) })
 
-        useCase.getFields() {
+        useCase.getFields(){
             notify(Notify.ErrorMessage(it ?: "", null,null))
         }
             .observeOn(AndroidSchedulers.mainThread())

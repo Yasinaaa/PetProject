@@ -29,7 +29,7 @@ interface IDishRepository {
     fun getFavorite(offset: Int, limit: Int): Single<List<DishEntity>>
     fun changeFavorite(dishId: Int, favorite: Boolean): Single<Boolean>
     fun getRecommended(offset: Int, limit: Int): Single<MutableList<CardItem>>
-    fun getDishes(offset: Int, limit: Int): Single<List<DishEntity>>
+    //fun getDishes(offset: Int, limit: Int): Single<List<DishEntity>>
     fun getCachedDishes(): Single<List<DishEntity>>
     fun getBestDishes(): Single<MutableList<CardItem>>
     fun getMostLikedDishes(): Single<MutableList<CardItem>>
@@ -46,19 +46,19 @@ class DishesRepository(
 
     override fun getCachedSearchHistory(): LiveData<MutableSet<String>> = prefs.searchHistoryLive
 
-    override fun getDishes(offset: Int, limit: Int): Single<List<DishEntity>> =
-        api.getDishes(offset, limit,
-            "${PrefManager.BEARER} ${prefs.accessToken}")
-            .doOnSuccess { dishes: List<Dish> ->
-                val savePersistDishes: List<DishEntity> = mapper.mapDtoToPersist(dishes)
-                dishesDao.insert(savePersistDishes)
-            }
-            .doOnError {
-
-            }
-            .map { mapper.mapDtoToPersist(it) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+//    override fun getDishes(offset: Int, limit: Int): Single<List<DishEntity>> =
+//        api.getDishes(offset, limit,
+//            "${PrefManager.BEARER} ${prefs.accessToken}")
+//            .doOnSuccess { dishes: List<Dish> ->
+//                val savePersistDishes: List<DishEntity> = mapper.mapDtoToPersist(dishes)
+//                dishesDao.insert(savePersistDishes)
+//            }
+//            .doOnError {
+//
+//            }
+//            .map { mapper.mapDtoToPersist(it) }
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
 
     override fun getCachedDishes(): Single<List<DishEntity>> =
         dishesDao.getAllDishes()
@@ -116,12 +116,18 @@ class DishesRepository(
                     throw EmptyDishesError()
                 }.subscribeOn(Schedulers.io())
             }
+            .doOnError {
+                throw ConnectException()
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun getBestDishes(): Single<MutableList<CardItem>>{
         return dishesDao.getAllDishes()
+            .onErrorReturn{
+                mutableListOf()
+            }
             .map {
                 var result = mutableListOf<DishEntity>()
                 for (item in it){
@@ -141,6 +147,9 @@ class DishesRepository(
 
     override fun getMostLikedDishes(): Single<MutableList<CardItem>>{
         return dishesDao.getAllDishes()
+            .onErrorReturn{
+                mutableListOf()
+            }
             .map {
                 it.sortedBy { item -> item.likes }
                 if(it.size < 4)

@@ -83,9 +83,9 @@ object AppModule {
                 .readTimeout(2, TimeUnit.SECONDS)
                 .writeTimeout(5, TimeUnit.SECONDS)
                 .addInterceptor(get<HttpLoggingInterceptor>())
-//                .authenticator(get<TokenAuthenticator>())
-//                .addInterceptor(get<ErrorStatusInterceptor>())
-//                .addInterceptor(get<NetworkStatusInterceptor>())
+                .authenticator(get<TokenAuthenticator>())
+                .addInterceptor(get<ErrorStatusInterceptor>())
+                .addInterceptor(get<NetworkStatusInterceptor>())
                 .build()
 
         }
