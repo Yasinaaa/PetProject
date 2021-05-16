@@ -91,8 +91,8 @@ interface RestService {
     @GET("dishes")
     @Headers("If-Modified-Since: Mon, 1 Jun 2020 08:00:00 GMT")
     fun getDishes(
-        @Query("offset") offset: Int,
-        @Query("limit") limit: Int,
+        @Query("offset") offset: Int? = null,
+        @Query("limit") limit: Int? = null,
         @Header("Authorization") token: String? = null
     ): Single<List<Dish>>
 

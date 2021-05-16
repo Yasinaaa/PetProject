@@ -25,9 +25,6 @@ class MostLikedDishesDataSource(
     override fun loadSingle(params: LoadParams<Int>): Single<LoadResult<Int, CardItem>> {
         page = params.key ?: 1
         return dishesDao.getAllDishes()
-            .onErrorReturn{
-                mutableListOf()
-            }
             .map {
                 it.sortedBy { item -> item.likes }
                 val list = if(it.size < 4)

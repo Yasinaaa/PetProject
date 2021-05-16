@@ -1,6 +1,7 @@
 package ru.skillbranch.sbdelivery.ui.main
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.filter
@@ -24,17 +25,22 @@ import java.util.concurrent.TimeUnit
 
 class MainViewModel(
     handle: SavedStateHandle,
-    //private val useCase: IMainUseCase
     private val rep: IDishRepository,
 ): BaseViewModel<MainState>(handle, MainState()){
 
     val dish = MutableLiveData<RecyclerItem>()
 
     fun getJobs() {
-        rep.getRecommended()
+        rep.getAllDishes()
+            .toFlowable()
+            .onErrorReturn {
+                notify(Notify.Error(error = R.string.network_is_unavailable))
+                emptyList()
+            }
+            .flatMap { rep.getRecommended() }
             .delay(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext {
+            .map {
                 dish.value = RecyclerItem(R.string.recommend, it)
             }
             .flatMap {
@@ -46,7 +52,7 @@ class MainViewModel(
             .flatMap {
                 rep.getMostLikedDishes()
             }
-            .subscribe({
+            .subscribe ({
                 dish.value = RecyclerItem(R.string.popular, it)
             }, {
                 notify(Notify.ErrorMessage(it.message ?: "", null,null))

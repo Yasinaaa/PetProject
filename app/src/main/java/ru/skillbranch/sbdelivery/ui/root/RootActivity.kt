@@ -128,9 +128,14 @@ class RootActivity : BaseActivity<RootViewModel>(){
     }
 
     override fun renderNotification(notify: Notify) {
-        val snackbar = Snackbar.make(
-            binding.appBarMain.container, notify.message,
+        val snackbar = if (notify is Notify.Error)
+            Snackbar.make(
+            binding.appBarMain.container, baseContext.getString(notify.error),
             Snackbar.LENGTH_LONG)
+        else
+            Snackbar.make(
+                binding.appBarMain.container, notify.message,
+                Snackbar.LENGTH_LONG)
         snackbar.behavior
 
         when (notify) {
@@ -154,6 +159,15 @@ class RootActivity : BaseActivity<RootViewModel>(){
                     setActionTextColor(ContextCompat.getColor(context, android.R.color.white))
                     handler ?: return@with
                     setAction(label) { handler.invoke() }
+                }
+            }
+
+            is Notify.Error -> {
+                with(snackbar) {
+                    setBackgroundTint(ContextCompat.getColor(context,
+                        R.color.design_default_color_error))
+                    setTextColor(ContextCompat.getColor(context, android.R.color.white))
+                    setActionTextColor(ContextCompat.getColor(context, android.R.color.white))
                 }
             }
             else -> {

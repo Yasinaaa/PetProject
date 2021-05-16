@@ -6,6 +6,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.skillbranch.sbdelivery.data.local.dao.DishesDao
 import ru.skillbranch.sbdelivery.data.local.entity.DishEntity
 import ru.skillbranch.sbdelivery.data.mapper.IDishesMapper
+import ru.skillbranch.sbdelivery.data.remote.RestService
+import ru.skillbranch.sbdelivery.data.remote.models.response.Dish
 import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
 
 
@@ -17,9 +19,6 @@ class BestDishesDataSource(
     override fun loadSingle(params: LoadParams<Int>): Single<LoadResult<Int, CardItem>> {
         page = params.key ?: 1
         return dishesDao.getAllDishes()
-            .onErrorReturn{
-                mutableListOf()
-            }
             .map {
                 var result = mutableListOf<DishEntity>()
                 for (item in it){

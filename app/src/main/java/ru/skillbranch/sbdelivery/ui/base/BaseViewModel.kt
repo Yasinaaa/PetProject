@@ -194,6 +194,11 @@ sealed class Notify {
         val errLabel: String? = null,
         val errHandler: (() -> Unit)? = null
     ) : Notify()
+
+    data class Error(
+        override val message: String = "",
+        val error: Int,
+    ) : Notify()
 }
 
 sealed class NavigationCommand() {

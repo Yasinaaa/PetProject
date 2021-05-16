@@ -35,7 +35,16 @@ open class RecyclersAdapter(
         val bindingItem: ItemMainRvBinding? = DataBindingUtil.bind(view)
     }
 
-    var list: MutableList<RecyclerItem> = mutableListOf()
+    var list: MutableList<RecyclerItem> = mutableListOf(
+        RecyclerItem(R.string.recommend),
+        RecyclerItem(R.string.best),
+        RecyclerItem(R.string.popular)
+    )
+
+    fun update(position: Int, data: PagingData<CardItem>){
+        list[position].cards = data
+        notifyItemChanged(position)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         context = parent.context

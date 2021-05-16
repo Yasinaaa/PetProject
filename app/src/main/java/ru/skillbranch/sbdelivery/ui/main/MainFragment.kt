@@ -49,8 +49,13 @@ class MainFragment : BaseFragment<MainViewModel>() {
 
         viewModel.getJobs()
         viewModel.dish.observe(viewLifecycleOwner, {
-            recyclerViewsAdapter.list.add(it)
-            recyclerViewsAdapter.notifyDataSetChanged()
+            when(it.title){
+                R.string.recommend -> recyclerViewsAdapter.update(0, it.cards!!)
+                R.string.best -> recyclerViewsAdapter.update(1, it.cards!!)
+                R.string.popular -> recyclerViewsAdapter.update(2, it.cards!!)
+            }
+            //recyclerViewsAdapter.list.
+            //recyclerViewsAdapter.notifyDataSetChanged()
             binding?.sivSb?.visibility = View.VISIBLE
             binding?.sivWallpaper?.visibility = View.VISIBLE
             binding?.flShimmer?.visibility = View.GONE

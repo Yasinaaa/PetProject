@@ -6,7 +6,7 @@ import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
 
 abstract class BaseDataSource(
     var page: Int = 1,
-    val limit: Int = 10
+    val limit: Int = 1000
 ): RxPagingSource<Int, CardItem>() {
     override fun getRefreshKey(state: PagingState<Int, CardItem>): Int? {
         return state.anchorPosition?.let { anchorPosition ->

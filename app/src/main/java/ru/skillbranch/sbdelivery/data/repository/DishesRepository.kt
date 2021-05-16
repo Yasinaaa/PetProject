@@ -18,12 +18,15 @@ import ru.skillbranch.sbdelivery.data.paging.BestDishesDataSource
 import ru.skillbranch.sbdelivery.data.paging.MostLikedDishesDataSource
 import ru.skillbranch.sbdelivery.data.paging.RecommendedDishesDataSource
 import ru.skillbranch.sbdelivery.data.remote.RestService
+import ru.skillbranch.sbdelivery.data.remote.err.ApiError
+import ru.skillbranch.sbdelivery.data.remote.models.response.Dish
 import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
 
 interface IDishRepository {
     fun getCachedSearchHistory(): LiveData<MutableSet<String>>
     fun getFavorite(offset: Int, limit: Int): Single<List<DishEntity>>
     fun changeFavorite(dishId: Int, favorite: Boolean): Single<Boolean>
+    fun getAllDishes(): Single<List<Dish>>
     fun getRecommended(): Flowable<PagingData<CardItem>>
     fun getCachedDishes(): Single<List<DishEntity>>
     fun getBestDishes(): Flowable<PagingData<CardItem>>
@@ -84,6 +87,21 @@ class DishesRepository(
     override fun changeFavorite(dishId: Int, favorite: Boolean): Single<Boolean> =
         api.changeFavorite(dishId, favorite,
             "${PrefManager.BEARER} ${prefs.accessToken}").saveResponseAsBool()
+
+    override fun getAllDishes(): Single<List<Dish>> {
+        return api.getDishes()
+            .doOnSuccess { dishes: List<Dish> ->
+                if (dishes.isNotEmpty()) {
+                    val savePersistDishes: List<DishEntity> = mapper.mapDtoToPersist(dishes)
+                    dishesDao.insert(savePersistDishes)
+                }
+            }
+            .onErrorReturn{
+                throw ApiError.ConnectionError()
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 
     override fun getRecommended(): Flowable<PagingData<CardItem>> {
         return Pager(PagingConfig(pageSize = 20)) {
