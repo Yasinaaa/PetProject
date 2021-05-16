@@ -37,7 +37,9 @@ class MainViewModel(
                 notify(Notify.Error(error = R.string.network_is_unavailable))
                 emptyList()
             }
-            .flatMap { rep.getRecommended() }
+            .flatMap {
+                rep.getRecommended()
+            }
             .delay(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .map {

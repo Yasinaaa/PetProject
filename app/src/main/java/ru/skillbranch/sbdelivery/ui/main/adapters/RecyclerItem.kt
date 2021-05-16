@@ -4,7 +4,8 @@ import androidx.paging.PagingData
 
 data class RecyclerItem(
     val title: Int,
-    var cards: PagingData<CardItem>? = null//MutableList<CardItem> = mutableListOf()
+    var cards: PagingData<CardItem>? = null,
+    var isEmpty: Boolean = false
 )
 
 data class CardItem(

@@ -45,6 +45,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_main_rv" />
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:textSize="20sp"
+        android:layout_weight="3"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/main_empty_list"
+        android:textColor="@android:color/white"
+        android:fontFamily="sans-serif"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/siv_wallpaper"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/fl_shimmer"
         android:layout_width="0dp"

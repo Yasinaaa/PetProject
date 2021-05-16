@@ -9,23 +9,21 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.paging.*
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.AlignContent
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ItemMainRvBinding
 import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter
 import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter.Companion.MAIN
 
+interface RecyclersAdapterListener{
+    fun click(c: CardItem)
+    fun setEmpty(isEmpty: Boolean)
+}
 
 open class RecyclersAdapter(
     private val lifecycleOwner: Lifecycle,
-    private val click: (CardItem) -> Unit
+    private val listener: RecyclersAdapterListener
 
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -57,29 +55,35 @@ open class RecyclersAdapter(
     @SuppressLint("CheckResult")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
-
+            //list[position].isEmpty = true
             holder.bindingItem?.tvTitle?.text = context.getString(list[position].title)
             val adapter = CardAdapter(type = MAIN){
-                click.invoke(it)
+                listener.click(it)
             }
             holder.bindingItem?.rvItems?.apply {
                 this.adapter = adapter
-                adapter.addLoadStateListener { loadState ->
+                adapter.addLoadStateListener {
                     if (adapter.itemCount >= 1) {
-                        holder.bindingItem?.cl?.visibility = VISIBLE
-                        holder.bindingItem?.tvTitle?.visibility = VISIBLE
-                        holder.bindingItem?.rvItems?.visibility = VISIBLE
-                        holder.bindingItem?.tvSeeAll?.visibility = VISIBLE
+                        listener.setEmpty(false)
+                        holder.bindingItem.cl.visibility = VISIBLE
+                        holder.bindingItem.tvTitle.visibility = VISIBLE
+                        holder.bindingItem.rvItems.visibility = VISIBLE
+                        holder.bindingItem.tvSeeAll.visibility = VISIBLE
+                    }else{
+                        //list[position].isEmpty = true
                     }
-
                 }
-                //val l = this.layoutManager as FlexboxLayoutManager
-                //l.flexDirection = FlexDirection.ROW
-                //l.justifyContent = JustifyContent.FLEX_START
-                //l.flexWrap = FlexWrap.NOWRAP
-                //l.alignItems = AlignContent.STRETCH
-                //layoutManager = l
             }
+
+
+            var isEmpty = true
+            for (s in list){
+                if (!s.isEmpty){
+                    isEmpty = false
+                }
+            }
+            listener.setEmpty(isEmpty)
+
 
             if (list[position].cards != null) {
                 adapter.submitData(lifecycleOwner, list[position].cards!!)

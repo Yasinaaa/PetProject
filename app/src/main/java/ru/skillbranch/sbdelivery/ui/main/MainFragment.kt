@@ -11,8 +11,10 @@ import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 import ru.skillbranch.sbdelivery.ui.base.NavigationCommand
+import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclerItem
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclersAdapter
+import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclersAdapterListener
 import ru.skillbranch.sbdelivery.ui.search.SearchFragmentDirections
 
 class MainFragment : BaseFragment<MainViewModel>() {
@@ -26,10 +28,18 @@ class MainFragment : BaseFragment<MainViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        recyclerViewsAdapter = RecyclersAdapter(lifecycle){
-            val action = SearchFragmentDirections.dishPage(it.id)
-            viewModel.navigate(NavigationCommand.To(action.actionId, action.arguments))
-        }
+        recyclerViewsAdapter = RecyclersAdapter(lifecycle, object : RecyclersAdapterListener{
+            override fun click(c: CardItem) {
+                val action = SearchFragmentDirections.dishPage(c.id)
+                viewModel.navigate(NavigationCommand.To(action.actionId, action.arguments))
+            }
+            override fun setEmpty(isEmpty: Boolean) {
+                if (isEmpty)
+                    binding?.tvError?.visibility = View.VISIBLE
+                else
+                    binding?.tvError?.visibility = View.GONE
+            }
+        })
     }
 
     override fun onCreateView(
