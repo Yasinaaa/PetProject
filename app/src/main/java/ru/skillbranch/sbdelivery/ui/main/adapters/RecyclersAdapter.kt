@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.paging.*
@@ -18,7 +19,7 @@ import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter.Companion.MAIN
 
 interface RecyclersAdapterListener{
     fun click(c: CardItem)
-    fun setEmpty(isEmpty: Boolean)
+    fun setEmpty()
 }
 
 open class RecyclersAdapter(
@@ -28,6 +29,7 @@ open class RecyclersAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var context: Context
+    private var errorCount = 0
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val bindingItem: ItemMainRvBinding? = DataBindingUtil.bind(view)
@@ -55,7 +57,6 @@ open class RecyclersAdapter(
     @SuppressLint("CheckResult")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
-            //list[position].isEmpty = true
             holder.bindingItem?.tvTitle?.text = context.getString(list[position].title)
             val adapter = CardAdapter(type = MAIN){
                 listener.click(it)
@@ -63,27 +64,32 @@ open class RecyclersAdapter(
             holder.bindingItem?.rvItems?.apply {
                 this.adapter = adapter
                 adapter.addLoadStateListener {
-                    if (adapter.itemCount >= 1) {
-                        listener.setEmpty(false)
-                        holder.bindingItem.cl.visibility = VISIBLE
-                        holder.bindingItem.tvTitle.visibility = VISIBLE
-                        holder.bindingItem.rvItems.visibility = VISIBLE
-                        holder.bindingItem.tvSeeAll.visibility = VISIBLE
-                    }else{
-                        //list[position].isEmpty = true
+                    if (it.refresh is LoadState.NotLoading){
+                        if (adapter.itemCount >= 1) {
+                            holder.bindingItem.cl.visibility = VISIBLE
+                            holder.bindingItem.tvTitle.visibility = VISIBLE
+                            holder.bindingItem.rvItems.visibility = VISIBLE
+                            holder.bindingItem.tvSeeAll.visibility = VISIBLE
+                        }
                     }
+                    else{
+                        val error = when {
+                            it.prepend is LoadState.Error -> it.prepend as LoadState.Error
+                            it.append is LoadState.Error -> it.append as LoadState.Error
+                            it.refresh is LoadState.Error -> it.refresh as LoadState.Error
+                            else -> null
+                        }
+                        error?.let {
+                            errorCount += 1
+                            if (errorCount >= list.size){
+                                listener.setEmpty()
+                            }
+                        }
+
+                    }
+
                 }
             }
-
-
-            var isEmpty = true
-            for (s in list){
-                if (!s.isEmpty){
-                    isEmpty = false
-                }
-            }
-            listener.setEmpty(isEmpty)
-
 
             if (list[position].cards != null) {
                 adapter.submitData(lifecycleOwner, list[position].cards!!)

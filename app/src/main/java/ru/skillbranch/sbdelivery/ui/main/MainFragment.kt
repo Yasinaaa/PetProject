@@ -33,11 +33,8 @@ class MainFragment : BaseFragment<MainViewModel>() {
                 val action = SearchFragmentDirections.dishPage(c.id)
                 viewModel.navigate(NavigationCommand.To(action.actionId, action.arguments))
             }
-            override fun setEmpty(isEmpty: Boolean) {
-                if (isEmpty)
-                    binding?.tvError?.visibility = View.VISIBLE
-                else
-                    binding?.tvError?.visibility = View.GONE
+            override fun setEmpty() {
+                binding?.tvError?.visibility = View.VISIBLE
             }
         })
     }
@@ -64,8 +61,7 @@ class MainFragment : BaseFragment<MainViewModel>() {
                 R.string.best -> recyclerViewsAdapter.update(1, it.cards!!)
                 R.string.popular -> recyclerViewsAdapter.update(2, it.cards!!)
             }
-            //recyclerViewsAdapter.list.
-            //recyclerViewsAdapter.notifyDataSetChanged()
+            //todo
             binding?.sivSb?.visibility = View.VISIBLE
             binding?.sivWallpaper?.visibility = View.VISIBLE
             binding?.flShimmer?.visibility = View.GONE

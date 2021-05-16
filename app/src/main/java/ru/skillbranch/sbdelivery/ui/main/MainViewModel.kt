@@ -37,11 +37,12 @@ class MainViewModel(
                 notify(Notify.Error(error = R.string.network_is_unavailable))
                 emptyList()
             }
+            .delay(1, TimeUnit.SECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
             .flatMap {
                 rep.getRecommended()
             }
-            .delay(1, TimeUnit.SECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
+            .cachedIn(viewModelScope)
             .map {
                 dish.value = RecyclerItem(R.string.recommend, it)
             }

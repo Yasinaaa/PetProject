@@ -43,6 +43,9 @@ class MostLikedDishesDataSource(
                         else page + 1,
                     ) as LoadResult<Int, CardItem>
             }
+            .onErrorReturn{
+                LoadResult.Error(EmptyDishesError())
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

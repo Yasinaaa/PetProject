@@ -9,6 +9,7 @@ import ru.skillbranch.sbdelivery.data.local.dao.DishesDao
 import ru.skillbranch.sbdelivery.data.local.entity.DishEntity
 import ru.skillbranch.sbdelivery.data.mapper.IDishesMapper
 import ru.skillbranch.sbdelivery.data.remote.RestService
+import ru.skillbranch.sbdelivery.data.remote.err.EmptyDishesError
 import ru.skillbranch.sbdelivery.data.remote.models.response.Dish
 import ru.skillbranch.sbdelivery.ui.main.adapters.CardItem
 
@@ -27,7 +28,10 @@ class RecommendedDishesDataSource(
                 mapper.mapDishToCardItem(dish, recom)
             })
             .map {
-                LoadResult.Page(
+                if (it.isEmpty())
+                    LoadResult.Error(EmptyDishesError())
+                else
+                    LoadResult.Page(
                     data = it,
                     prevKey = if(page == 1) null else page - 1,
                     nextKey = if(it.size < limit)
@@ -35,15 +39,11 @@ class RecommendedDishesDataSource(
                     else page + 1,
                 ) as LoadResult<Int, CardItem>
             }
+            .onErrorReturn{
+                LoadResult.Error(EmptyDishesError())
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .onErrorReturn{
-                //LoadResult.Error(it)
-                LoadResult.Page(
-                    data = emptyList(),
-                    prevKey = null,
-                    nextKey = null
-                ) as LoadResult<Int, CardItem>
-            }
+
     }
 }
