@@ -8,7 +8,8 @@ import ru.skillbranch.sbdelivery.data.remote.err.NoNetworkError
 class NetworkStatusInterceptor(val monitor: NetworkMonitor) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         //return response or throw error
-        //if(!monitor.isConnected) throw NoNetworkError()
+        if(!monitor.isConnected)
+            throw NoNetworkError()
 
         return chain.proceed(chain.request())
     }

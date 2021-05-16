@@ -9,6 +9,7 @@ sealed class ApiError(override val message:String): IOException(message) {
     class NotFound(message: String? ) : ApiError(message ?: "Requested page not found")
     class InternalServerError(message: String?) : ApiError(message ?: "Internal server error")
     class UnknownError(message: String?) : ApiError(message ?: "Unknown error" )
+    class ConnectionError() : java.net.ConnectException()
 }
 
 class ErrorBody(val message:String)

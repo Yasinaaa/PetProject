@@ -69,6 +69,7 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout_version"
     implementation "androidx.preference:preference-ktx:$pref_ktx_version"
+    implementation 'com.google.android:flexbox:2.0.1'
 
     //Room
     implementation "androidx.room:room-runtime:$room_version"

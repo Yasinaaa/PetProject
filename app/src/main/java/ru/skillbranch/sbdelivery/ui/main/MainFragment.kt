@@ -6,6 +6,7 @@ import android.view.*
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.FragmentMainBinding
+import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter
 import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
@@ -37,28 +38,93 @@ class MainFragment : BaseFragment<MainViewModel>() {
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         rootView = binding!!.root
-        binding!!.rv.adapter = recyclerViewsAdapter
+        //binding?.rv?.adapter = recyclerViewsAdapter
         return rootView
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun setupViews() {
         binding?.flShimmer?.startShimmer()
-        viewModel.recommendDishesLists(viewLifecycleOwner){
-            if (it.isNotEmpty()) {
-                recyclerViewsAdapter.list = it
-                recyclerViewsAdapter.notifyDataSetChanged()
-                binding?.rv?.visibility = View.VISIBLE
-            }else{
-                binding?.tvError?.visibility = View.VISIBLE
+
+        viewModel.getJobs()
+        viewModel.recommend.observe(viewLifecycleOwner, {
+            val adapter = CardAdapter(type = CardAdapter.MAIN){
+                //click.invoke(it)
             }
+            binding?.rvItemsRec?.apply {
+                this.adapter = adapter
+                adapter.addLoadStateListener { loadState ->
+                    if (adapter.itemCount >= 1) {
+                        binding?.rvItemsRec?.visibility = View.VISIBLE
+                        binding?.tvTitle?.visibility = View.VISIBLE
+                        binding?.tvSeeAll?.visibility = View.VISIBLE
+                    }
+
+                    if (loadState.append.endOfPaginationReached) {
+                        if (adapter.itemCount == 0) {
+                            binding?.rvItemsRec?.visibility = View.GONE
+                            binding?.tvTitle?.visibility = View.GONE
+                            binding?.tvSeeAll?.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+
+            adapter.submitData(lifecycle, it)
+
             binding?.sivSb?.visibility = View.VISIBLE
             binding?.sivWallpaper?.visibility = View.VISIBLE
             binding?.flShimmer?.visibility = View.GONE
-        }
+        })
+        viewModel.best.observe(viewLifecycleOwner, {
+            val adapter = CardAdapter(type = CardAdapter.MAIN){
+                //click.invoke(it)
+            }
+            binding?.rvItemsBest?.apply {
+                this.adapter = adapter
+                adapter.addLoadStateListener { loadState ->
+                    if (adapter.itemCount >= 1) {
+                        binding?.rvItemsBest?.visibility = View.VISIBLE
+                        binding?.tvBestTitle?.visibility = View.VISIBLE
+                        binding?.tvSeeAllBest?.visibility = View.VISIBLE
+                    }
 
-        viewModel.dish.observe(viewLifecycleOwner, {
+                    if (loadState.append.endOfPaginationReached) {
+                        if (adapter.itemCount < 1) {
+                            binding?.rvItemsBest?.visibility = View.GONE
+                            binding?.tvBestTitle?.visibility = View.GONE
+                            binding?.tvSeeAllBest?.visibility = View.GONE
+                        }
+                    }
+                }
+            }
 
+            adapter.submitData(lifecycle, it)
+        })
+        viewModel.popular.observe(viewLifecycleOwner, {
+            val adapter = CardAdapter(type = CardAdapter.MAIN){
+                //click.invoke(it)
+            }
+            binding?.rvItemsPopular?.apply {
+                this.adapter = adapter
+                adapter.addLoadStateListener { loadState ->
+                    if (adapter.itemCount >= 1) {
+                        binding?.rvItemsPopular?.visibility = View.VISIBLE
+                        binding?.tvPopularTitle?.visibility = View.VISIBLE
+                        binding?.tvSeeAllPopular?.visibility = View.VISIBLE
+                    }
+
+                    if (loadState.append.endOfPaginationReached) {
+                        if (adapter.itemCount < 1) {
+                            binding?.rvItemsPopular?.visibility = View.GONE
+                            binding?.tvPopularTitle?.visibility = View.GONE
+                            binding?.tvSeeAllPopular?.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+
+            adapter.submitData(lifecycle, it)
         })
     }
 

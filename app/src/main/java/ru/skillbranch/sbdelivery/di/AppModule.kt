@@ -15,10 +15,11 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import ru.skillbranch.sbdelivery.BuildConfig.BASE_URL
 import ru.skillbranch.sbdelivery.utils.ResourceManager
 import ru.skillbranch.sbdelivery.data.local.AppDb
-import ru.skillbranch.sbdelivery.data.local.dao.DishesDao
 import ru.skillbranch.sbdelivery.data.local.pref.PrefManager
 import ru.skillbranch.sbdelivery.data.mapper.*
-import ru.skillbranch.sbdelivery.data.paging.PostDataSource
+import ru.skillbranch.sbdelivery.data.paging.BestDishesDataSource
+import ru.skillbranch.sbdelivery.data.paging.MostLikedDishesDataSource
+import ru.skillbranch.sbdelivery.data.paging.RecommendedDishesDataSource
 import ru.skillbranch.sbdelivery.data.remote.NetworkMonitor
 import ru.skillbranch.sbdelivery.data.remote.RestService
 import ru.skillbranch.sbdelivery.data.remote.interceptors.ErrorStatusInterceptor
@@ -31,8 +32,7 @@ import ru.skillbranch.sbdelivery.ui.category.viewpager.SingleCategoryViewModel
 import ru.skillbranch.sbdelivery.ui.dish.DishViewModel
 import ru.skillbranch.sbdelivery.ui.dish.review.ReviewDialogViewModel
 import ru.skillbranch.sbdelivery.ui.favorite.FavoriteViewModel
-import ru.skillbranch.sbdelivery.ui.main.IMainUseCase
-import ru.skillbranch.sbdelivery.ui.main.MainUseCase
+
 import ru.skillbranch.sbdelivery.ui.root.RootViewModel
 import ru.skillbranch.sbdelivery.ui.main.MainViewModel
 import ru.skillbranch.sbdelivery.ui.menu.MenuViewModel
@@ -106,11 +106,19 @@ object AppModule {
         single<IProfileRepository> { ProfileRepository(api = get(), prefs = get()) }
 
         single<IDishesMapper> { DishesMapper(context = get()) }
-        single<PostDataSource> {
-            PostDataSource(api = get(), mapper = get(), dishesDao = get())
+        single{
+            RecommendedDishesDataSource(api = get(), mapper = get(), dishesDao = get())
+        }
+        single{
+            BestDishesDataSource(mapper = get(), dishesDao = get())
+        }
+        single{
+            MostLikedDishesDataSource(mapper = get(), dishesDao = get())
         }
         single<IDishRepository> {
-            DishesRepository(prefs = get(), api = get(), mapper = get(), dishesDao = get(), postDataSource = get())
+            DishesRepository(prefs = get(), api = get(), mapper = get(), dishesDao = get(),
+                recommendedDishesDataSource = get(), bestDishesDataSource = get(),
+                mostLikedDishesDataSource = get())
         }
 
         single<IReviewsMapper> { ReviewsMapper() }
@@ -160,12 +168,12 @@ object AppModule {
     }
 
     fun useCaseModule() = module {
-        single<IMainUseCase> { MainUseCase(repository = get(), context = get()) }
+        //single<IMainUseCase> { MainUseCase(repository = get(), context = get()) }
     }
 
     fun viewModelModule() = module {
         viewModel { RootViewModel(handle = get(), repository = get()) }
-        viewModel { MainViewModel(handle = get(), useCase = get()) } //
+        viewModel { MainViewModel(handle = get(),  rep = get(), context = get()) }//useCase = get()) } //
         viewModel { SearchViewModel(handle = get(), categoryRepo = get(), dishRepo = get()) }
         viewModel { MenuViewModel(handle = get(), repository = get()) }
         viewModel { DishViewModel(handle = get(),

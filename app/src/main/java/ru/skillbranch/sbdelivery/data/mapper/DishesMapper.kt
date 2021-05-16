@@ -20,6 +20,10 @@ interface IDishesMapper {
         dishes: List<DishEntity>,
         recommended: List<String> = mutableListOf()
     ): MutableList<CardItem>
+
+    fun mapDishToCardItem(
+        dishes: List<DishEntity>
+    ): MutableList<CardItem>
 }
 
 open class DishesMapper(
@@ -65,6 +69,14 @@ open class DishesMapper(
                         result.add(createCardItem(dish))
                 }
             }
+        }
+        return result
+    }
+
+    override fun mapDishToCardItem(dishes: List<DishEntity>): MutableList<CardItem> {
+        val result = mutableListOf<CardItem>()
+        for(dish in dishes){
+            result.add(createCardItem(dish))
         }
         return result
     }

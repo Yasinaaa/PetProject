@@ -81,6 +81,8 @@
                 android:ellipsize="end"
                 android:textColor="@color/colorTextWhite"
                 android:textSize="14sp"
+                android:maxLines="2"
+                android:minLines="2"
                 tools:text="Сет Королевский"
                 android:fontFamily="sans-serif"
                 android:paddingTop="0dp"

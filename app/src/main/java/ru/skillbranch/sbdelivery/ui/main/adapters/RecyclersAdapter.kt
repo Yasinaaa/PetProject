@@ -12,6 +12,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.paging.*
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.AlignContent
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import ru.skillbranch.sbdelivery.R
 import ru.skillbranch.sbdelivery.databinding.ItemMainRvBinding
 import ru.skillbranch.sbdelivery.ui.adapters.CardAdapter
@@ -43,24 +48,40 @@ open class RecyclersAdapter(
     @SuppressLint("CheckResult")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
-//            if(list[position].cards.isNullOrEmpty()) {
-//                holder.bindingItem?.cl?.visibility = GONE
-//                holder.bindingItem?.root?.visibility = GONE
-//            }else{
-                holder.bindingItem?.cl?.visibility = VISIBLE
 
-                holder.bindingItem?.tvTitle?.text = context.getString(list[position].title)
-                val adapter = CardAdapter(type = MAIN){
-                    click.invoke(it)
+            holder.bindingItem?.tvTitle?.text = context.getString(list[position].title)
+            val adapter = CardAdapter(type = MAIN){
+                click.invoke(it)
+            }
+            holder.bindingItem?.rvItems?.apply {
+                this.adapter = adapter
+                adapter.addLoadStateListener { loadState ->
+                    if (adapter.itemCount >= 1) {
+                        holder.bindingItem?.cl?.visibility = VISIBLE
+                        holder.bindingItem?.tvTitle?.visibility = VISIBLE
+                    }
+
+                    if (loadState.source.append.endOfPaginationReached) {
+                        if (adapter.itemCount < 1) {
+                            holder.bindingItem?.cl?.visibility = GONE
+                            list.removeAt(position)
+                            notifyItemRemoved(position)
+
+                        }
+                    }
                 }
-                //, list[position].cards
-//                if (list[position].cards.filter {
-//
-//                    } < 10)
-//                    holder.bindingItem?.tvSeeAll?.visibility = GONE
-                holder.bindingItem?.rvItems?.adapter = adapter
-                adapter.submitData(lifecycleOwner, list[position].cards)
-//            }
+                //val l = this.layoutManager as FlexboxLayoutManager
+                //l.flexDirection = FlexDirection.ROW
+                //l.justifyContent = JustifyContent.FLEX_START
+                //l.flexWrap = FlexWrap.NOWRAP
+                //l.alignItems = AlignContent.STRETCH
+                //layoutManager = l
+            }
+
+            if (list[position].cards != null) {
+                adapter.submitData(lifecycleOwner, list[position].cards!!)
+            }
+
         }
     }
 
