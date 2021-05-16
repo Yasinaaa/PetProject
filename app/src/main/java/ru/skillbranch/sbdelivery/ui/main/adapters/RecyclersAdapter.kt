@@ -59,16 +59,10 @@ open class RecyclersAdapter(
                     if (adapter.itemCount >= 1) {
                         holder.bindingItem?.cl?.visibility = VISIBLE
                         holder.bindingItem?.tvTitle?.visibility = VISIBLE
+                        holder.bindingItem?.rvItems?.visibility = VISIBLE
+                        holder.bindingItem?.tvSeeAll?.visibility = VISIBLE
                     }
 
-                    if (loadState.source.append.endOfPaginationReached) {
-                        if (adapter.itemCount < 1) {
-                            holder.bindingItem?.cl?.visibility = GONE
-                            list.removeAt(position)
-                            notifyItemRemoved(position)
-
-                        }
-                    }
                 }
                 //val l = this.layoutManager as FlexboxLayoutManager
                 //l.flexDirection = FlexDirection.ROW
@@ -81,7 +75,6 @@ open class RecyclersAdapter(
             if (list[position].cards != null) {
                 adapter.submitData(lifecycleOwner, list[position].cards!!)
             }
-
         }
     }
 

@@ -11,6 +11,7 @@ import ru.skillbranch.sbdelivery.ui.base.BaseFragment
 import ru.skillbranch.sbdelivery.ui.base.Binding
 import ru.skillbranch.sbdelivery.ui.base.IViewModelState
 import ru.skillbranch.sbdelivery.ui.base.NavigationCommand
+import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclerItem
 import ru.skillbranch.sbdelivery.ui.main.adapters.RecyclersAdapter
 import ru.skillbranch.sbdelivery.ui.search.SearchFragmentDirections
 
@@ -38,7 +39,7 @@ class MainFragment : BaseFragment<MainViewModel>() {
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         rootView = binding!!.root
-        //binding?.rv?.adapter = recyclerViewsAdapter
+        binding?.rv?.adapter = recyclerViewsAdapter
         return rootView
     }
 
@@ -47,85 +48,14 @@ class MainFragment : BaseFragment<MainViewModel>() {
         binding?.flShimmer?.startShimmer()
 
         viewModel.getJobs()
-        viewModel.recommend.observe(viewLifecycleOwner, {
-            val adapter = CardAdapter(type = CardAdapter.MAIN){
-                //click.invoke(it)
-            }
-            binding?.rvItemsRec?.apply {
-                this.adapter = adapter
-                adapter.addLoadStateListener { loadState ->
-                    if (adapter.itemCount >= 1) {
-                        binding?.rvItemsRec?.visibility = View.VISIBLE
-                        binding?.tvTitle?.visibility = View.VISIBLE
-                        binding?.tvSeeAll?.visibility = View.VISIBLE
-                    }
-
-                    if (loadState.append.endOfPaginationReached) {
-                        if (adapter.itemCount == 0) {
-                            binding?.rvItemsRec?.visibility = View.GONE
-                            binding?.tvTitle?.visibility = View.GONE
-                            binding?.tvSeeAll?.visibility = View.GONE
-                        }
-                    }
-                }
-            }
-
-            adapter.submitData(lifecycle, it)
-
+        viewModel.dish.observe(viewLifecycleOwner, {
+            recyclerViewsAdapter.list.add(it)
+            recyclerViewsAdapter.notifyDataSetChanged()
             binding?.sivSb?.visibility = View.VISIBLE
             binding?.sivWallpaper?.visibility = View.VISIBLE
             binding?.flShimmer?.visibility = View.GONE
         })
-        viewModel.best.observe(viewLifecycleOwner, {
-            val adapter = CardAdapter(type = CardAdapter.MAIN){
-                //click.invoke(it)
-            }
-            binding?.rvItemsBest?.apply {
-                this.adapter = adapter
-                adapter.addLoadStateListener { loadState ->
-                    if (adapter.itemCount >= 1) {
-                        binding?.rvItemsBest?.visibility = View.VISIBLE
-                        binding?.tvBestTitle?.visibility = View.VISIBLE
-                        binding?.tvSeeAllBest?.visibility = View.VISIBLE
-                    }
 
-                    if (loadState.append.endOfPaginationReached) {
-                        if (adapter.itemCount < 1) {
-                            binding?.rvItemsBest?.visibility = View.GONE
-                            binding?.tvBestTitle?.visibility = View.GONE
-                            binding?.tvSeeAllBest?.visibility = View.GONE
-                        }
-                    }
-                }
-            }
-
-            adapter.submitData(lifecycle, it)
-        })
-        viewModel.popular.observe(viewLifecycleOwner, {
-            val adapter = CardAdapter(type = CardAdapter.MAIN){
-                //click.invoke(it)
-            }
-            binding?.rvItemsPopular?.apply {
-                this.adapter = adapter
-                adapter.addLoadStateListener { loadState ->
-                    if (adapter.itemCount >= 1) {
-                        binding?.rvItemsPopular?.visibility = View.VISIBLE
-                        binding?.tvPopularTitle?.visibility = View.VISIBLE
-                        binding?.tvSeeAllPopular?.visibility = View.VISIBLE
-                    }
-
-                    if (loadState.append.endOfPaginationReached) {
-                        if (adapter.itemCount < 1) {
-                            binding?.rvItemsPopular?.visibility = View.GONE
-                            binding?.tvPopularTitle?.visibility = View.GONE
-                            binding?.tvSeeAllPopular?.visibility = View.GONE
-                        }
-                    }
-                }
-            }
-
-            adapter.submitData(lifecycle, it)
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

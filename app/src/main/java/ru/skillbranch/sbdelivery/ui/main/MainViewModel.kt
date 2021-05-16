@@ -28,28 +28,26 @@ class MainViewModel(
     private val rep: IDishRepository,
 ): BaseViewModel<MainState>(handle, MainState()){
 
-    val recommend = MutableLiveData<PagingData<CardItem>>()
-    val best = MutableLiveData<PagingData<CardItem>>()
-    val popular = MutableLiveData<PagingData<CardItem>>()
+    val dish = MutableLiveData<RecyclerItem>()
 
     fun getJobs() {
         rep.getRecommended()
             .delay(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
-                recommend.value = it
+                dish.value = RecyclerItem(R.string.recommend, it)
             }
             .flatMap {
                 rep.getBestDishes()
             }
             .doOnNext {
-                this.best.value = it
+                dish.value = RecyclerItem(R.string.best, it)
             }
             .flatMap {
                 rep.getMostLikedDishes()
             }
             .subscribe({
-                this.popular.value = it
+                dish.value = RecyclerItem(R.string.popular, it)
             }, {
                 notify(Notify.ErrorMessage(it.message ?: "", null,null))
             })

@@ -173,7 +173,7 @@ object AppModule {
 
     fun viewModelModule() = module {
         viewModel { RootViewModel(handle = get(), repository = get()) }
-        viewModel { MainViewModel(handle = get(),  rep = get(), context = get()) }//useCase = get()) } //
+        viewModel { MainViewModel(handle = get(),  rep = get()) }//useCase = get()) } //
         viewModel { SearchViewModel(handle = get(), categoryRepo = get(), dishRepo = get()) }
         viewModel { MenuViewModel(handle = get(), repository = get()) }
         viewModel { DishViewModel(handle = get(),
